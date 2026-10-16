@@ -472,8 +472,9 @@ input[type=range].scrub{width:100%;accent-color:var(--bg-accent-primary);height:
 .dcard.dark .study-label{border-color:var(--hairline-on-dark-color);color:var(--text-on-dark-muted)}
 .dcard.accent .study-label{border-color:rgba(18,18,18,.3);color:rgba(18,18,18,.74)}
 .study-media{border-radius:16px;overflow:hidden;margin-bottom:14px;border:var(--border-hairline)}
-.study-media img{width:100%;aspect-ratio:16/9;object-fit:cover}
-.study-media svg{width:100%;height:100%;max-width:100%;display:block}
+.dcard-media{position:relative;border-radius:14px;overflow:hidden;margin-bottom:16px;border:var(--border-hairline);background:var(--bg-canvas)}
+.dcard-media img{width:100%;height:auto !important;aspect-ratio:16/10 !important;object-fit:cover;display:block}
+.dcard-media .circle-btn{position:absolute;right:12px;top:12px;box-shadow:0 4px 16px rgba(0,0,0,.45)}
 .shot-cell{padding:0;min-height:0;justify-content:flex-start}
 .shot-cell .shot-img{border-bottom:var(--border-hairline)}
 .shot-cell .shot-img img{width:100%;aspect-ratio:16/10;object-fit:cover}
@@ -775,37 +776,37 @@ body[data-path="driver"] #drivers,body[data-path="business"] #business{box-shado
         <span class="dcard-top"><span class="meta">CHAPTER 01: ACQUISITION</span><span class="arrow" aria-hidden="true">↗</span></span>
         <h3>The day it becomes yours</h3>
         <p>A 1991 coupé changes hands. Its first record opens: identity, configuration, starting mileage, a biography with page one.</p>
-        <div class="dsplit">
-          <span class="thumb"><img src="assets/hero/acquire_1280.webp" srcset="assets/hero/acquire_1280.webp 1280w, assets/hero/acquire_1600.webp 1600w" sizes="80px" alt="A white vintage car parked in a garage. Photograph: Egor Vikhrev" loading="lazy" width="1600" height="1069"></span>
+        <figure class="dcard-media">
+          <img src="assets/hero/acquire_1280.webp" srcset="assets/hero/acquire_1280.webp 1280w, assets/hero/acquire_1600.webp 1600w" sizes="(max-width:560px) 100vw, 560px" alt="A white vintage car parked in a garage. Photograph: Egor Vikhrev" loading="lazy" width="1600" height="1069">
           <span class="circle-btn" aria-hidden="true">↗</span>
-        </div>
+        </figure>
       </article>
       <article class="dcard rv" style="--i:1">
         <span class="dcard-top"><span class="meta">CHAPTER 02: ROUTINE CARE</span><span class="arrow" aria-hidden="true">↗</span></span>
         <h3>Kept where the work happens</h3>
         <p>Each service documented at the ramp, attributed to the workshop that did it, and kept with the car, not in a drawer.</p>
-        <div class="dsplit">
-          <span class="thumb"><img src="assets/hero/care_1280.webp" srcset="assets/hero/care_1280.webp 1280w, assets/hero/care_1600.webp 1600w" sizes="80px" alt="A man working on a car engine in a garage. Photograph: Ahmet Debelemez" loading="lazy" width="1600" height="900"></span>
+        <figure class="dcard-media">
+          <img src="assets/hero/care_1280.webp" srcset="assets/hero/care_1280.webp 1280w, assets/hero/care_1600.webp 1600w" sizes="(max-width:560px) 100vw, 560px" alt="A man working on a car engine in a garage. Photograph: Ahmet Debelemez" loading="lazy" width="1600" height="900">
           <span class="circle-btn" aria-hidden="true">↗</span>
-        </div>
+        </figure>
       </article>
       <article class="dcard rv" style="--i:2">
         <span class="dcard-top"><span class="meta">CHAPTER 03: A MEANINGFUL DRIVE</span><span class="arrow" aria-hidden="true">↗</span></span>
         <h3>A dawn pass, deliberately recorded</h3>
         <p>The route is remembered; the exact home address never leaves the driveway. What mattered is kept. What shouldn't travel, doesn't.</p>
-        <div class="dsplit">
-          <span class="thumb"><img src="assets/hero/drive_1280.webp" srcset="assets/hero/drive_1280.webp 1280w, assets/hero/drive_1600.webp 1600w" sizes="80px" alt="A long road with a mountain in the background. Photograph: Andrew Svk" loading="lazy" width="1600" height="1067"></span>
+        <figure class="dcard-media">
+          <img src="assets/hero/drive_1280.webp" srcset="assets/hero/drive_1280.webp 1280w, assets/hero/drive_1600.webp 1600w" sizes="(max-width:560px) 100vw, 560px" alt="A long road with a mountain in the background. Photograph: Andrew Svk" loading="lazy" width="1600" height="1067">
           <span class="circle-btn" aria-hidden="true">↗</span>
-        </div>
+        </figure>
       </article>
       <article class="dcard rv" style="--i:3">
         <span class="dcard-top"><span class="meta">CHAPTER 04: REFLECTION</span><span class="arrow" aria-hidden="true">↗</span></span>
         <h3>Years later, it reads whole</h3>
         <p>Engineering, evidence, people and memory in one place, ready for the next custodian, or simply for yourself.</p>
-        <div class="dsplit">
-          <span class="thumb"><img src="assets/hero/reflect_1280.webp" srcset="assets/hero/reflect_1280.webp 1280w, assets/hero/reflect_1600.webp 1600w" sizes="80px" alt="A red and black steering wheel. Photograph: Stephanie Valencia" loading="lazy" width="1600" height="2400"></span>
+        <figure class="dcard-media">
+          <img src="assets/hero/reflect_1280.webp" srcset="assets/hero/reflect_1280.webp 1280w, assets/hero/reflect_1600.webp 1600w" sizes="(max-width:560px) 100vw, 560px" alt="A red and black steering wheel. Photograph: Stephanie Valencia" loading="lazy" width="1600" height="2400">
           <span class="circle-btn" aria-hidden="true">↗</span>
-        </div>
+        </figure>
       </article>
     </div>
 
