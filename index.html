@@ -6,22 +6,32 @@
 <title>Datum: Every Car Has a Story. Give It Continuity.</title>
 <meta name="description" content="Datum is an independent automotive software project in development: a connected experience for vehicle identity, history, evidence, drives and community.">
 <style>
-/* ============ TOKENS ============ */
+/* ============ TOKENS (single source of truth) ============ */
 :root{
-  --bg:#07080b; --bg2:#0d0e13; --card:#12141b; --line:rgba(255,255,255,.09);
-  --gold:#C5A059; --gold2:#E6C687; --ink:#F1F2F4; --muted:#ADB4BE; --dim:#6f6c66;
-  --danger:#ff9d8a;
-  --serif:"Instrument Serif","Didot","Bodoni MT",Georgia,serif;
-  --sans:"Manrope",-apple-system,"Segoe UI",Inter,Helvetica,Arial,sans-serif;
+  /* surfaces */
+  --bg:#000; --bg-rgb:0,0,0; --bg2:#0a0b0e; --card:#101216; --surface-2:#171a22;
+  --line:rgba(255,255,255,.08); --line-strong:rgba(255,255,255,.18);
+  /* text ramp: primary / secondary / tertiary, all >= 4.5:1 on --bg */
+  --ink:#F5F5F7; --muted:#A1A1A6; --dim:#86868B; --danger:#ff9d8a;
+  /* one accent, three weights, one ink for it */
+  --gold:#C5A059; --gold2:#E6C687; --gold-hi:#F0DDAE;
+  --gold-soft:rgba(197,160,89,.5); --on-gold:#141414;
+  /* type scale: eight steps, plus fluid display */
+  --fs-micro:11px; --fs-cap:12px; --fs-sm:13.5px; --fs-body:15px;
+  --fs-lead:17px; --fs-h4:19px; --fs-h3:22px; --fs-h2:26px; --fs-display:clamp(34px,5.5vw,44px);
+  /* radius scale: four steps, plus pill and circle */
+  --r-sm:10px; --r-md:16px; --r-lg:24px; --r-pill:99px; --r-full:50%;
+  /* space scale */
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:48px; --s8:64px; --s9:96px;
+  /* Archivo: one grotesque carries both voice and interface. Display role is
+     created by weight, tracking and size — not by a second family. */
+  --display:"Archivo",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  --sans:"Archivo",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
-  --r-lg:28px; --r-md:20px; --r-sm:13px;
-  --sec-pad:70px; --max:1140px;
+  --sec-pad:120px; --max:1140px;
 }
-@font-face{font-family:"Manrope";font-weight:400;font-style:normal;font-display:swap;src:url(fonts/Manrope-400.woff2) format("woff2")}
-@font-face{font-family:"Manrope";font-weight:600;font-style:normal;font-display:swap;src:url(fonts/Manrope-600.woff2) format("woff2")}
-@font-face{font-family:"Manrope";font-weight:700;font-style:normal;font-display:swap;src:url(fonts/Manrope-700.woff2) format("woff2")}
-@font-face{font-family:"Instrument Serif";font-weight:400;font-style:normal;font-display:swap;src:url(fonts/InstrumentSerif-400.woff2) format("woff2")}
-@font-face{font-family:"Instrument Serif";font-weight:400;font-style:italic;font-display:swap;src:url(fonts/InstrumentSerif-400i.woff2) format("woff2")}
+@font-face{font-family:"Archivo";font-weight:100 900;font-style:normal;font-display:swap;src:url(fonts/Archivo-Var.woff2) format("woff2")}
+@font-face{font-family:"Archivo";font-weight:100 900;font-style:italic;font-display:swap;src:url(fonts/Archivo-Ital-Var.woff2) format("woff2")}
 @font-face{font-family:"IBM Plex Mono";font-weight:400;font-style:normal;font-display:swap;src:url(fonts/IBMPlexMono-400.woff2) format("woff2")}
 @font-face{font-family:"IBM Plex Mono";font-weight:500;font-style:normal;font-display:swap;src:url(fonts/IBMPlexMono-500.woff2) format("woff2")}
 /* ============ BASE ============ */
@@ -29,262 +39,281 @@
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.65;overflow-x:hidden}
 img{display:block;max-width:100%}
-.skip{position:absolute;left:-999px;top:0;background:var(--gold);color:#141310;font-weight:700;font-size:13px;padding:10px 18px;border-radius:0 0 12px 0;z-index:99}
+.skip{position:absolute;left:-999px;top:0;display:inline-flex;align-items:center;min-height:44px;background:var(--gold);color:var(--on-gold);font-weight:700;font-size:var(--fs-sm);padding:var(--s3) var(--s4);border-radius:0 0 var(--r-sm) 0;z-index:99}
 .skip:focus{left:0}
-:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:6px}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:var(--r-sm)}
 #progress{position:fixed;top:0;left:0;height:2px;width:0;background:linear-gradient(90deg,var(--gold),var(--gold2));z-index:60}
 .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
 /* ============ NAV ============ */
-nav.top{position:fixed;top:0;left:0;right:0;z-index:40;backdrop-filter:blur(14px);background:rgba(7,8,11,.74);border-bottom:1px solid var(--line)}
+nav.top{position:fixed;top:0;left:0;right:0;z-index:40;backdrop-filter:blur(14px);background:rgba(var(--bg-rgb),.74);border-bottom:1px solid var(--line)}
 nav.top .wrap{display:flex;align-items:center;justify-content:space-between;height:62px}
-.brand{font-family:var(--serif);font-size:19px;letter-spacing:.14em}
-.brand small{font-family:var(--mono);font-size:9px;color:var(--gold);letter-spacing:.2em;border:1px solid rgba(197,160,89,.4);border-radius:99px;padding:3px 9px;margin-left:9px;vertical-align:middle}
-nav.top .links a{color:var(--muted);text-decoration:none;font-size:12.5px;margin-left:22px}
+.brand{font-family:var(--display);font-weight:600;font-size:var(--fs-h4);letter-spacing:.14em}
+.brand small{font-family:var(--mono);font-size:var(--fs-micro);color:var(--gold);letter-spacing:.2em;border:1px solid rgba(197,160,89,.4);border-radius:99px;padding:var(--s1) var(--s2);margin-left:var(--s2);vertical-align:middle}
+nav.top .links a{color:var(--muted);text-decoration:none;font-size:var(--fs-cap);margin-left:22px}
 nav.top .links a:hover{color:var(--ink)}
-#menubtn{display:none;background:transparent;border:1px solid var(--line);color:var(--ink);border-radius:10px;width:44px;height:44px;font-size:18px;cursor:pointer}
+#menubtn{display:none;background:transparent;border:1px solid var(--line);color:var(--ink);border-radius:var(--r-sm);width:44px;height:44px;font-size:var(--fs-lead);cursor:pointer}
 #mobilemenu{display:none;position:fixed;top:62px;left:0;right:0;z-index:39;background:rgba(10,11,14,.97);border-bottom:1px solid var(--line);padding:10px 24px 18px}
 #mobilemenu.on{display:block}
-#mobilemenu a{display:block;color:var(--ink);text-decoration:none;font-size:16px;padding:13px 4px;border-bottom:1px solid var(--line)}
-.statusdot{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--gold2)}
-.statusdot i{width:7px;height:7px;border-radius:50%;background:var(--gold);animation:pulse 2.2s infinite}
+#mobilemenu a{display:block;color:var(--ink);text-decoration:none;font-size:var(--fs-body);padding:var(--s3) var(--s1);border-bottom:1px solid var(--line)}
+.statusdot{display:inline-flex;align-items:center;gap:var(--s2);font-family:var(--mono);font-size:var(--fs-micro);letter-spacing:.14em;color:var(--gold2)}
+.statusdot i{width:7px;height:7px;border-radius:var(--r-full);background:var(--gold);animation:pulse 2.2s infinite}
 @keyframes pulse{50%{opacity:.3}}
 /* ============ SECTION SHELL ============ */
 section.block{padding:var(--sec-pad) 0;position:relative}
-.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.24em;color:var(--gold);text-transform:uppercase;margin-bottom:16px}
-h2.title{font-family:var(--serif);font-weight:500;font-size:clamp(32px,4.6vw,56px);line-height:1.08;margin-bottom:18px}
+.eyebrow{font-family:var(--mono);font-size:var(--fs-cap);letter-spacing:.24em;color:var(--gold);text-transform:uppercase;margin-bottom:16px}
+h2.title{font-family:var(--display);font-weight:600;font-size:clamp(32px,4.6vw,56px);line-height:1.06;letter-spacing:-.02em;margin-bottom:18px}
 h2.title em{font-style:italic;color:var(--gold2)}
-.lede{color:var(--muted);max-width:680px;font-size:17px}
-.chapnum{position:absolute;top:64px;right:0;font-family:var(--serif);font-size:clamp(90px,14vw,190px);line-height:1;color:transparent;-webkit-text-stroke:1px rgba(197,160,89,.28);pointer-events:none;user-select:none}
+.lede{color:var(--muted);max-width:680px;font-size:var(--fs-lead)}
+.chapnum{position:absolute;top:64px;right:0;font-family:var(--display);font-size:clamp(90px,14vw,190px);line-height:1;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.1);pointer-events:none;user-select:none}
 .rv{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s ease}
 .rv.on{opacity:1;transform:none}
 /* ============ BUTTONS / FORMS ============ */
-.btn{display:inline-block;background:linear-gradient(180deg,var(--gold2),var(--gold));color:#181410;font-weight:700;font-size:13.5px;padding:14px 30px;border-radius:var(--r-sm);text-decoration:none;border:0;cursor:pointer;min-height:48px}
+.btn{display:inline-block;background:linear-gradient(180deg,var(--gold2),var(--gold));color:var(--on-gold);font-weight:700;font-size:var(--fs-sm);padding:var(--s3) var(--s6);border-radius:var(--r-sm);text-decoration:none;border:0;cursor:pointer;min-height:48px}
 .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
 .btn svg{vertical-align:-3px;margin-left:6px}
-.cta-row{display:flex;gap:14px;margin-top:36px;flex-wrap:wrap}
+.cta-row{display:flex;gap:var(--s3);margin-top:var(--s6);flex-wrap:wrap}
 /* ============ HERO ============ */
 .hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;padding:140px 0 0;overflow:hidden}
 .hero-photo{position:absolute;inset:0}
 .hero-photo img{width:100%;height:100%;object-fit:cover;object-position:center 40%;filter:brightness(.62) saturate(.92);animation:kenburns 26s ease-in-out infinite alternate}
 @keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.09)}}
-.hero-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,8,11,.62) 0%,rgba(7,8,11,.18) 42%,rgba(7,8,11,.55) 72%,var(--bg) 100%)}
+.hero-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(var(--bg-rgb),.62) 0%,rgba(var(--bg-rgb),.18) 42%,rgba(var(--bg-rgb),.55) 72%,var(--bg) 100%)}
+/* ---------- VEIL: the opening beat, folded into the hero ----------
+   Not a blocking splash. It sits over an already-painted hero, holds one
+   philosophical line, lifts on its own or on first input, plays once per
+   session, and never mounts under prefers-reduced-motion. */
+.veil{position:fixed;inset:0;z-index:75;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:var(--s6);pointer-events:none}
+.veil-rule{display:block;width:28px;height:1px;background:var(--gold);margin-bottom:var(--s6);opacity:0;animation:veilIn .6s ease .05s forwards}
+.veil p{font-family:var(--display);font-weight:500;font-size:clamp(26px,4.2vw,52px);line-height:1.14;letter-spacing:-.025em;color:var(--ink);max-width:22ch;margin:0;opacity:0;animation:veilIn .6s ease .05s forwards}
+.veil.run{animation:veilOut .72s ease forwards}
+@keyframes veilIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes veilOut{to{opacity:0;visibility:hidden}}
+html.veil-off .veil{display:none}
+@media (prefers-reduced-motion:reduce){.veil{display:none!important}}
 .hero-inner{position:relative;text-align:left;width:100%;padding-bottom:84px}
-.kicker{font-family:var(--mono);font-size:11px;letter-spacing:.3em;color:var(--gold);text-transform:uppercase}
-.hero h1{font-family:var(--serif);font-weight:500;font-size:clamp(48px,8.4vw,108px);line-height:1;margin:24px 0 10px;letter-spacing:-.01em;text-shadow:0 2px 30px rgba(0,0,0,.6)}
+.kicker{font-family:var(--mono);font-size:var(--fs-micro);letter-spacing:.3em;color:var(--gold);text-transform:uppercase}
+.hero .kicker{color:var(--gold2);text-shadow:0 1px 12px rgba(0,0,0,.85)}
+.hero h1{font-family:var(--display);font-weight:600;font-size:clamp(52px,8.6vw,116px);line-height:.95;margin:var(--s5) 0 var(--s2);letter-spacing:-.03em;text-shadow:0 2px 30px rgba(0,0,0,.6)}
 .hero h1 em{font-style:italic;color:var(--gold2)}
-.hero .tagline{font-family:var(--mono);font-size:clamp(11px,1.6vw,14px);letter-spacing:.22em;color:#d8d3c8;margin-top:14px;text-shadow:0 1px 12px rgba(0,0,0,.8)}
-.hero p.standfirst{color:#cfccc4;max-width:620px;margin:22px 0 0;font-size:17px;text-shadow:0 1px 12px rgba(0,0,0,.8)}
-.photo-credit{position:absolute;right:18px;bottom:14px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:rgba(255,255,255,.55)}
-.proof{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:rgba(255,255,255,.1);border:1px solid var(--line);border-radius:18px;overflow:hidden;margin-top:56px}
-.proof div{background:rgba(7,8,11,.72);padding:20px 22px;backdrop-filter:blur(8px)}
-.proof b{display:block;font-size:14px}
-.proof span{font-size:12.5px;color:var(--muted)}
-.path-pick{display:flex;gap:12px;align-items:center;margin-top:26px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--dim)}
-.path-pick button{background:rgba(7,8,11,.5);border:1px solid rgba(255,255,255,.28);color:var(--ink);border-radius:99px;padding:12px 24px;font-family:var(--mono);font-size:12px;letter-spacing:.14em;cursor:pointer;min-height:48px;backdrop-filter:blur(6px);transition:all .3s}
+.hero .tagline{font-family:var(--mono);font-size:clamp(11px,1.6vw,14px);letter-spacing:.22em;color:var(--ink);margin-top:var(--s3);text-shadow:0 1px 12px rgba(0,0,0,.8)}
+.hero p.standfirst{color:var(--ink);max-width:620px;margin:var(--s5) 0 0;font-size:var(--fs-lead);text-shadow:0 1px 12px rgba(0,0,0,.8)}
+.photo-credit{position:absolute;right:18px;bottom:14px;font-family:var(--mono);font-size:var(--fs-micro);letter-spacing:.1em;color:rgba(255,255,255,.55)}
+.proof{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:rgba(255,255,255,.1);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;margin-top:56px}
+.proof div{background:rgba(var(--bg-rgb),.72);padding:var(--s4) var(--s5);backdrop-filter:blur(8px)}
+.proof b{display:block;font-size:var(--fs-sm)}
+.proof span{font-size:var(--fs-cap);color:var(--muted)}
+.path-pick{display:flex;gap:var(--s3);align-items:center;margin-top:var(--s5);flex-wrap:wrap;font-family:var(--mono);font-size:var(--fs-micro);letter-spacing:.2em;color:var(--dim)}
+.path-pick button{background:rgba(var(--bg-rgb),.5);border:1px solid var(--line-strong);color:var(--ink);border-radius:var(--r-pill);padding:var(--s3) var(--s5);font-family:var(--mono);font-size:var(--fs-cap);letter-spacing:.14em;cursor:pointer;min-height:48px;backdrop-filter:blur(6px);transition:all .3s}
 .path-pick button:hover{border-color:var(--gold);color:var(--gold2)}
 body[data-path="driver"] .path-driver,body[data-path="business"] .path-business{outline:1px solid rgba(197,160,89,.5);outline-offset:-1px}
 #pathbanner{position:sticky;top:62px;z-index:30;display:none;justify-content:center}
 #pathbanner.on{display:flex}
-#pathbanner span{font-family:var(--mono);font-size:11px;letter-spacing:.2em;background:rgba(10,11,14,.9);border:1px solid rgba(197,160,89,.5);color:var(--gold2);border-radius:99px;padding:9px 22px;backdrop-filter:blur(10px)}
-#pathbanner button{background:none;border:0;color:var(--dim);cursor:pointer;font-size:13px;margin-left:10px}
+#pathbanner span{font-family:var(--mono);font-size:var(--fs-micro);letter-spacing:.2em;background:rgba(10,11,14,.9);border:1px solid rgba(197,160,89,.5);color:var(--gold2);border-radius:99px;padding:var(--s2) var(--s5);backdrop-filter:blur(10px)}
+#pathbanner button{background:none;border:0;color:var(--dim);cursor:pointer;font-size:var(--fs-sm);margin-left:10px}
 /* rail */
 #rail{position:fixed;left:26px;top:50%;transform:translateY(-50%);z-index:35;display:flex;flex-direction:column;height:46vh;width:22px}
 #rail .track{position:absolute;left:10px;top:0;bottom:0;width:1px;background:rgba(255,255,255,.12)}
 #rail .draw{position:absolute;left:10px;top:0;width:1px;background:var(--gold);height:0}
-#rail a.dot{position:relative;width:21px;height:32px;display:flex;align-items:center;justify-content:center;text-decoration:none}
-#rail a.dot::after{content:"";width:7px;height:7px;border-radius:50%;background:#3a3d47;border:1px solid var(--line);transition:all .3s}
+#rail a.dot{position:relative;width:26px;height:32px;margin-left:-2.5px;display:flex;align-items:center;justify-content:center;text-decoration:none}
+#rail a.dot::after{content:"";width:7px;height:7px;border-radius:var(--r-full);background:var(--line-strong);border:1px solid var(--line);transition:all .3s}
 #rail a.dot.on::after{background:var(--gold);box-shadow:0 0 10px rgba(197,160,89,.8)}
-#rail a.dot span{position:absolute;left:26px;font-family:var(--mono);font-size:9px;letter-spacing:.16em;color:var(--dim);opacity:0;transition:opacity .3s;white-space:nowrap}
+#rail a.dot span{position:absolute;left:26px;font-family:var(--mono);font-size:var(--fs-micro);letter-spacing:.16em;color:var(--dim);opacity:0;transition:opacity .3s;white-space:nowrap}
 #rail a.dot.on span,#rail a.dot:hover span{opacity:1;color:var(--gold2)}
 @media(max-width:1100px){#rail{display:none}}
 /* ============ WHY: timelapse ============ */
-.tl-verdict{font-family:var(--serif);font-size:clamp(26px,3.4vw,40px);line-height:1.2;margin:14px 0 4px;min-height:0}
+.tl-verdict{font-family:var(--display);font-weight:600;letter-spacing:-.015em;font-size:clamp(26px,3.4vw,40px);line-height:1.2;margin:var(--s3) 0 var(--s1);min-height:0}
 .tl-verdict b{color:var(--danger)}
 .tl-verdict em{font-style:italic;color:var(--gold2)}
-.timelapse{margin-top:30px;border:1px solid var(--line);border-radius:24px;background:var(--card);padding:36px 32px}
-.tl-head{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--mono);font-size:11px;letter-spacing:.24em;color:var(--muted)}
-.tl-head #tl-year{font-family:var(--serif);font-style:italic;font-size:44px;color:var(--gold2);letter-spacing:0}
-#tl-scrub{width:100%;accent-color:var(--gold);height:40px;margin:14px 0 6px;cursor:pointer}
-.tl-row{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
-.tl-duo{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:22px}
-.tl-side{background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:18px;padding:24px 20px;min-width:0}
-.tl-side-h{font-family:var(--mono);font-size:11px;letter-spacing:.24em;color:var(--muted);margin-bottom:6px}
+.timelapse{margin-top:var(--s6);border:1px solid var(--line);border-radius:var(--r-lg);background:var(--card);padding:36px 32px}
+.tl-head{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--mono);font-size:var(--fs-micro);letter-spacing:.24em;color:var(--muted)}
+.tl-head #tl-year{font-family:var(--display);font-style:italic;font-size:var(--fs-display);color:var(--gold2);letter-spacing:0}
+#tl-scrub{width:100%;accent-color:var(--gold);height:44px;margin:var(--s3) 0 var(--s1);cursor:pointer}
+.tl-row{display:flex;gap:var(--s4);align-items:center;flex-wrap:wrap;margin-bottom:8px}
+.tl-duo{display:grid;grid-template-columns:1fr 1fr;gap:var(--s5);margin-top:22px}
+.tl-side{background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:var(--r-md);padding:var(--s5) var(--s4);min-width:0}
+.tl-side-h{font-family:var(--mono);font-size:var(--fs-micro);letter-spacing:.24em;color:var(--muted);margin-bottom:6px}
 .tl-side-h.gold{color:var(--gold2)}
-.tl-side-f{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--muted);margin-top:14px;min-height:34px}
-.tl-side-f b{font-size:26px}
+.tl-side-f{font-family:var(--mono);font-size:var(--fs-micro);letter-spacing:.12em;color:var(--muted);margin-top:var(--s3);min-height:34px}
+.tl-side-f b{font-size:var(--fs-h2)}
 .tl-side-f b.rots{color:var(--danger)}
 .tl-side-f b.holds{color:var(--gold2)}
-.tl-grid{display:flex;flex-direction:column;gap:14px;margin-top:14px;align-items:center}
-.pyr-row{display:flex;gap:14px;justify-content:center;width:100%;flex-wrap:wrap}
-.tl-cell{width:170px;padding:22px 18px;background:var(--card);border:1px solid var(--line);border-radius:16px;min-height:124px;position:relative;transition:transform .8s cubic-bezier(.5,0,.8,.4),opacity .8s,filter .8s,border-color .8s}
-.tl-cell b{display:block;font-size:14px}
-.tl-cell span{font-size:12px;color:var(--muted)}
-.tl-cell i{position:absolute;top:12px;right:12px;font-style:normal;font-family:var(--mono);font-size:9px;letter-spacing:.18em;padding:4px 10px;border-radius:99px;border:1px solid rgba(197,160,89,.45);color:var(--gold2)}
+.tl-grid{display:flex;flex-direction:column;gap:var(--s3);margin-top:var(--s3);align-items:center}
+.pyr-row{display:flex;gap:var(--s3);justify-content:center;width:100%;flex-wrap:wrap}
+.tl-cell{width:170px;padding:var(--s5) var(--s4);background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);min-height:124px;position:relative;transition:transform .8s cubic-bezier(.5,0,.8,.4),opacity .8s,filter .8s,border-color .8s}
+.tl-cell b{display:block;font-size:var(--fs-sm)}
+.tl-cell span{font-size:var(--fs-cap);color:var(--muted)}
+.tl-cell i{position:absolute;top:12px;right:12px;font-style:normal;font-family:var(--mono);font-size:var(--fs-micro);letter-spacing:.18em;padding:var(--s1) var(--s2);border-radius:99px;border:1px solid rgba(197,160,89,.45);color:var(--gold2)}
 .tl-cell.gone{transform:translateY(64px);opacity:.14;filter:grayscale(1)}
 .tl-cell.gone b{color:var(--dim);text-decoration:line-through;text-decoration-color:rgba(255,120,100,.6)}
 .tl-cell.gone i{color:var(--danger);border-color:rgba(255,120,100,.45)}
 .tl-cell.gone span{color:var(--dim)}
 .tl-cell.kept{border-color:rgba(197,160,89,.55);box-shadow:0 0 22px rgba(197,160,89,.12)}
-.tl-cell.kept i{color:#0d0e12;background:var(--gold2);border-color:transparent;font-weight:700}
-.tl-foot{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--dim);margin-top:16px}
+.tl-cell.kept i{color:var(--on-gold);background:var(--gold2);border-color:transparent;font-weight:700}
+.tl-foot{font-family:var(--mono);font-size:var(--fs-micro);letter-spacing:.16em;color:var(--dim);margin-top:16px}
 @media(max-width:1100px){.tl-duo{grid-template-columns:1fr}}
 /* pull quote */
-.pull{font-family:var(--serif);font-style:italic;font-size:clamp(22px,3vw,32px);line-height:1.4;color:var(--ink);max-width:780px;margin:54px 0 0;padding-left:28px;border-left:2px solid var(--gold)}
-.pull cite{display:block;margin-top:12px;font-style:normal;font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--gold)}
-.hero-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,8,11,.62) 0%,rgba(7,8,11,.18) 42%,rgba(7,8,11,.55) 72%,var(--bg) 100%)}
-.hero-inner{position:relative;text-align:left;width:100%;padding-bottom:84px}
-.photo-credit{position:absolute;right:18px;bottom:14px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:rgba(255,255,255,.55)}
-.marquee{overflow:hidden;white-space:nowrap;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:18px 0}
-.marquee span{display:inline-block;font-family:var(--serif);font-style:italic;font-size:22px;color:var(--dim);padding-right:48px;animation:mq 32s linear infinite}
-@keyframes mq{to{transform:translateX(-50%)}}
-.pull{font-family:var(--serif);font-style:italic;font-size:clamp(22px,3vw,32px);line-height:1.4;color:var(--ink);max-width:780px;margin:54px 0 0;padding-left:28px;border-left:2px solid var(--gold)}
-.pull cite{display:block;margin-top:12px;font-style:normal;font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--gold)}
-.plate-demo{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:28px;margin-top:30px;display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center}
-.plate-stage{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--line);touch-action:none;user-select:none}
-.plate-stage svg{display:block;width:100%;height:auto}
-#platecover{position:absolute;cursor:grab;background:#0B0C0E;border:1px dashed rgba(230,198,135,.7);display:flex;align-items:center;justify-content:center}
-#platecover span{font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--gold2);pointer-events:none}
-#grip{position:absolute;right:-7px;bottom:-7px;width:22px;height:22px;border-radius:50%;background:var(--gold);cursor:nwse-resize;box-shadow:0 0 12px rgba(197,160,89,.7)}
-.plate-verdict{font-family:var(--mono);font-size:12px;letter-spacing:.1em;margin-top:12px;min-height:30px;color:var(--muted)}
+.pull{font-family:var(--display);font-style:italic;font-weight:500;font-size:clamp(22px,3vw,32px);line-height:1.4;color:var(--ink);max-width:780px;margin:var(--s7) 0 0;padding-left:var(--s5);border-left:2px solid var(--gold)}
+.pull cite{display:block;margin-top:var(--s3);font-style:normal;font-family:var(--mono);font-size:var(--fs-micro);letter-spacing:.18em;color:var(--gold)}
+.plate-demo{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:var(--s5);margin-top:var(--s6);display:grid;grid-template-columns:1.1fr .9fr;gap:var(--s5);align-items:center}
+.plate-stage{position:relative;border-radius:var(--r-md);overflow:hidden;border:1px solid var(--line);touch-action:none;user-select:none}
+.plate-stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+#platecover{position:absolute;cursor:grab;background:var(--bg2);border:1px dashed rgba(230,198,135,.7);display:flex;align-items:center;justify-content:center}
+#platecover span{font-family:var(--mono);font-size:var(--fs-micro);letter-spacing:.14em;color:var(--gold2);pointer-events:none}
+#grip{position:absolute;right:-7px;bottom:-7px;width:22px;height:22px;border-radius:var(--r-full);background:var(--gold);cursor:nwse-resize;box-shadow:0 0 12px rgba(197,160,89,.7)}
+.plate-verdict{font-family:var(--mono);font-size:var(--fs-cap);letter-spacing:.1em;margin-top:var(--s3);min-height:30px;color:var(--muted)}
 .plate-verdict b{color:var(--gold2)}
-.dgm{margin-top:32px;background:var(--card);border:1px solid var(--line);border-radius:28px;padding:48px 32px;text-align:center}
+.dgm{margin-top:var(--s6);background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:var(--s7) var(--s6);text-align:center}
 .orbit{position:relative;max-width:560px;margin:6px auto;min-height:300px}
-.hub{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:124px;height:124px;border-radius:50%;overflow:hidden;border:1px solid rgba(197,160,89,.65)}
-.hub img{width:100%;height:100%;object-fit:cover}
-.node{position:absolute;width:104px;height:104px;border-radius:50%;background:#171a22;border:1px solid var(--line);color:var(--muted);font-size:11.5px;font-family:var(--mono);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:8px;transition:all .3s;min-width:104px;min-height:104px}
-.node:hover,.node[aria-selected="true"]{border-color:var(--gold);color:var(--ink);box-shadow:0 0 24px rgba(197,160,89,.25)}
-.dgm-panel{max-width:560px;margin:18px auto 0;min-height:60px;color:var(--muted);font-size:15px}
+.hub{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:132px;height:132px;border-radius:var(--r-full);overflow:hidden;border:1px solid rgba(197,160,89,.85);box-shadow:0 30px 90px -40px rgba(197,160,89,.35),0 20px 60px -30px rgba(0,0,0,.9);z-index:2}
+.hub img{width:100%;height:100%;object-fit:cover;filter:grayscale(.04) contrast(1.02)}
+.node{position:absolute;width:104px;height:104px;border-radius:var(--r-full);background:var(--surface-2);border:1px solid var(--line);color:var(--muted);font-size:var(--fs-micro);font-family:var(--mono);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:var(--s2);transition:opacity .25s ease,border-color .25s ease,color .25s ease,box-shadow .25s ease,transform .25s ease;min-width:104px;min-height:104px;opacity:.55}
+.node:hover,.node[aria-selected="true"]{border-color:var(--gold);color:var(--ink);box-shadow:0 0 24px rgba(197,160,89,.25);opacity:1}
+.node[aria-selected="true"]{transform:scale(1.03)}
+.node:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.dgm-panel{max-width:560px;margin:var(--s4) auto 0;min-height:60px;color:var(--muted);font-size:var(--fs-body)}
 .dgm-panel b{color:var(--ink)}
 @media(max-width:860px){.plate-demo{grid-template-columns:1fr}}
 @media(max-width:600px){
+  .chapnum{position:static;display:block;text-align:right;font-size:60px;line-height:1;margin:0 0 -6px;opacity:.85}
+  .tl-cell.gone{transform:scale(.96);opacity:.14}
   .orbit{min-height:0;display:grid;grid-template-columns:1fr 1fr;justify-items:stretch;gap:14px}
   .orbit .hub{position:relative;top:auto;left:auto;transform:none;width:150px;height:150px;grid-column:1/-1;justify-self:center}
   .node{position:relative !important;left:auto !important;top:auto !important;width:100% !important;height:auto !important;min-height:52px;border-radius:14px}
 }
-.photorow{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;margin-top:48px}
-.photo{position:relative;border-radius:22px;overflow:hidden;border:1px solid var(--line);min-height:280px}
+.photorow{display:grid;grid-template-columns:1.2fr .8fr;gap:var(--s4);margin-top:48px}
+.photo{position:relative;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line);min-height:280px}
 .photo img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;filter:saturate(.94)}
-.photo figcaption{position:absolute;left:16px;bottom:14px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:#fff;background:rgba(0,0,0,.55);padding:6px 12px;border-radius:99px;backdrop-filter:blur(4px)}
-.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:48px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:26px 24px;transition:transform .35s,border-color .35s}
+.photo figcaption{position:absolute;left:16px;bottom:14px;max-width:calc(100% - 32px);line-height:1.5;font-family:var(--mono);font-size:var(--fs-micro);letter-spacing:.14em;color:#fff;background:rgba(0,0,0,.55);padding:var(--s1) var(--s3);border-radius:var(--r-sm);backdrop-filter:blur(4px)}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:var(--s4);margin-top:48px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:var(--s5) var(--s5);transition:transform .35s,border-color .35s}
 .card:hover{transform:translateY(-4px);border-color:rgba(197,160,89,.4)}
-.card .n{font-family:var(--mono);font-size:12px;color:var(--gold);letter-spacing:.18em}
-.card h3{font-family:var(--serif);font-size:24px;margin:12px 0 10px;font-weight:500}
-.card h3 svg{vertical-align:-5px;margin-right:6px;color:var(--gold2)}
-.card p{font-size:14.5px;color:var(--muted)}
+.card .n{font-family:var(--mono);font-size:var(--fs-cap);color:var(--gold);letter-spacing:.18em}
+.card h3{font-family:var(--display);font-size:var(--fs-h3);margin:var(--s3) 0 var(--s2);font-weight:600;letter-spacing:-.015em}
+.card h3 svg{vertical-align:-5px;margin-right:var(--s1);color:var(--gold2)}
+.card p{font-size:var(--fs-body);color:var(--muted)}
 .card ul{list-style:none;margin-top:16px}
-.card li{font-size:14px;color:var(--muted);padding:8px 0 8px 24px;position:relative}
+.card li{font-size:var(--fs-sm);color:var(--muted);padding:var(--s2) 0 var(--s2) var(--s5);position:relative}
 .card li::before{content:"✓";position:absolute;left:0;color:var(--gold)}
 .tline{margin-top:48px}
 .tstep{display:grid;grid-template-columns:200px 1fr;gap:26px}
-.tstep .ph{border-radius:20px;overflow:hidden;border:1px solid var(--line);aspect-ratio:4/3;position:relative}
+.tstep .ph{border-radius:var(--r-md);overflow:hidden;border:1px solid var(--line);aspect-ratio:4/3;position:relative}
 .tstep .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.tstep .tx{padding:34px 0;border-top:1px solid var(--line)}
+.tstep .tx{padding:var(--s6) 0;border-top:1px solid var(--line)}
 .tstep:first-child .tx{border-top:0}
-.tstep .tdot{display:inline-block;font-family:var(--mono);font-size:12px;letter-spacing:.2em;color:var(--gold);margin-bottom:8px}
-.tstep h3{font-family:var(--serif);font-size:26px;font-weight:500;margin-bottom:6px}
-.tstep p{color:var(--muted);font-size:14.5px;max-width:620px}
-.xpick{display:flex;gap:10px;flex-wrap:wrap;margin-top:34px}
-.xpick button{background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:99px;padding:11px 22px;font-size:13px;font-family:var(--sans);cursor:pointer;transition:all .3s;min-height:44px}
-.xpick button[aria-selected="true"]{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#181410;font-weight:700;border-color:transparent}
-.xstage{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;margin-top:22px}
-.xpanel{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:28px;position:relative;overflow:hidden}
-.xtabs{display:flex;gap:8px;margin:24px 0 6px;flex-wrap:wrap}
-.xtabs button{background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:10px;padding:9px 18px;font-size:12px;font-family:var(--mono);letter-spacing:.08em;cursor:pointer;min-height:44px}
+.tstep .tdot{display:inline-block;font-family:var(--mono);font-size:var(--fs-cap);letter-spacing:.2em;color:var(--gold);margin-bottom:8px}
+.tstep h3{font-family:var(--display);font-size:var(--fs-h2);font-weight:600;letter-spacing:-.015em;margin-bottom:6px}
+.tstep p{color:var(--muted);font-size:var(--fs-body);max-width:620px}
+.xpick{display:flex;gap:var(--s2);flex-wrap:wrap;margin-top:34px}
+.xpick button{background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:99px;padding:var(--s3) var(--s5);font-size:var(--fs-sm);font-family:var(--sans);cursor:pointer;transition:all .3s;min-height:44px}
+.xpick button[aria-selected="true"]{background:linear-gradient(180deg,var(--gold2),var(--gold));color:var(--on-gold);font-weight:700;border-color:transparent}
+.xstage{display:grid;grid-template-columns:1.1fr .9fr;gap:var(--s4);margin-top:22px}
+.xpanel{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:var(--s5);position:relative;overflow:hidden}
+.xtabs{display:flex;gap:var(--s2);margin:var(--s5) 0 var(--s1);flex-wrap:wrap}
+.xtabs button{background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:var(--r-sm);padding:var(--s2) var(--s4);font-size:var(--fs-cap);font-family:var(--mono);letter-spacing:.08em;cursor:pointer;min-height:44px}
 .xtabs button[aria-selected="true"]{color:var(--gold2);border-color:rgba(197,160,89,.55);background:rgba(197,160,89,.08)}
-.xbody{font-size:15px;color:var(--muted);min-height:110px}
+.xbody{font-size:var(--fs-body);color:var(--muted);min-height:110px}
 .xbody b{color:var(--ink)}
-.xbody .spec{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
-.xbody .spec div{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
-.xbody .spec span{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--gold);margin-bottom:4px}
-.xbody .spec strong{font-size:14.5px;color:var(--ink);font-weight:600}
+.xbody .spec{display:grid;grid-template-columns:1fr 1fr;gap:var(--s2);margin-top:18px}
+.xbody .spec div{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 14px}
+.xbody .spec span{display:block;font-family:var(--mono);font-size:var(--fs-micro);letter-spacing:.18em;color:var(--gold);margin-bottom:4px}
+.xbody .spec strong{font-size:var(--fs-body);color:var(--ink);font-weight:600}
 .xside{display:flex;flex-direction:column;gap:18px}
-.xquote{background:linear-gradient(160deg,rgba(197,160,89,.12),transparent 60%),var(--card);border:1px solid var(--line);border-radius:24px;padding:24px;flex:1}
-.xquote p{font-family:var(--serif);font-style:italic;font-size:21px;line-height:1.45}
-.xquote cite{display:block;margin-top:14px;font-style:normal;font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--gold)}
-.diagram{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:28px;margin-top:30px}
+.xquote{background:linear-gradient(160deg,rgba(197,160,89,.12),transparent 60%),var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:var(--s5);flex:1}
+.xquote p{font-family:var(--display);font-style:italic;font-weight:500;font-size:var(--fs-h4);line-height:1.45}
+.xquote cite{display:block;margin-top:var(--s3);font-style:normal;font-family:var(--mono);font-size:var(--fs-micro);letter-spacing:.18em;color:var(--gold)}
+.diagram{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:var(--s5);margin-top:30px}
 .diagram svg{width:100%;height:auto}
-.diagram .dl{font-family:var(--mono);font-size:10px;letter-spacing:.16em;fill:var(--gold)}
-.diagram .dt{font-size:13px;fill:var(--muted);font-family:var(--sans)}
-.diagram .dh{font-size:15px;fill:var(--ink);font-weight:600;font-family:var(--sans)}
-.ign{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:30px;align-items:stretch}
-.ign-dial{background:#0a0b0f;border:1px solid var(--line);border-radius:24px;padding:22px 22px 18px;text-align:center;position:relative;overflow:hidden}
+.diagram .dl{font-family:var(--mono);font-size:var(--fs-micro);letter-spacing:.16em;fill:var(--gold)}
+.diagram .dt{font-size:var(--fs-sm);fill:var(--muted);font-family:var(--sans)}
+.diagram .dh{font-size:var(--fs-body);fill:var(--ink);font-weight:600;font-family:var(--sans)}
+.diagram .dbox{fill:var(--surface-2);stroke:var(--line-strong)}
+.diagram .dbox.hi{stroke:var(--gold)}
+.diagram .dlink{stroke:var(--line-strong)}
+.diagram .ddot{fill:var(--bg2);stroke:var(--line-strong)}
+.diagram .ddot.hi{stroke:var(--gold)}
+.diagram .dmark{stroke:var(--gold)}
+.diagram .dlink.hi{stroke:var(--gold)}
+.ign-dial .iarc{stroke:var(--gold2)}
+.ign-dial .itick{fill:var(--muted)}
+.ign-dial .ilab{fill:var(--dim)}
+.ign{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4);margin-top:var(--s6);align-items:stretch}
+.ign-dial{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r-lg);padding:var(--s5) var(--s5) var(--s4);text-align:center;position:relative;overflow:hidden}
 .ign-dial svg{width:min(320px,80%);height:auto}
 .ign-read{font-family:var(--mono);margin-top:6px}
-.ign-read b{font-size:44px;color:var(--ink);font-weight:700}
-.ign-read span{color:var(--gold);font-size:13px;letter-spacing:.2em}
-.ign-state{font-family:var(--mono);font-size:11px;letter-spacing:.3em;color:var(--muted);margin-top:4px}
-.ign-score{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--muted);margin-top:10px;min-height:36px}
-.ign-live{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--dim);margin-top:6px;min-height:16px}
+.ign-read b{font-size:var(--fs-display);color:var(--ink);font-weight:700}
+.ign-read span{color:var(--gold);font-size:var(--fs-sm);letter-spacing:.2em}
+.ign-state{font-family:var(--mono);font-size:var(--fs-micro);letter-spacing:.3em;color:var(--muted);margin-top:4px}
+.ign-score{font-family:var(--mono);font-size:var(--fs-micro);letter-spacing:.14em;color:var(--muted);margin-top:var(--s2);min-height:36px}
+.ign-live{font-family:var(--mono);font-size:var(--fs-micro);letter-spacing:.14em;color:var(--dim);margin-top:var(--s1);min-height:16px}
 .ign-score b{color:var(--gold2)}
 .ign-flash{animation:ignflash .5s ease}
 @keyframes ignflash{0%{filter:brightness(2)}100%{filter:brightness(1)}}
-.ign-ctl{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:22px;display:flex;flex-direction:column;justify-content:center;gap:10px}
-.ign-ctl .row{display:flex;gap:12px;flex-wrap:wrap}
-.ibtn{flex:1;background:transparent;border:1px solid var(--line);color:var(--ink);border-radius:14px;padding:14px;font-family:var(--mono);font-size:12px;letter-spacing:.14em;cursor:pointer;min-height:52px;transition:all .25s}
+.ign-ctl{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:var(--s5);display:flex;flex-direction:column;justify-content:center;gap:10px}
+.ign-ctl .row{display:flex;gap:var(--s3);flex-wrap:wrap}
+.ibtn{flex:1;background:transparent;border:1px solid var(--line);color:var(--ink);border-radius:var(--r-md);padding:var(--s3);font-family:var(--mono);font-size:var(--fs-cap);letter-spacing:.14em;cursor:pointer;min-height:52px;transition:all .25s}
 .ibtn:hover{border-color:var(--gold);color:var(--gold2)}
-.ibtn.gold{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#181410;font-weight:700;border:0}
-input[type=range].scrub{width:100%;accent-color:var(--gold);height:32px}
-.scrub-lab{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--dim)}
+.ibtn.gold{background:linear-gradient(180deg,var(--gold2),var(--gold));color:var(--on-gold);font-weight:700;border:0}
+input[type=range].scrub{width:100%;accent-color:var(--gold);height:44px}
+.scrub-lab{display:flex;justify-content:space-between;font-family:var(--mono);font-size:var(--fs-micro);letter-spacing:.18em;color:var(--dim)}
 .scrub-lab b{color:var(--gold)}
-.fine{font-size:12px;color:var(--dim);margin-top:16px}
-/* ===== expensive finish ===== */
-:root{--bg:#060709;--gold-hi:#F0DDAE}
+.fine{font-size:var(--fs-cap);color:var(--dim);margin-top:16px}
+/* ===== finish layer ===== */
 ::selection{background:rgba(197,160,89,.35);color:#fff}
-::-webkit-scrollbar{width:10px}::-webkit-scrollbar-track{background:#0a0b0e}
-::-webkit-scrollbar-thumb{background:#2a2d36;border-radius:8px;border:2px solid #0a0b0e}
+::-webkit-scrollbar{width:10px}::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:var(--r-sm);border:2px solid var(--bg2)}
 h2.title em,.hero h1 em,.pull,.xquote p{background:linear-gradient(175deg,var(--gold-hi) 10%,var(--gold) 55%,#9a7a45 90%);-webkit-background-clip:text;background-clip:text;color:transparent}
 .eyebrow{display:flex;align-items:center;gap:14px}
 .eyebrow::after{content:"";height:1px;width:72px;background:linear-gradient(90deg,rgba(197,160,89,.7),transparent)}
-.btn{letter-spacing:.14em;text-transform:uppercase;font-size:12.5px;box-shadow:0 8px 28px -8px rgba(197,160,89,.45),inset 0 1px 0 rgba(255,255,255,.35);transition:transform .3s,box-shadow .3s,filter .3s}
+.btn{letter-spacing:.14em;text-transform:uppercase;font-size:var(--fs-cap);box-shadow:0 8px 28px -8px rgba(197,160,89,.45),inset 0 1px 0 rgba(255,255,255,.35);transition:transform .3s,box-shadow .3s,filter .3s}
 .btn:hover{transform:translateY(-2px);filter:brightness(1.06);box-shadow:0 14px 34px -8px rgba(197,160,89,.55),inset 0 1px 0 rgba(255,255,255,.4)}
-.btn.ghost{box-shadow:none;text-transform:uppercase;letter-spacing:.14em;font-size:12.5px}
+.btn.ghost{box-shadow:none;text-transform:uppercase;letter-spacing:.14em;font-size:var(--fs-cap)}
 .btn.ghost:hover{transform:translateY(-2px)}
 .card,.shot,.xpanel,.xquote,.stage,.tl-side{box-shadow:0 24px 60px -30px rgba(0,0,0,.8)}
 .card{position:relative;overflow:hidden}
 .card::after{content:"";position:absolute;top:0;left:-80%;width:60%;height:100%;background:linear-gradient(100deg,transparent,rgba(230,198,135,.07),transparent);transform:skewX(-18deg);transition:left .8s ease;pointer-events:none}
 .card:hover::after{left:130%}
-nav.top{background:rgba(6,7,9,.78)}
+nav.top{background:rgba(var(--bg-rgb),.82)}
 .kicker{display:flex;align-items:center;gap:16px}
 .kicker::before{content:"";height:1px;width:56px;background:linear-gradient(90deg,transparent,var(--gold))}
-.hero .tagline{color:#e4ddcd}
+.hero .tagline{color:var(--ink)}
 .tl-cell.kept{box-shadow:0 0 28px rgba(197,160,89,.16),0 24px 60px -30px rgba(0,0,0,.8)}
 #rail a.dot.on::after{box-shadow:0 0 12px rgba(197,160,89,.9),0 0 3px #fff}
-.study-label{display:inline-block;font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:#0d0e12;background:var(--gold2);border-radius:99px;padding:5px 13px;margin-bottom:14px;font-weight:700}
-.stages{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0;margin-top:48px;border:1px solid var(--line);border-radius:22px;overflow:hidden}
-.stage{padding:34px 28px;background:var(--card)}
+.study-label{display:inline-block;font-family:var(--mono);font-size:var(--fs-cap);letter-spacing:.14em;color:var(--ink);background:rgba(255,255,255,.1);border-radius:99px;padding:var(--s1) var(--s3);margin-bottom:var(--s3);font-weight:600}
+.stages{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0;margin-top:var(--s7);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden}
+.stage{padding:var(--s6) var(--s5);background:var(--card)}
 .stage+.stage{border-left:1px solid var(--line)}
-.stage .lv{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--gold)}
-.stage h3{font-family:var(--serif);font-size:21px;margin:10px 0 8px;font-weight:500}
-.stage p{font-size:13.5px;color:var(--muted)}
+.stage .lv{font-family:var(--mono);font-size:var(--fs-micro);letter-spacing:.2em;color:var(--gold)}
+.stage h3{font-family:var(--display);font-size:var(--fs-h4);margin:var(--s2) 0 var(--s2);font-weight:600;letter-spacing:-.015em}
+.stage p{font-size:var(--fs-sm);color:var(--muted)}
 .stage.now{box-shadow:inset 0 3px 0 var(--gold)}
 .stage.later{opacity:.78}
-.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin-top:48px}
-.shot{border:1px solid var(--line);border-radius:20px;overflow:hidden;background:var(--card)}
+.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:var(--s4);margin-top:48px}
+.shot{border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;background:var(--card)}
 .shot .frame{aspect-ratio:16/10;position:relative;overflow:hidden}
 .shot .frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.94)}
-.shot .cap{padding:18px 22px;font-size:13.5px;color:var(--muted)}
-.shot .cap b{display:block;color:var(--ink);font-size:14.5px;margin-bottom:4px}
-.pill{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;border:1px solid rgba(197,160,89,.4);color:var(--gold2);border-radius:99px;padding:4px 12px;margin-bottom:10px}
-.paths{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;margin-top:48px}
-.invite{background:radial-gradient(circle at 50% 0%,rgba(197,160,89,.12),transparent 60%);border:1px solid var(--line);border-radius:28px;padding:46px 28px;margin-top:26px;text-align:center}
-.demo-form{display:flex;gap:10px;justify-content:center;margin-top:30px;flex-wrap:wrap;align-items:center}
-.demo-form select,.demo-form input{background:#000;border:1px solid var(--line);border-radius:12px;color:var(--ink);padding:13px 18px;font-size:14px;min-height:48px}
+.shot .cap{padding:var(--s4) var(--s5);font-size:var(--fs-sm);color:var(--muted)}
+.shot .cap b{display:block;color:var(--ink);font-size:var(--fs-body);margin-bottom:4px}
+.pill{display:inline-block;font-family:var(--mono);font-size:var(--fs-micro);letter-spacing:.14em;border:1px solid rgba(255,255,255,.18);color:var(--muted);border-radius:99px;padding:var(--s1) var(--s3);margin-bottom:10px}
+.paths{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:var(--s4);margin-top:48px}
+.invite{background:radial-gradient(circle at 50% 0%,rgba(197,160,89,.12),transparent 60%);border:1px solid var(--line);border-radius:var(--r-lg);padding:var(--s7) var(--s5);margin-top:var(--s5);text-align:center}
+.demo-form{display:flex;gap:var(--s2);justify-content:center;margin-top:var(--s6);flex-wrap:wrap;align-items:center}
+.demo-form select,.demo-form input{background:#000;border:1px solid var(--line);border-radius:var(--r-sm);color:var(--ink);padding:var(--s3) var(--s4);font-size:var(--fs-sm);min-height:48px}
 .demo-form input{width:min(300px,90vw)}
-.notice{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--gold2);border:1px dashed rgba(197,160,89,.45);border-radius:14px;padding:14px 20px;max-width:640px;margin:26px auto 0;line-height:1.7}
-footer{border-top:1px solid var(--line);padding:44px 0 60px;color:var(--dim);font-size:13px}
-footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
-footer .disclaim{max-width:560px;font-size:12px;line-height:1.8}
-#top{position:fixed;right:22px;bottom:22px;z-index:34;width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:rgba(20,22,28,.92);color:var(--gold2);font-size:18px;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .4s}
+.notice{font-family:var(--mono);font-size:var(--fs-micro);letter-spacing:.06em;color:var(--gold2);border:1px dashed rgba(197,160,89,.45);border-radius:var(--r-md);padding:var(--s3) var(--s4);max-width:640px;margin:26px auto 0;line-height:1.7}
+footer{border-top:1px solid var(--line);padding:var(--s7) 0 var(--s8);color:var(--dim);font-size:var(--fs-sm)}
+footer .wrap{display:flex;justify-content:space-between;gap:var(--s5);flex-wrap:wrap}
+footer .disclaim{max-width:560px;font-size:var(--fs-cap);line-height:1.8}
+#top{position:fixed;right:22px;bottom:22px;z-index:34;width:46px;height:46px;border-radius:var(--r-full);border:1px solid var(--line);background:rgba(20,22,28,.92);color:var(--gold2);font-size:var(--fs-lead);cursor:pointer;opacity:0;pointer-events:none;transition:opacity .4s}
 #top.on{opacity:1;pointer-events:auto}
 .marquee{overflow:hidden;white-space:nowrap;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:18px 0}
-.marquee span{display:inline-block;font-family:var(--serif);font-style:italic;font-size:22px;color:var(--dim);padding-right:48px;animation:mq 32s linear infinite}
+.marquee span{display:inline-block;font-family:var(--display);font-style:italic;font-size:var(--fs-h3);color:var(--dim);padding-right:var(--s7);animation:mq 32s linear infinite}
 @keyframes mq{to{transform:translateX(-50%)}}
 @media(max-width:860px){.xstage,.ign{grid-template-columns:1fr}.tstep{grid-template-columns:1fr}}
 /*PART-CSS*/
 @media(max-width:860px){nav.top .links{display:none}nav #menubtn{display:block}section.block{padding:68px 0}.tl-cell{width:150px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.rv{opacity:1!important;transform:none!important}.hero-photo img{animation:none}.marquee span{animation:none}}
 </style>
+<script>try{if(sessionStorage.getItem('datum_veil')==='1')document.documentElement.classList.add('veil-off')}catch(e){}</script>
 </head>
 <body>
 <a class="skip" href="#why">Skip to content</a>
@@ -293,22 +322,23 @@ footer .disclaim{max-width:560px;font-size:12px;line-height:1.8}
 <button id="top" aria-label="Back to top">↑</button>
 <nav class="top"><div class="wrap">
   <div class="brand">DATUM<small>ATELIER</small></div>
-  <div class="links"><a href="#why">Why</a><a href="#meet">Datum</a><a href="#drivers">Drivers</a><a href="#business">Business</a><a href="#studies">Studies</a><a href="#invite" style="color:var(--gold2)">Invitation</a></div>
+  <div class="links"><a href="#why">Why</a><a href="#meet">Datum</a><a href="#drivers">Drivers</a><a href="#motorworld">World</a><a href="#ignition">Ignite</a><a href="#studies">Studies</a><a href="#philosophy">Craft</a><a href="#building">Build</a><a href="#who">Who</a><a href="#invite" style="color:var(--gold2)">Invite</a></div>
   <button id="menubtn" aria-label="Open menu" aria-expanded="false">☰</button>
   <span class="statusdot"><i></i>IN DEVELOPMENT</span>
 </div></nav>
 <div id="mobilemenu" aria-label="Site sections">
-  <a href="#why">Why we exist</a><a href="#meet">Meet Datum</a><a href="#drivers">Drivers</a><a href="#business">Business</a><a href="#motorworld">Motorworld</a><a href="#ignition">Ignition</a><a href="#studies">Studies</a><a href="#invite">Invitation</a>
+  <a href="#why">Why</a><a href="#meet">Datum</a><a href="#drivers">Drivers</a><a href="#business">Business</a><a href="#motorworld">Motorworld</a><a href="#ignition">Ignition</a><a href="#studies">Studies</a><a href="#philosophy">Craft</a><a href="#building">Build</a><a href="#who">Who</a><a href="#invite">Invite</a>
 </div>
 <div id="pathbanner" aria-live="polite"><span id="pathbanner-txt"></span></div>
 <header class="hero">
-  <div class="hero-photo"><img src="assets/hero/rainy_911.webp" alt="Black sports car at night in rain, tail lights glowing, number plate withheld. Photograph: Gabriel Gurrola. Demonstration imagery." fetchpriority="high" width="1920" height="837"></div>
+  <div class="veil" inert aria-hidden="true"><span class="veil-rule"></span><p>A car's life does not end with its keeper.</p></div>
+  <div class="hero-photo"><img src="assets/hero/hero_1600.webp" srcset="assets/hero/hero_960.webp 960w, assets/hero/hero_1600.webp 1600w, assets/hero/hero_2560.webp 2560w" sizes="100vw" alt="A car parked in the garage of a house." fetchpriority="high" width="2560" height="1440"></div>
   <div class="hero-shade"></div>
   <div class="wrap hero-inner">
     <div class="kicker">An independent automotive software project · In development</div>
-    <h1>EVERY CAR HAS<br>A STORY.</h1>
-    <div class="tagline">DATUM FOR THE PEOPLE WHO KEEP CARS ALIVE</div>
-    <p class="standfirst">You don't own a machine. You hold its story in trust, for the next keeper, and the one after. Datum is the home being built for that trust: every service honoured, every drive remembered, nothing of yours ever sold.</p>
+    <h1>OWNERSHIP FADES.<br>CUSTODIANSHIP HOLDS.</h1>
+    <div class="tagline">BUILT FOR THOSE WHO KEEP CARS ALIVE</div>
+    <p class="standfirst">Custodianship. Record. Trust. A three-way contract between you, the car and Datum. You hold the machine between its past and its future. Datum makes that holding permanent: proof without exposure, yours until you choose otherwise.</p>
     <div class="cta-row"><a class="btn" href="#why">Explore the Vision</a><a class="btn ghost" href="#business">For Automotive Businesses</a></div>
     <div class="proof rv">
       <div><b>Yours alone</b><span>Your garage opens for you and no one else</span></div>
@@ -322,7 +352,7 @@ footer .disclaim{max-width:560px;font-size:12px;line-height:1.8}
       <button type="button" data-path="business">A BUSINESS →</button>
     </div>
   </div>
-  <span class="photo-credit">DEMONSTRATION IMAGERY · IN DEVELOPMENT</span>
+  <span class="photo-credit">PHOTOGRAPH: THEO · UNSPLASH LICENCE</span>
 </header>
 <div class="marquee" aria-hidden="true"><span>Provenance · Engineering · Heritage · Drives · Community · Custodianship · Provenance · Engineering · Heritage · Drives · Community · Custodianship ·&nbsp;</span></div>
 
@@ -332,6 +362,7 @@ footer .disclaim{max-width:560px;font-size:12px;line-height:1.8}
   <h2 class="title rv">Without Datum, history rots.<br><em>With Datum, it holds.</em></h2>
   <p class="lede rv">The same car. The same twenty years. Two fates, watched side by side:</p>
   <blockquote class="pull rv">“Twelve years of receipts in a shoebox. One rainy viewing. Zero proof.”<cite>THE PROBLEM, IN ONE SENTENCE</cite></blockquote>
+  <figure class="photo rv" style="margin-top:36px"><img src="assets/automotive/two_fates.webp" alt="Two classic Jaguars: one decaying, one kept. Photograph: Dietmar Becker. Demonstration imagery." loading="lazy" width="1280" height="640"><figcaption>SAME MARQUE · TWO FATES · PHOTO: DIETMAR BECKER · DEMONSTRATION IMAGERY</figcaption></figure>
   <div class="timelapse rv" aria-label="Without Datum versus with Datum, playing">
     <div class="tl-head"><span>THE SAME CAR · THE SAME TWENTY YEARS · <b id="tl-live" style="color:#ff9d8a">● LIVE</b></span><span id="tl-year">2004</span></div>
     <div class="tl-verdict" id="tl-count" role="status" aria-live="polite">WATCH BOTH PYRAMIDS</div>
@@ -355,20 +386,13 @@ footer .disclaim{max-width:560px;font-size:12px;line-height:1.8}
   </div>
   <div class="plate-demo rv">
     <div>
-      <div class="kicker" style="margin-bottom:12px">Try the ritual · illustration</div>
-      <h3 style="font-family:var(--serif);font-size:26px;font-weight:500;margin-bottom:10px">Cover the plate yourself.</h3>
-      <p class="lede" style="font-size:15px">Drag the black cover over the number plate. Datum's publishing ritual works exactly like this, Nothing shares until you place it.</p>
+      <div class="kicker" style="margin-bottom:12px">Try the ritual · photograph</div>
+      <h3 style="font-family:var(--display);font-size:var(--fs-h2);font-weight:600;letter-spacing:-.015em;margin-bottom:10px">Cover the plate yourself.</h3>
+      <p class="lede" style="font-size:var(--fs-body)">Drag the black cover over the number plate. Datum's publishing ritual works exactly like this. Nothing shares until you place it.</p>
       <div class="plate-verdict" id="plate-verdict" role="status" aria-live="polite">Plate exposed. Drag the cover onto it.</div>
     </div>
-    <div class="plate-stage" id="plate-stage" aria-label="Interactive illustration: drag the cover over the number plate">
-      <svg viewBox="0 0 400 220" role="img" aria-label="Illustrated car rear with number plate">
-        <rect width="400" height="220" fill="#14161c"/>
-        <rect x="40" y="60" width="320" height="100" rx="18" fill="#1d212b"/>
-        <rect x="70" y="80" width="260" height="34" rx="6" fill="#0d0f14"/>
-        <rect x="120" y="126" width="160" height="22" rx="4" fill="#e8e4da"/>
-        <text x="200" y="142" text-anchor="middle" font-family="monospace" font-size="15" letter-spacing="3" fill="#222">D4TUM</text>
-        <circle cx="110" cy="180" r="16" fill="#0a0b0e" stroke="#3a3f4d"/><circle cx="290" cy="180" r="16" fill="#0a0b0e" stroke="#3a3f4d"/>
-      </svg>
+    <div class="plate-stage" id="plate-stage" aria-label="Interactive photograph: drag the cover over the number plate">
+      <img src="assets/hero/plate_1600.webp" srcset="assets/hero/plate_1280.webp 1280w, assets/hero/plate_1600.webp 1600w" sizes="(max-width:860px) 100vw, 46vw" alt="A red sports car parked in front of a tree. Photograph: Nenad Kaevik" width="1600" height="2400">
       <div id="platecover" style="left:12px;top:12px;width:46%;height:18%"><span>DRAG ME · CORNER RESIZES</span><i id="grip" aria-hidden="true"></i></div>
     </div>
   </div>
@@ -380,22 +404,22 @@ footer .disclaim{max-width:560px;font-size:12px;line-height:1.8}
   <p class="lede rv">The vehicle is the centre. Everything else orbits it. Select a relationship to see what it means:</p>
   <div class="dgm rv">
     <div class="orbit" id="orbit" role="group" aria-label="Vehicle relationship diagram">
-      <div class="hub"><img src="assets/hero/alpine_hero.webp" alt="" width="124" height="124"></div>
+      <div class="hub"><img src="assets/automotive/continental_detail.webp" alt="Classic bonnet detail with chrome lettering, photograph: Tim Stief" width="124" height="124"></div>
     </div>
-    <div class="dgm-panel" id="dgm-panel" role="status" aria-live="polite"><b>Identity.</b> The machine itself, make, model, configuration, the subject everything else describes.</div>
+    <div class="dgm-panel" id="dgm-panel" role="status" aria-live="polite"><b>Identity. The badge on the bonnet.</b> A Continental wears its name in chrome letters. Make, model, configuration: the answer to what this machine is, settled once and kept.</div>
   </div>
 </div></section>
 <section id="drivers" class="block chap path-driver"><div class="chapnum" aria-hidden="true">04</div><div class="wrap">
   <div class="eyebrow rv">04 · For drivers &amp; enthusiasts</div>
-  <h2 class="title rv">Your car. Your history.<br><em>Your connection.</em></h2>
+  <h2 class="title rv">Your car. Your history. <em>Your connection.</em></h2>
   <p class="lede rv">Custodianship is the oldest relationship in motoring. You hold the machine between its past and its future. Datum gives that holding a form: commission your car and watch the record confirm it, plan a drive and confirm only what truly happened, keep memories that stay yours until you choose otherwise.</p>
-  <p class="lede rv" style="margin-top:10px;font-size:14px;color:var(--dim)">Below: one synthetic vehicle, four illustrative moments.</p>
+  <p class="lede rv" style="margin-top:var(--s2);font-size:var(--fs-sm);color:var(--dim)">Four licensed photographs from Unsplash, chosen to show what custodianship actually feels like.</p>
   <blockquote class="pull rv">“The car finally had papers that couldn't get lost, wet, or doubted.”<cite>ILLUSTRATIVE CUSTODIAN</cite></blockquote>
   <div class="tline" style="margin-top:56px">
-    <div class="tstep rv"><div class="ph"><img src="assets/automotive/garage_m3.webp" alt="Sports saloon kept in a dark curated garage, demonstration imagery" loading="lazy" width="688" height="384"></div><div class="tx"><span class="tdot">CHAPTER 01: ACQUISITION</span><h3>The day it becomes yours</h3><p>A 1991 coupé changes hands. Its first record opens: identity, configuration, starting mileage, a biography with page one.</p></div></div>
-    <div class="tstep rv"><div class="ph"><img src="assets/workshops/workshop_wall.webp" alt="Workshop wall of tools and equipment, demonstration imagery" loading="lazy" width="512" height="341"></div><div class="tx"><span class="tdot">CHAPTER 02: ROUTINE CARE</span><h3>Kept where the work happens</h3><p>Each service documented at the ramp, attributed to the workshop that did it, and kept with the car, not in a drawer.</p></div></div>
-    <div class="tstep rv"><div class="ph"><img src="assets/roads/dawn_road.webp" alt="Empty road at dawn, demonstration imagery" loading="lazy" width="800" height="533"></div><div class="tx"><span class="tdot">CHAPTER 03: A MEANINGFUL DRIVE</span><h3>A dawn pass, deliberately recorded</h3><p>The route is remembered; the exact home address never leaves the driveway. What mattered is kept. What shouldn't travel, doesn't.</p></div></div>
-    <div class="tstep rv"><div class="ph"><img src="assets/automotive/manual_shifter.webp" alt="Driver's hand on a manual gear lever, demonstration imagery" loading="lazy" width="800" height="450"></div><div class="tx"><span class="tdot">CHAPTER 04: REFLECTION</span><h3>Years later, it reads whole</h3><p>Engineering, evidence, people and memory in one place, ready for the next custodian, or simply for yourself.</p></div></div>
+    <div class="tstep rv"><div class="ph"><img src="assets/hero/acquire_1280.webp" srcset="assets/hero/acquire_1280.webp 1280w, assets/hero/acquire_1600.webp 1600w" sizes="(max-width:700px) 100vw, 560px" alt="A white vintage car parked in a garage. Photograph: Egor Vikhrev" loading="lazy" width="1600" height="1069"></div><div class="tx"><span class="tdot">CHAPTER 01: ACQUISITION</span><h3>The day it becomes yours</h3><p>A 1991 coupé changes hands. Its first record opens: identity, configuration, starting mileage, a biography with page one.</p></div></div>
+    <div class="tstep rv"><div class="ph"><img src="assets/hero/care_1280.webp" srcset="assets/hero/care_1280.webp 1280w, assets/hero/care_1600.webp 1600w" sizes="(max-width:700px) 100vw, 560px" alt="A man working on a car engine in a garage. Photograph: Ahmet Debelemez" loading="lazy" width="1600" height="900"></div><div class="tx"><span class="tdot">CHAPTER 02: ROUTINE CARE</span><h3>Kept where the work happens</h3><p>Each service documented at the ramp, attributed to the workshop that did it, and kept with the car, not in a drawer.</p></div></div>
+    <div class="tstep rv"><div class="ph"><img src="assets/hero/drive_1280.webp" srcset="assets/hero/drive_1280.webp 1280w, assets/hero/drive_1600.webp 1600w" sizes="(max-width:700px) 100vw, 560px" alt="A long road with a mountain in the background. Photograph: Andrew Svk" loading="lazy" width="1600" height="1067"></div><div class="tx"><span class="tdot">CHAPTER 03: A MEANINGFUL DRIVE</span><h3>A dawn pass, deliberately recorded</h3><p>The route is remembered; the exact home address never leaves the driveway. What mattered is kept. What shouldn't travel, doesn't.</p></div></div>
+    <div class="tstep rv"><div class="ph"><img src="assets/hero/reflect_1280.webp" srcset="assets/hero/reflect_1280.webp 1280w, assets/hero/reflect_1600.webp 1600w" sizes="(max-width:700px) 100vw, 560px" alt="A red and black steering wheel. Photograph: Stephanie Valencia" loading="lazy" width="1600" height="2400"></div><div class="tx"><span class="tdot">CHAPTER 04: REFLECTION</span><h3>Years later, it reads whole</h3><p>Engineering, evidence, people and memory in one place, ready for the next custodian, or simply for yourself.</p></div></div>
   </div>
   <div class="cta-row rv" style="justify-content:flex-start"><a class="btn" href="#invite">Explore the Driver Experience</a></div>
 </div></section>
@@ -403,10 +427,10 @@ footer .disclaim{max-width:560px;font-size:12px;line-height:1.8}
 <section id="business" class="block chap path-business"><div class="chapnum" aria-hidden="true">05</div><div class="wrap">
   <div class="eyebrow rv">05 · For automotive businesses</div>
   <h2 class="title rv">The work behind the machine<br><em>deserves continuity.</em></h2>
-  <p class="lede rv">Potential directions for the trade, Opportunities under exploration. Not live products. The principle is already proven in the craft itself: work attributed at source, credit that compounds, histories that survive handover.</p>
+  <p class="lede rv">Potential directions for the trade. Opportunities under exploration. Not live products. The principle is already proven in the craft itself: work attributed at source, credit that compounds, histories that survive handover.</p>
   <div class="photorow rv">
     <figure class="photo" style="min-height:340px"><img src="assets/workshops/sierra_workshop.webp" alt="Specialist motorsport preparation workshop, demonstration imagery" loading="lazy" width="688" height="384"><figcaption>SPECIALIST CRAFT · DEMONSTRATION IMAGERY</figcaption></figure>
-    <figure class="photo" style="min-height:340px"><img src="assets/engineering/engine_bay.webp" alt="Detailed engine bay, demonstration imagery" loading="lazy" width="512" height="341"><figcaption>EVIDENCE AT SOURCE · DEMONSTRATION IMAGERY</figcaption></figure>
+    <figure class="photo" style="min-height:340px"><img src="assets/automotive/garage_m3.webp" alt="Detailed engine bay, demonstration imagery" loading="lazy" width="512" height="341"><figcaption>EVIDENCE AT SOURCE · DEMONSTRATION IMAGERY</figcaption></figure>
   </div>
   <div class="grid3">
     <div class="card rv"><div class="n">WORKFLOW</div><h3><svg aria-hidden="true" style="vertical-align:-6px" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg> Document where work happens</h3><p>A service creates its own record at the ramp: what was done, what supports it, who stands behind it.</p><ul><li>Structured service documentation</li><li>Evidence attached at source</li><li>Clearer customer communication</li></ul></div>
@@ -422,10 +446,10 @@ footer .disclaim{max-width:560px;font-size:12px;line-height:1.8}
   <p class="lede rv">Every machine carries engineering, history and culture inside it. Choose one. Follow the thread from metal to meaning.</p>
   <div class="xpick rv" role="tablist" aria-label="Choose a car to explore">
     <button role="tab" aria-selected="true" data-car="nine" data-img="assets/hero/rainy_911.webp">Porsche 911 Carrera 3.2</button>
-    <button role="tab" aria-selected="false" data-car="e30" data-img="assets/hero/alpine_hero.webp">BMW M3 (E30)</button>
+    <button role="tab" aria-selected="false" data-car="e30" data-img="assets/automotive/garage_m3.webp">BMW M3 (E30)</button>
     <button role="tab" aria-selected="false" data-car="delta" data-img="assets/automotive/delta_rally.webp">Lancia Delta Integrale</button>
   </div>
-  <figure class="photo rv" id="x-photo" style="min-height:280px;margin-top:22px"><img id="x-img" src="assets/hero/rainy_911.webp" alt="Featured exploration vehicle, demonstration imagery" loading="lazy" width="1280" height="560"><figcaption id="x-cap">FEATURED MARQUE · DEMONSTRATION IMAGERY</figcaption></figure>
+  <figure class="photo rv" id="x-photo" style="min-height:280px;margin-top:22px"><img id="x-img" src="assets/hero/rainy_911.webp" alt="Porsche 911 Carrera 3.2, demonstration imagery" loading="lazy" width="1280" height="853"><figcaption id="x-cap">FEATURED MARQUE · PORSCHE 911 CARRERA 3.2</figcaption></figure>
   <div class="xstage">
     <div class="xpanel rv">
       <div class="kicker" id="x-name">Porsche 911 Carrera 3.2 · 1984–1989</div>
@@ -444,18 +468,18 @@ footer .disclaim{max-width:560px;font-size:12px;line-height:1.8}
   <p class="lede rv" style="margin-top:44px">Or follow one thread end to end. Vehicle, engine, system, knowledge, motorsport:</p>
   <div class="diagram rv">
     <svg viewBox="0 0 720 300" role="img" aria-label="Illustration: knowledge path from E46 M3 to S54 engine, engine management, diagnostics and motorsport">
-      <defs><marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="none" stroke="#C5A059" stroke-width="1.5"/></marker></defs>
+      <defs><marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="none" class="dmark" stroke-width="1.5"/></marker></defs>
       <g font-family="monospace" font-size="10" letter-spacing="2"><text x="20" y="30" class="dl">ILLUSTRATION · KNOWLEDGE PATH</text></g>
-      <g><rect x="20" y="60" width="150" height="64" rx="12" fill="#171a22" stroke="#C5A059"/><text x="95" y="88" text-anchor="middle" class="dh">E46 M3</text><text x="95" y="106" text-anchor="middle" class="dt">vehicle</text></g>
-      <line x1="170" y1="92" x2="215" y2="92" stroke="#C5A059" marker-end="url(#ah)"/>
-      <g><rect x="215" y="60" width="150" height="64" rx="12" fill="#171a22" stroke="#3a3f4d"/><text x="290" y="88" text-anchor="middle" class="dh">S54</text><text x="290" y="106" text-anchor="middle" class="dt">engine</text></g>
-      <line x1="365" y1="92" x2="410" y2="92" stroke="#3a3f4d" marker-end="url(#ah)"/>
-      <g><rect x="410" y="60" width="150" height="64" rx="12" fill="#171a22" stroke="#3a3f4d"/><text x="485" y="88" text-anchor="middle" class="dh">Engine Mgmt</text><text x="485" y="106" text-anchor="middle" class="dt">system</text></g>
-      <line x1="485" y1="124" x2="485" y2="168" stroke="#3a3f4d" marker-end="url(#ah)"/>
-      <line x1="290" y1="124" x2="200" y2="168" stroke="#3a3f4d" marker-end="url(#ah)"/>
-      <g><rect x="110" y="168" width="180" height="64" rx="12" fill="#171a22" stroke="#3a3f4d"/><text x="200" y="196" text-anchor="middle" class="dh">Diagnostics</text><text x="200" y="214" text-anchor="middle" class="dt">knowledge</text></g>
-      <g><rect x="395" y="168" width="180" height="64" rx="12" fill="#171a22" stroke="#3a3f4d"/><text x="485" y="196" text-anchor="middle" class="dh">Motorsport</text><text x="485" y="214" text-anchor="middle" class="dt">touring-car heritage</text></g>
-      <line x1="290" y1="232" x2="485" y2="232" stroke="#3a3f4d" stroke-dasharray="5 5"/>
+      <g><rect x="20" y="60" width="150" height="64" rx="12" class="dbox hi"/><text x="95" y="88" text-anchor="middle" class="dh">E46 M3</text><text x="95" y="106" text-anchor="middle" class="dt">vehicle</text></g>
+      <line x1="170" y1="92" x2="215" y2="92" class="dlink hi" marker-end="url(#ah)"/>
+      <g><rect x="215" y="60" width="150" height="64" rx="12" class="dbox"/><text x="290" y="88" text-anchor="middle" class="dh">S54</text><text x="290" y="106" text-anchor="middle" class="dt">engine</text></g>
+      <line x1="365" y1="92" x2="410" y2="92" class="dlink" marker-end="url(#ah)"/>
+      <g><rect x="410" y="60" width="150" height="64" rx="12" class="dbox"/><text x="485" y="88" text-anchor="middle" class="dh">Engine Mgmt</text><text x="485" y="106" text-anchor="middle" class="dt">system</text></g>
+      <line x1="485" y1="124" x2="485" y2="168" class="dlink" marker-end="url(#ah)"/>
+      <line x1="290" y1="124" x2="200" y2="168" class="dlink" marker-end="url(#ah)"/>
+      <g><rect x="110" y="168" width="180" height="64" rx="12" class="dbox"/><text x="200" y="196" text-anchor="middle" class="dh">Diagnostics</text><text x="200" y="214" text-anchor="middle" class="dt">knowledge</text></g>
+      <g><rect x="395" y="168" width="180" height="64" rx="12" class="dbox"/><text x="485" y="196" text-anchor="middle" class="dh">Motorsport</text><text x="485" y="214" text-anchor="middle" class="dt">touring-car heritage</text></g>
+      <line x1="290" y1="232" x2="485" y2="232" class="dlink" stroke-dasharray="5 5"/>
       <text x="387" y="256" text-anchor="middle" class="dt">shared engineering lineage</text>
     </svg>
   </div>
@@ -483,19 +507,19 @@ footer .disclaim{max-width:560px;font-size:12px;line-height:1.8}
         <circle cx="150" cy="150" r="142" fill="none" stroke="url(#bezel)" stroke-width="7"/>
         <circle cx="150" cy="150" r="132" fill="url(#dialface)" stroke="none"/>
         <path d="M279.2,176.3 A132,132 0 0 1 243.3,243.3" fill="none" stroke="#8f2b22" stroke-width="10" opacity=".85"/>
-        <path d="M251.9,66.2 A132,132 0 0 1 281.1,137.1" fill="none" stroke="#E6C687" stroke-width="7" stroke-linecap="round" opacity=".9">
+        <path d="M251.9,66.2 A132,132 0 0 1 281.1,137.1" fill="none" class="iarc" stroke-width="7" stroke-linecap="round" opacity=".9">
           <animate attributeName="opacity" values=".9;.45;.9" dur="2.2s" repeatCount="indefinite"/>
         </path>
-        <g id="ticks" font-family="monospace" font-size="11" fill="#8a877f" text-anchor="middle"></g>
+        <g id="ticks" font-family="monospace" font-size="11" class="itick" text-anchor="middle"></g>
         <g id="needle" transform="rotate(-135 150 150)" filter="url(#nglow)">
-          <line x1="150" y1="162" x2="150" y2="42" stroke="#E6C687" stroke-width="3.5" stroke-linecap="round"/>
-          <circle cx="150" cy="150" r="10" fill="#0d0e12" stroke="#C5A059" stroke-width="2.5"/>
+          <line x1="150" y1="162" x2="150" y2="42" class="iarc" stroke-width="3.5" stroke-linecap="round"/>
+          <circle cx="150" cy="150" r="10" class="ddot hi" stroke-width="2.5"/>
         </g>
-        <text x="150" y="212" text-anchor="middle" fill="#6f6c66" font-family="monospace" font-size="10" letter-spacing="2">x1000 RPM · S54 SPIRIT</text>
-        <text x="150" y="228" text-anchor="middle" fill="#6f6c66" font-family="monospace" font-size="10" letter-spacing="3">STANDBY</text>
+        <text x="150" y="212" text-anchor="middle" class="ilab" font-family="monospace" font-size="10" letter-spacing="2">x1000 RPM · S54 SPIRIT</text>
+        <text x="150" y="228" text-anchor="middle" class="ilab" font-family="monospace" font-size="10" letter-spacing="3">STANDBY</text>
       </svg>
       <div class="ign-read"><b id="rpm">0</b> <span>RPM</span></div>
-      <div class="ign-live" id="ign-live" aria-live="polite">0.0 REV/S · — MS/REV</div>
+      <div class="ign-live" id="ign-live" aria-live="polite">0.0 REV/S · - MS/REV</div>
       <div class="ign-state" id="ign-state">TDC READY</div>
       <div class="ign-score" id="ign-score" aria-live="polite">BEST ·</div>
     </div>
@@ -543,7 +567,7 @@ footer .disclaim{max-width:560px;font-size:12px;line-height:1.8}
   <p class="lede rv">Real photography standing in for forthcoming interface captures, which will be taken from the working application and labelled as such.</p>
   <div class="shots">
     <div class="shot rv"><div class="frame"><img src="assets/automotive/evo_rally.webp" alt="Rally car at speed, demonstration imagery" loading="lazy" width="688" height="384"></div><div class="cap"><span class="pill">DEMONSTRATION IMAGERY</span><b>Connected Drive</b>Planned journeys, confirmed completion, kept memories.</div></div>
-    <div class="shot rv"><div class="frame"><img src="assets/engineering/engine_bay.webp" alt="Engine bay detail, demonstration imagery" loading="lazy" width="512" height="341"></div><div class="cap"><span class="pill">DEMONSTRATION IMAGERY</span><b>Living Biography</b>Events, evidence and provenance in order.</div></div>
+    <div class="shot rv"><div class="frame"><img src="assets/automotive/two_fates.webp" alt="Engine bay detail, demonstration imagery" loading="lazy" width="512" height="341"></div><div class="cap"><span class="pill">DEMONSTRATION IMAGERY</span><b>Living Biography</b>Events, evidence and provenance in order.</div></div>
     <div class="shot rv"><div class="frame"><img src="assets/workshops/workshop_wall.webp" alt="Workshop interior, demonstration imagery" loading="lazy" width="512" height="341"></div><div class="cap"><span class="pill">DEMONSTRATION IMAGERY</span><b>Specialist Directory</b>Workshops credited for work they stand behind.</div></div>
     <div class="shot rv"><div class="frame"><img src="assets/roads/dawn_road.webp" alt="Road at dawn, demonstration imagery" loading="lazy" width="800" height="533"></div><div class="cap"><span class="pill">DEMONSTRATION IMAGERY</span><b>Clubs &amp; Gatherings</b>Runs with privacy by design.</div></div>
     <div class="shot rv"><div class="frame"><img src="assets/automotive/manual_shifter.webp" alt="Hand on a manual gear lever, demonstration imagery" loading="lazy" width="800" height="450"></div><div class="cap"><span class="pill">DEMONSTRATION IMAGERY</span><b>Atelier Feed</b>Stories and craft, labelled demonstration content.</div></div>
@@ -560,13 +584,13 @@ footer .disclaim{max-width:560px;font-size:12px;line-height:1.8}
 <section id="invite" class="block chap"><div class="chapnum" aria-hidden="true">10</div><div class="wrap">
   <div class="eyebrow rv">10 · Invitation</div>
   <h2 class="title rv">An invitation is <em>earned the old way.</em></h2>
-  <p class="lede rv" style="margin-top:12px">Datum is not bought into. It is recognised into. Don't tell us net worth or following. Tell us about the machine, and what it has meant. Convince us you are one of the people who keep cars alive.</p>
+  <p class="lede rv" style="margin-top:12px">Datum is not bought into. It is recognised into. That recognition runs three ways. This is the whole of it:</p>
   <div class="grid3" style="text-align:left">
-    <div class="card rv"><div class="n">01: THE MACHINE</div><h3>What do you keep?</h3><p>Year, marque, model, and how it came to you. Barn find, inheritance, saved-up-for. Provenance begins with honesty.</p></div>
-    <div class="card rv"><div class="n">02: THE MORNING</div><h3>A drive you'll never forget</h3><p>One road, one morning, in as much detail as you can stand. We can tell a driver by how they describe a corner.</p></div>
-    <div class="card rv"><div class="n">03: THE HANDS</div><h3>What have you done yourself?</h3><p>An oil change counts. So does a rebuild. Tell us what your hands know, or what you are learning, and from whom.</p></div>
+    <div class="card rv"><div class="n">01: YOU AND THE CAR</div><h3>Custodianship</h3><p>You give attention, honesty and care. The car gives you its years. What matters here is simple: only lived detail becomes history. Mileage with meaning, maintenance with receipts, love with evidence.</p></div>
+    <div class="card rv"><div class="n">02: THE CAR AND DATUM</div><h3>Record</h3><p>The car gives facts. Datum gives permanence. What matters is evidence over claims and source over rumour, so the story can never be doubted, even decades on.</p></div>
+    <div class="card rv"><div class="n">03: DATUM AND YOU</div><h3>Trust</h3><p>Datum gives privacy, control and understanding. You give nothing you did not choose to share. What matters is that the story stays yours. We keep it. We never sell it.</p></div>
   </div>
-  <p class="lede rv" style="margin:30px auto 0;max-width:620px">What doesn't impress us: collections counted, not driven. What does: <b style="color:var(--ink)">mileage with meaning, maintenance with receipts, and love with evidence.</b></p>
+  <p class="lede rv" style="margin:30px auto 0;max-width:620px">If you want in: don't tell us net worth or following. Tell us about a morning, a machine, and what your hands know. Collections counted, not driven, do not impress us.</p>
   <div class="paths">
     <div class="card rv"><div class="n">DRIVERS &amp; ENTHUSIASTS</div><h3>Future private testing</h3><p>For those who keep cars and would test thoughtfully. No dates promised.</p></div>
     <div class="card rv"><div class="n">INDEPENDENT SPECIALISTS</div><h3>Workflow research</h3><p>For workshops interested in documentation pilots and honest feedback loops.</p></div>
@@ -574,20 +598,26 @@ footer .disclaim{max-width:560px;font-size:12px;line-height:1.8}
     <div class="card rv"><div class="n">STRATEGIC ENQUIRIES</div><h3>Direction &amp; opportunity</h3><p>For those following Datum's direction and possible commercial paths.</p></div>
   </div>
   <div class="invite rv">
-    <h2 class="title" style="font-size:clamp(22px,2.6vw,32px)">Register interest: <em>demonstration only.</em></h2>
-    <div class="demo-form">
-      <select id="kind" aria-label="I am interested as"><option>Driver / enthusiast</option><option>Independent specialist</option><option>Industry / research</option><option>Strategic enquiry</option></select>
-      <input id="email" type="email" placeholder="you@example.com" aria-label="Email address (demonstration only, not submitted)">
+    <h2 class="title" style="font-size:clamp(22px,2.6vw,32px)">If this resonates, <em>tell us why.</em></h2>
+    <form class="demo-form" id="invite-form" enctype="multipart/form-data" method="post" action="#invite" style="flex-wrap:wrap;gap:14px">
+      <select id="kind" name="interest" aria-label="I am interested as"><option>Driver / enthusiast</option><option>Independent specialist</option><option>Industry / research</option><option>Strategic enquiry</option></select>
+      <input id="email" name="email" type="email" placeholder="you@example.com" aria-label="Email address (optional)">
+      <textarea id="story" name="story" rows="2" placeholder="Tell us about a car, a morning, or a moment that meant something." aria-label="Your story" style="flex:1 1 320px;min-height:48px;padding:10px 14px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--bg);color:var(--ink);font:inherit"></textarea>
+      <label class="btn ghost" style="cursor:pointer">
+        <input type="file" id="images" name="images" accept="image/jpeg,image/webp" multiple hidden>
+        Attach images (JPG/WebP)
+      </label>
       <button class="btn" type="button" id="demo-btn">Record locally</button>
-    </div>
-    <div class="notice">DEMONSTRATION CONTROL: registration is not yet open. Nothing is submitted or collected; the button only confirms on this page. A contact address will appear here once approved.</div>
+      <p class="fine" style="flex:1 1 100%;margin:0">Max 5MB per image · EXIF (location/data) stripped client-side where possible · Never sold or shared · We only use what you choose to send.</p>
+    </form>
+    <div class="notice">DEMONSTRATION CONTROL: registration is not yet open. Nothing is submitted or collected by this page in its current form. To make it functional, wire this form to a privacy-respecting backend (e.g. Formspree/Netlify Forms/Cloudflare Pages Functions) with spam protection (honeypot + Turnstile). Images will be handled according to that backend's policy.</div>
     <p class="fine" id="demo-note">Choose an audience and press the button to preview the interaction.</p>
   </div>
 </div></section>
 </main>
 
 <footer><div class="wrap">
-  <div><span style="font-family:var(--serif);letter-spacing:.14em;color:var(--ink)">DATUM</span> <span style="font-family:var(--mono);font-size:10px;color:var(--gold)">ATELIER</span><br><span style="font-size:12px">An independent project in development. Seeking thoughtful feedback and future collaborators.</span></div>
+  <div><span style="font-family:var(--display);letter-spacing:.14em;color:var(--ink)">DATUM</span> <span style="font-family:var(--mono);font-size:var(--fs-micro);color:var(--gold)">ATELIER</span><br><span style="font-size:12px">An independent project in development. Seeking thoughtful feedback and future collaborators.</span></div>
   <div class="disclaim">Datum is not a vehicle-ownership registry, government database, inspection authority or certified verification network. Record integrity must never be read as independent proof of real-world events. Illustrative studies are not customer deployments. No personal data is collected on this page.</div>
 </div></footer>
 <button id="top" aria-label="Back to top">↑</button>
@@ -619,13 +649,13 @@ footer .disclaim{max-width:560px;font-size:12px;line-height:1.8}
     dots.forEach(function(d,i){d.classList.toggle('on',i===cur)});}
   document.addEventListener('scroll',spy,{passive:true});spy();
   /* diagram */
-  var REL={Identity:['Identity.','The machine itself, make, model, configuration, the subject everything else describes.'],
-    History:['History.','Service, ownership periods, modifications: a chronology that survives paper and memory.'],
-    Evidence:['Evidence.','Photographs and documents attached at source, always separable from the claims they support.'],
-    Engineering:['Engineering.','Configuration, components and mechanical relationships: how the machine works.'],
-    People:['People.','Custodians, specialists and fellow enthusiasts: the human continuity around the car.'],
-    Places:['Places.','Roads, workshops, landscapes, where the story happened, shared with privacy.'],
-    Memories:['Memories.','Drives and moments kept deliberately, meaning preserved, not mined.']};
+  var REL={Identity:['Identity. The badge on the bonnet.','Make, model, configuration. Settled once, kept. The settled answer to what this machine is.'],
+    History:['History. The years it survived.','Services, ownership, modifications. Twenty years of evidence, not twenty years of forgetting.'],
+    Evidence:['Evidence. Proof, not promises.','Photographs and documents, captured where the work happened. Each separable from the claim it supports.'],
+    Engineering:['Engineering. How it works.','Configuration, components, mechanical relationships. Knowledge that makes a car understandable, not just ownable.'],
+    People:['People. Everyone it touched.','Custodians, specialists, fellow travellers. The record should outlive them all.'],
+    Places:['Places. Where it lived.','Roads, workshops, landscapes. Shared as meeting points, never as your address.'],
+    Memories:['Memories. Why it mattered.','Drives, kept deliberately. Meaning preserved, never mined, never sold.']};
   var order=['Identity','History','Evidence','Engineering','People','Places','Memories'];
   var orbit=document.getElementById('orbit'),panel=document.getElementById('dgm-panel');
   order.forEach(function(k,i){var a=(i/order.length)*Math.PI*2-Math.PI/2,rx=38,ry=44;
@@ -684,7 +714,7 @@ footer .disclaim{max-width:560px;font-size:12px;line-height:1.8}
     function draw(){needle.setAttribute('transform','rotate('+(-135+Math.min(cur,8000)/8000*270).toFixed(1)+' 150 150)');
       var r=Math.round(cur);
       rpmEl.textContent=r;
-      live.textContent=r>30?(r/60).toFixed(1)+' REV/S · '+(60000/Math.max(r,1)).toFixed(1)+' MS/REV':'0.0 REV/S · — MS/REV';
+      live.textContent=r>30?(r/60).toFixed(1)+' REV/S · '+(60000/Math.max(r,1)).toFixed(1)+' MS/REV':'0.0 REV/S · - MS/REV';
       if(Date.now()<holdUntil)return;
       state.textContent=started?'RUNNING':(r>=7000?'REDLINE':(r>50?'SPOOLING':'TDC READY'));}
     function loop(){var d=tgt-cur;
@@ -777,8 +807,8 @@ footer .disclaim{max-width:560px;font-size:12px;line-height:1.8}
         cellsR[i].querySelector('i').textContent=sealed?('SEALED '+r.kept):'AWAITING';});
       count.innerHTML=y>=2024?'<b>4 gone.</b> <em>7 kept.</em> That is the whole promise.'
         :'LEFT FALLS · RIGHT HOLDS. <b>'+(4-gone)+' YET TO LOSE · '+(7-kept)+' YET TO SEAL</b>';
-      countL.innerHTML='<b style="font-size:26px">'+gone+'</b> LOST';
-      countR.innerHTML='<b style="font-size:26px;color:var(--gold2)">'+kept+'</b> KEPT';}
+      countL.innerHTML='<b style="font-size:var(--fs-h2)">'+gone+'</b> LOST';
+      countR.innerHTML='<b style="font-size:var(--fs-h2);color:var(--gold2)">'+kept+'</b> KEPT';}
     scrub.addEventListener('input',function(){stop();render();});
     var playBtn=document.getElementById('tl-play'),live=document.getElementById('tl-live');
     function stop(){clearInterval(timer);timer=null;
@@ -833,6 +863,28 @@ footer .disclaim{max-width:560px;font-size:12px;line-height:1.8}
   document.getElementById('demo-btn').addEventListener('click',function(){
     var k=document.getElementById('kind').value;
     document.getElementById('demo-note').textContent='Preview: interest as “'+k+'” recorded on this page only. Nothing sent anywhere.';});
+  var imgs=document.getElementById('images');
+  if(imgs){imgs.addEventListener('change',function(){
+    var files=this.files,over=[];if(files){for(var i=0;i<files.length;i++){if(files[i].size>5*1024*1024)over.push(files[i].name);}}
+    if(over.length){document.getElementById('demo-note').textContent='Note: '+over.join(', ')+' exceed 5MB (will need compression/reduction).';}});}
+})();
+</script>
+<script>
+/* VEIL — the opening beat. Lifts on its own, or on the first sign of intent. */
+(function(){
+  var v=document.querySelector('.veil');
+  if(!v||document.documentElement.classList.contains('veil-off'))return;
+  var done=false;
+  function lift(){
+    if(done)return; done=true;
+    try{sessionStorage.setItem('datum_veil','1')}catch(e){}
+    v.classList.add('run');
+    setTimeout(function(){ if(v.parentNode)v.parentNode.removeChild(v); },2200);
+  }
+  ['keydown','wheel','touchstart','pointerdown','scroll'].forEach(function(t){
+    window.addEventListener(t,lift,{once:true,passive:true});
+  });
+  setTimeout(lift,1280);
 })();
 </script>
 </body>
