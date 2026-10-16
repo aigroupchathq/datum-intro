@@ -395,12 +395,22 @@ button.cell{cursor:pointer;width:100%}
 .xquote{border-radius:var(--radius-card);padding:20px;background:var(--bg-surface-elevated);border:var(--border-hairline);box-shadow:var(--shadow-card)}
 .xquote p{font-style:italic;font-weight:500;font-size:1.05rem;line-height:1.35;letter-spacing:-0.02em}
 .xquote cite{display:block;margin-top:12px;font-style:normal;font-family:var(--font-mono);font-size:.66rem;letter-spacing:.1em;color:var(--text-muted-readable);text-transform:uppercase}
-.xbody{font-size:.98rem;color:var(--text-muted-readable)}
-.xbody b{color:var(--text-primary);font-weight:500}
+.xbody{font-size:.98rem;color:var(--text-primary);padding:0}
+.xbody .x-lede{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:14px;flex-wrap:wrap}
+.xbody .x-lens{display:inline-flex;align-items:center;font-family:var(--font-mono);font-size:.66rem;letter-spacing:.26em;color:var(--bg-accent-primary);background:var(--bg-canvas);border:var(--border-hairline);border-radius:var(--radius-pill);padding:7px 13px;text-transform:uppercase;white-space:nowrap}
+.xbody .x-metric{font-family:var(--font-mono);font-weight:200;font-variant-numeric:tabular-nums;font-size:clamp(1.05rem,4vw,1.55rem);line-height:1.05;letter-spacing:-.025em;color:var(--text-on-dark, var(--text-primary));overflow-wrap:anywhere;max-width:100%}
+.xbody .pillar{flex:1 1 180px;min-width:150px;max-width:100%;text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.xbody .pillar small{display:block;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-muted-readable)}
+.xbody .pull{font-size:1.12rem;line-height:1.5;font-weight:500;letter-spacing:-.015em;margin-top:6px;max-width:44ch}
+.xbody .pull i{font-family:var(--font-mono);font-style:normal;font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--bg-accent-primary);display:block;margin-bottom:4px}
+.xbody .body-p{margin-top:10px;font-size:.92rem;line-height:1.55;color:var(--text-muted-readable)}
 .xbody .spec{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
-.xbody .spec div{background:var(--bg-canvas);border:var(--border-hairline);border-radius:14px;padding:12px 14px}
-.xbody .spec span{display:block;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.1em;color:var(--bg-accent-primary);margin-bottom:4px;text-transform:uppercase}
-.xbody .spec strong{font-size:.92rem;font-weight:500;color:var(--text-primary)}
+.xbody .spec div{background:var(--bg-canvas);border:var(--border-hairline);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;transition:transform .35s var(--ease-spring),border-color .25s ease}
+.xbody .spec div:active,.xbody .spec div:hover{transform:translateY(-1px);border-color:var(--bg-accent-primary)}
+.xbody .spec span{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.12em;color:var(--bg-accent-primary);text-transform:uppercase}
+.xbody .spec strong{font-size:1rem;font-weight:500;color:var(--text-primary);letter-spacing:-.015em}
+.xbody .meta-line{margin-top:14px;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted-readable);opacity:.7}
+.xbody .x-body-wrap{background:var(--bg-surface-elevated);border-radius:var(--radius-card);padding:20px;border:var(--border-hairline)}
 .diagram{border-radius:var(--radius-card);padding:18px;background:var(--bg-surface-elevated);border:var(--border-hairline);margin-top:16px;box-shadow:var(--shadow-card);overflow-x:auto}
 .diagram svg{width:100%;min-width:520px;height:auto}
 .diagram .dl{fill:var(--bg-accent-primary)}
@@ -1380,10 +1390,10 @@ body[data-path="driver"] #drivers,body[data-path="business"] #business{box-shado
     document.getElementById('x-img').src=picked.dataset.img;
     document.getElementById('x-cap').textContent='FEATURED MARQUE · '+MW[car].name.toUpperCase().split('·')[0].trim()+(car==='delta'?' · PHOTO: ALBMARTINIRACING, CC BY-SA 3.0':'');
     document.getElementById('x-name').textContent=MW[car].name;
-    var h='<p>'+d.q+'</p><p style="margin-top:12px">'+d.h+'</p><div class="spec">';
+    var body=document.getElementById('x-body');var kicker={engine:'ENGINE · HOW IT WORKS',history:'HISTORY · PROVEN',culture:'CULTURE · LIVED'}[lens]||'';body.setAttribute('data-lens',lens);var h='<div class="x-lede"><span class="x-lens">'+kicker+'</span><span class="pillar"><small>lead datum</small><i class="x-metric">'+d.s[0][1]+'</i></span></div>'+'<p class="pull"><i>'+d.q+'</i></p>'+'<p class="body-p">'+d.h+'</p>'+'<div class="spec">';
     d.s.forEach(function(x){h+='<div><span>'+x[0]+'</span><strong>'+x[1]+'</strong></div>'});
-    document.getElementById('x-body').innerHTML=h+'</div>';
-    document.getElementById('x-quote').textContent='“'+d.q+'”';
+    document.getElementById('x-body').innerHTML=h+'</div>'+'<p class="meta-line">LENS '+lens.toUpperCase()+' · '+MW[car].name.toUpperCase()+'</p>';
+    document.getElementById('x-quote').textContent='\u201C'+d.q+'\u201D';
   }
   document.querySelectorAll('.xpick button').forEach(function(b){b.addEventListener('click',function(){
     document.querySelectorAll('.xpick button').forEach(function(x){x.setAttribute('aria-selected','false')});
