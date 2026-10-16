@@ -5,7 +5,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#E8E6E1">
 <title>Datum: Every Car Has a Story. Give It Continuity.</title>
+<meta name="robots" content="index,follow,max-image-preview:large">
 <meta name="description" content="Datum is an independent automotive software project in development: a connected experience for vehicle identity, history, evidence, drives and community.">
+<link rel="canonical" href="https://datumatelier.uk/">
+<meta property="og:site_name" content="Datum Atelier">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Datum — Every Car Has a Story. Give It Continuity.">
+<meta property="og:description" content="A connected experience for vehicle identity, history, evidence, drives and co-custodianship — built to keep a machine's memory attached to the machine.">
+<meta property="og:url" content="https://datumatelier.uk/">
+<meta property="og:image" content="https://datumatelier.uk/assets/hero/hero_1600.webp">
+<meta property="og:image:width" content="1600">
+<meta property="og:image:height" content="900">
+<meta property="og:image:alt" content="A car in an open garage at dusk, bathed in warm light.">
+<meta property="og:locale" content="en_GB">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Datum — Every Car Has a Story. Give It Continuity.">
+<meta name="twitter:description" content="Vehicle identity, history, evidence, drives and co-custodianship — software built to keep a machine's memory attached to the machine.">
+<meta name="twitter:image" content="https://datumatelier.uk/assets/hero/hero_1600.webp">
+<meta name="twitter:image:alt" content="A car in an open garage at dusk, bathed in warm light.">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Datum","applicationCategory":"UtilityApplication","description":"An independent automotive software project in development: a connected experience for vehicle identity, history, evidence, drives and co-custodianship.","url":"https://datumatelier.uk/","offers":{"@type":"Offer","price":"0","priceCurrency":"GBP"},"author":{"@type":"Person","name":"Datum Atelier"}}
+</script>
 <style>
 /* ============================================================
    DATUM — Swiss Editorial Mobile App
@@ -355,6 +375,7 @@ button.cell{cursor:pointer;width:100%}
 .hub-card{position:relative;border-radius:var(--radius-card);overflow:hidden;border:var(--border-hairline);margin-bottom:16px;box-shadow:var(--shadow-card);background:var(--bg-surface-dark)}
 .hub-media{position:relative;height:262px;overflow:hidden}
 .hub-media img{width:100%;height:100%;object-fit:cover;transform:scale(1.01);transition:transform 9s var(--ease-spring)}
+.hub-media svg{width:100%;height:100%;max-width:100%;display:block}
 .hub-card:hover .hub-media img,.hub-card:active .hub-media img{transform:scale(1.08)}
 .hub-media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,18,18,.6) 0%,rgba(18,18,18,0) 32%,rgba(18,18,18,.1) 58%,rgba(18,18,18,.86) 100%)}
 .hub-top{position:absolute;top:13px;left:13px;right:13px;display:flex;align-items:center;justify-content:space-between;gap:10px;z-index:2}
@@ -364,8 +385,8 @@ button.cell{cursor:pointer;width:100%}
 .hub-foot{position:absolute;left:13px;right:13px;bottom:13px;display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:2}
 .hub-label{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.08em;color:var(--text-on-dark);background:rgba(18,18,18,.55);padding:5px 10px;border-radius:10px;backdrop-filter:blur(4px)}
 .hub-faces{display:inline-flex;align-items:center;flex:0 0 auto}
-.hub-faces img{width:30px;height:30px;border-radius:50%;object-fit:cover;border:2px solid rgba(18,18,18,.85);margin-left:-9px;box-shadow:0 2px 8px rgba(0,0,0,.45)}
-.hub-faces img:first-child{margin-left:0}
+.hub-faces span{width:30px;height:30px;border-radius:50%;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;background:var(--bg-surface-elevated);color:var(--text-primary);font-family:var(--font-mono);font-size:.6rem;letter-spacing:.04em;border:2px solid var(--bg-surface-dark);margin-left:-9px;box-shadow:0 2px 8px rgba(0,0,0,.45)}
+.hub-faces span:first-child{margin-left:0}
 .dgm-panel{margin-top:16px;background:var(--bg-surface-dark);color:var(--text-on-dark);border-radius:var(--radius-card);padding:20px;font-size:.98rem;line-height:1.5}
 .dgm-panel b{color:var(--text-on-dark);font-weight:500}
 
@@ -427,7 +448,9 @@ input[type=range].scrub{width:100%;accent-color:var(--bg-accent-primary);height:
 .ign-ctl .row{display:flex;gap:10px;flex-wrap:wrap}
 .fine-list{font-size:.75rem;color:var(--text-muted-readable);margin-top:2px;line-height:1.6}
 
-/* ============ STAGES (philosophy) ============ */
+/* ---- skip link ---- */
+.skip-link{position:absolute;left:-9999px;top:8px;z-index:200;background:var(--bg-surface-dark);color:var(--text-on-dark);padding:10px 16px;border-radius:var(--radius-pill);font-size:.85rem;font-weight:500}
+.skip-link:focus{left:16px;outline:2px solid var(--bg-accent-primary);outline-offset:2px}
 .stage .lv{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.1em;color:var(--bg-accent-primary);text-transform:uppercase}
 .dcard.dark .stage .lv{color:var(--text-on-dark)}
 .dcard.accent .stage .lv{color:rgba(18,18,18,.85)}
@@ -486,6 +509,7 @@ body[data-path="driver"] #drivers,body[data-path="business"] #business{box-shado
 <script>try{if(localStorage.getItem('datum_theme')==='obsidian')document.documentElement.dataset.theme='obsidian';}catch(e){}</script>
 </head>
 <body>
+<a class="skip-link" href="#why">Skip to content</a>
 <a class="skip" href="#why">Skip to content</a>
 <div id="progress" aria-hidden="true"></div>
 
@@ -673,7 +697,39 @@ body[data-path="driver"] #drivers,body[data-path="business"] #business{box-shado
     </div>
     <div class="hub-card rv">
       <div class="hub-media">
-        <img src="assets/automotive/continental_detail.webp" alt="Classic bonnet detail with chrome lettering, photograph: Tim Stief" width="124" height="124">
+        <svg class="hub-study" viewBox="0 0 400 220" width="400" height="220" role="img" aria-label="Datum vehicle study: measurement plate with wheelbase and identity reference" xmlns="http://www.w3.org/2000/svg">
+          <style>
+            .accent  { stroke: var(--bg-accent-primary); fill: var(--bg-accent-primary); }
+            .on-dark { color: var(--text-on-dark); }
+            .muted   { color: var(--text-on-dark-muted); }
+          </style>
+          <g opacity=".16" stroke="var(--text-on-dark-muted)" stroke-width=".4" fill="none">
+            <path d="M0 28 H400 M0 56 H400 M0 84 H400 M0 112 H400 M0 140 H400 M0 168 H400 M0 196 H400"/>
+            <path d="M28 0 V220 M56 0 V220 M84 0 V220 M112 0 V220 M140 0 V220 M168 0 V220 M196 0 V220 M224 0 V220 M252 0 V220 M280 0 V220 M308 0 V220 M336 0 V220 M364 0 V220 M392 0 V220"/>
+          </g>
+          <g fill="none" stroke="var(--text-on-dark-muted)" stroke-width=".7" opacity=".7">
+            <path d="M40 152 Q40 112 66 104 L108 76 Q116 72 130 72 L238 72 Q252 72 274 86 L316 108 Q338 118 356 130 L356 160 Q356 168 346 168 L318 168"/>
+            <path d="M130 72 V168"/>
+            <path d="M50 168 H346"/>
+          </g>
+          <circle cx="84" cy="172" r="25" fill="none" stroke="var(--bg-accent-primary)" stroke-width="1.2"/>
+          <circle cx="84" cy="172" r="12.5" fill="none" stroke="var(--bg-surface-dark)" stroke-width=".9"/>
+          <circle cx="84" cy="172" r="2.8" fill="var(--bg-accent-primary)"/>
+          <circle cx="296" cy="172" r="25" fill="none" stroke="var(--bg-accent-primary)" stroke-width="1.2"/>
+          <circle cx="296" cy="172" r="12.5" fill="none" stroke="var(--bg-surface-dark)" stroke-width=".9"/>
+          <circle cx="296" cy="172" r="2.8" fill="var(--bg-accent-primary)"/>
+          <line x1="84" y1="122" x2="84" y2="146" stroke="var(--text-on-dark-muted)" stroke-width=".5" stroke-dasharray="3 3" opacity=".7"/>
+          <line x1="296" y1="122" x2="296" y2="146" stroke="var(--text-on-dark-muted)" stroke-width=".5" stroke-dasharray="3 3" opacity=".7"/>
+          <path d="M84 136 H296 M90 133 L84 136 90 139 M290 133 L296 136 290 139" stroke="var(--bg-accent-primary)" stroke-width="1.2" fill="none" opacity=".85"/>
+          <text x="190" y="130" font-family="monospace" font-size="8.5" letter-spacing="2.4" text-anchor="middle" fill="var(--text-on-dark)" opacity=".95">WHEELBASE · 2.54 m</text>
+          <text x="44" y="62" font-family="monospace" font-size="9" letter-spacing="2" fill="var(--text-on-dark)" opacity=".9">DATUM · VEHICLE STUDY · MEASUREMENT PLATE</text>
+          <g transform="translate(352,64)">
+            <circle r="13" fill="none" stroke="var(--bg-accent-primary)" stroke-width="1"/>
+            <text y="4" font-family="monospace" font-size="10.5" text-anchor="middle" fill="var(--bg-accent-primary)">7</text>
+          </g>
+          <ellipse cx="120" cy="86" rx="86" ry="60" fill="var(--text-on-dark)" opacity=".04" transform="rotate(-18 120 86)"/>
+        </svg>
+        <span class="hub-label">FIG. 03 · MEASUREMENT PLATE</span>
       </div>
       <div class="hub-top">
         <span class="hub-live"><i></i>MOTOR WORLD</span>
@@ -682,9 +738,7 @@ body[data-path="driver"] #drivers,body[data-path="business"] #business{box-shado
       <div class="hub-foot">
         <span class="hub-label">THE VEHICLE · THE CENTRE</span>
         <span class="hub-faces" aria-hidden="true">
-          <img src="assets/hero/acquire_1280.webp" alt="" loading="lazy" width="1600" height="1069">
-          <img src="assets/hero/care_1280.webp" alt="" loading="lazy" width="1600" height="900">
-          <img src="assets/hero/drive_1280.webp" alt="" loading="lazy" width="1600" height="1067">
+          <span>DR</span><span>SP</span><span>OW</span>
         </span>
       </div>
     </div>
@@ -993,27 +1047,27 @@ body[data-path="driver"] #drivers,body[data-path="business"] #business{box-shado
     <div class="bento rv">
       <div class="cell shot-cell">
         <span class="shot-img"><img src="assets/automotive/evo_rally.webp" alt="Rally car at speed, demonstration imagery" loading="lazy" width="688" height="384"></span>
-        <span class="shot-foot"><span class="tag-pill">DEMONSTRATION IMAGERY</span><b>Connected Drive</b><p>Planned journeys, confirmed completion, kept memories.</p></span>
+        <span class="shot-foot"><b>Connected Drive</b><p>Planned journeys, confirmed completion, kept memories.</p></span>
       </div>
       <div class="cell shot-cell">
         <span class="shot-img"><img src="assets/automotive/two_fates.webp" alt="Engine bay detail, demonstration imagery" loading="lazy" width="512" height="341"></span>
-        <span class="shot-foot"><span class="tag-pill">DEMONSTRATION IMAGERY</span><b>Living Biography</b><p>Events, evidence and provenance in order.</p></span>
+        <span class="shot-foot"><b>Living Biography</b><p>Events, evidence and provenance in order.</p></span>
       </div>
       <div class="cell shot-cell">
         <span class="shot-img"><img src="assets/workshops/workshop_wall.webp" alt="Workshop interior, demonstration imagery" loading="lazy" width="512" height="341"></span>
-        <span class="shot-foot"><span class="tag-pill">DEMONSTRATION IMAGERY</span><b>Specialist Directory</b><p>Workshops credited for work they stand behind.</p></span>
+        <span class="shot-foot"><b>Specialist Directory</b><p>Workshops credited for work they stand behind.</p></span>
       </div>
       <div class="cell shot-cell span2">
         <span class="shot-img"><img src="assets/roads/dawn_road.webp" alt="Road at dawn, demonstration imagery" loading="lazy" width="800" height="533"></span>
-        <span class="shot-foot"><span class="tag-pill">DEMONSTRATION IMAGERY</span><b>Clubs &amp; Gatherings</b><p>Runs with privacy by design.</p></span>
+        <span class="shot-foot"><b>Clubs &amp; Gatherings</b><p>Runs with privacy by design.</p></span>
       </div>
       <div class="cell shot-cell">
         <span class="shot-img"><img src="assets/automotive/manual_shifter.webp" alt="Hand on a manual gear lever, demonstration imagery" loading="lazy" width="800" height="450"></span>
-        <span class="shot-foot"><span class="tag-pill">DEMONSTRATION IMAGERY</span><b>Atelier Feed</b><p>Stories and craft, labelled demonstration content.</p></span>
+        <span class="shot-foot"><b>Atelier Feed</b><p>Stories and craft, labelled demonstration content.</p></span>
       </div>
       <div class="cell shot-cell">
         <span class="shot-img"><img src="assets/automotive/garage_m3.webp" alt="Sports saloon in a curated garage, demonstration imagery" loading="lazy" width="688" height="384"></span>
-        <span class="shot-foot"><span class="tag-pill">DEMONSTRATION IMAGERY</span><b>Motor World</b><p>Engineering, history and culture from any vehicle.</p></span>
+        <span class="shot-foot"><b>Motor World</b><p>Engineering, history and culture from any vehicle.</p></span>
       </div>
     </div>
   </section>
