@@ -463,6 +463,7 @@ input[type=range].scrub{width:100%;accent-color:var(--bg-accent-primary);height:
 .dcard.accent .study-label{border-color:rgba(18,18,18,.3);color:rgba(18,18,18,.74)}
 .study-media{border-radius:16px;overflow:hidden;margin-bottom:14px;border:var(--border-hairline)}
 .study-media img{width:100%;aspect-ratio:16/9;object-fit:cover}
+.study-media svg{width:100%;height:100%;max-width:100%;display:block}
 .shot-cell{padding:0;min-height:0;justify-content:flex-start}
 .shot-cell .shot-img{border-bottom:var(--border-hairline)}
 .shot-cell .shot-img img{width:100%;aspect-ratio:16/10;object-fit:cover}
@@ -1014,8 +1015,49 @@ body[data-path="driver"] #drivers,body[data-path="business"] #business{box-shado
         <p>A two-bay workshop measures, photographs and records a shim service. Evidence attributed to the workshop, reviewable by the custodian, a fiction demonstrating a workflow.</p>
       </article>
       <article class="dcard accent rv" style="--i:2">
-        <figure class="study-media" style="border-color:var(--hairline-on-dark-color)"><img src="assets/automotive/evo_rally.webp" alt="Rally action, demonstration imagery" loading="lazy" width="688" height="384"></figure>
-        <span class="study-label">ILLUSTRATIVE CONCEPT STUDY</span>
+        <figure class="study-media" style="border-color:var(--hairline-on-dark-color)"><svg class="study-plate" viewBox="0 0 480 270" role="img" aria-label="Powertrain study: S54 inline six cross-section with camshaft, rods, crankshaft and service references" xmlns="http://www.w3.org/2000/svg">
+          <g opacity=".35" stroke="var(--text-on-dark-muted, #7a7a82)" stroke-width=".5" fill="none">
+            <path d="M0 27 H480 M0 54 H480 M0 81 H480 M0 108 H480 M0 135 H480 M0 162 H480 M0 189 H480 M0 216 H480 M0 243 H480"/>
+            <path d="M40 0 V270 M80 0 V270 M120 0 V270 M160 0 V270 M200 0 V270 M240 0 V270 M280 0 V270 M320 0 V270 M360 0 V270 M400 0 V270 M440 0 V270"/>
+          </g>
+          <text x="28" y="16" font-family="monospace" font-size="9" font-style="normal" letter-spacing="2" fill="var(--text-on-dark, #f4f2ee)" opacity=".95">03 · S54 · INTAKE, VALVES, CRANK · STUDY</text>
+          <!-- valve / cam cover -->
+          <rect x="92" y="54" width="296" height="24" rx="4" fill="none" stroke="var(--text-on-dark-muted,#7a7a82)" stroke-width="1"/>
+          <!-- rocker / camshaft line -->
+          <line x1="76" y1="40" x2="404" y2="40" stroke="var(--bg-accent-primary,#c5a059)" stroke-width="1.4"/>
+          <text x="416" y="44" font-family="monospace" font-size="7.5" letter-spacing="1.8" fill="var(--text-on-dark,#f4f2ee)" opacity=".85">CAM 2 · INTAKE</text>
+          <!-- six cylinder pillows -->
+          <g fill="none" stroke="var(--text-on-dark-muted,#7a7a82)" stroke-width=".9">
+            <rect x="102" y="94" width="30" height="36" rx="6"/>
+            <rect x="150" y="94" width="30" height="36" rx="6"/>
+            <rect x="198" y="94" width="30" height="36" rx="6"/>
+            <rect x="246" y="94" width="30" height="36" rx="6"/>
+            <rect x="294" y="94" width="30" height="36" rx="6"/>
+            <rect x="342" y="94" width="30"  height="36" rx="6"/>
+          </g>
+          <!-- intake ports (top dark bar) -->
+          <path d="M92 92 C120 92 120 88 120 84 L120 62" stroke="var(--text-on-dark-muted,#7a7a82)" stroke-width=".6" opacity=".7" fill="none"/>
+          <path d="M140 92 C168 92 168 88 168 84 L168 62" stroke="var(--text-on-dark-muted,#7a7a82)" stroke-width=".6" opacity=".7" fill="none"/>
+          <path d="M188 92 C216 92 216 88 216 84 L216 62" stroke="var(--text-on-dark-muted,#7a7a82)" stroke-width=".6" opacity=".7" fill="none"/>
+          <path d="M236 92 C264 92 264 88 264 84 L264 62" stroke="var(--text-on-dark-muted,#7a7a82)" stroke-width=".6" opacity=".7" fill="none"/>
+          <path d="M284 92 C312 92 312 88 312 84 L312 62" stroke="var(--text-on-dark-muted,#7a7a82)" stroke-width=".6" opacity=".7" fill="none"/>
+          <path d="M332 92 C360 92 360 88 360 84 L360 62" stroke="var(--text-on-dark-muted,#7a7a82)" stroke-width=".6" opacity=".7" fill="none"/>
+          <!-- connecting rods -->
+          <g stroke="var(--text-on-dark,#f4f2ee)" stroke-width="1." opacity=".75">
+            <line x1="117" y1="130" x2="117" y2="178"/>
+            <line x1="165" y1="130" x2="165" y2="178"/>
+            <line x1="213" y1="130" x2="213" y2="178"/>
+            <line x1="261" y1="130" x2="261" y2="178"/>
+            <line x1="309" y1="130" x2="309" y2="178"/>
+            <line x1="357" y1="130" x2="357" y2="178"/>
+          </g>
+          <!-- crankshaft (sine-ish) -->
+          <path d="M70 196 C105 176 130 176 150 196 C170 216 195 216 215 196 C235 176 260 176 280 196 C300 216 325 216 345 196 C365 176 390 176 410 196" fill="none" stroke="var(--bg-accent-primary,#c5a059)" stroke-width="2.2" stroke-linecap="round"/>
+          <line x1="70" y1="204" x2="410" y2="204" stroke="var(--text-on-dark-muted,#7a7a82)" stroke-width=".5" opacity=".5"/>
+          <text x="70" y="222" font-family="monospace" font-size="8" letter-spacing="1.8" fill="var(--text-on-dark,#f4f2ee)" opacity=".7">CRANK (6 THROW, 120° OFFSET) · HEAD TORQUE 30 Nm · COOLANT Δ 0.4 °C</text>
+        </svg>
+        <figcaption>ENGINE PLATE · TECHNICAL ILLUSTRATION — DEMONSTRATION STUDY</figcaption>
+        </figure>
         <span class="meta">STUDY C: THE AUTOMOTIVE EXPLORER</span>
         <h3>Starting from an E46 M3</h3>
         <p>Curiosity about one coupé leads to its S54 engine, engine management, diagnostics and touring-car heritage, the diagram above, walked.</p>
@@ -1480,14 +1522,49 @@ body[data-path="driver"] #drivers,body[data-path="business"] #business{box-shado
     check();
   })();
 
-  /* demo invite (non-submitting) */
-  document.getElementById('demo-btn').addEventListener('click',function(){
-    var k=document.getElementById('kind').value;
-    document.getElementById('demo-note').textContent='Preview: interest as “'+k+'” recorded on this page only. Nothing sent anywhere.';});
-  var imgs=document.getElementById('images');
-  if(imgs){imgs.addEventListener('change',function(){
-    var files=this.files,over=[];if(files){for(var i=0;i<files.length;i++){if(files[i].size>5*1024*1024)over.push(files[i].name);}}
-    if(over.length){document.getElementById('demo-note').textContent='Note: '+over.join(', ')+' exceed 5MB (will need compression/reduction).';}});}
+  /* invite form — client-side preparation, backend-ready.
+     The submission endpoint is intentionally unconfigured. When wiring a
+     privacy-safe backend, set window.DATUM_INVITE_URL and this handler posts the
+     assembled FormData there. Until then it behaves as a honest local preview:
+     FormData is built, previewed, and nothing leaves the browser. */
+  (function(){
+    var form=document.getElementById('invite-form'); if(!form) return;
+    var btn=document.getElementById('demo-btn'), note=document.getElementById('demo-note'),
+        honey=''; /* endpoint hook: window.DATUM_INVITE_URL */
+    var trap=document.createElement('input'); trap.type='text'; trap.name='website'; trap.value='';
+    trap.style.position='absolute'; trap.style.left='-10000px'; trap.tabIndex=-1; trap.setAttribute('aria-hidden','true');
+    form.appendChild(trap);
+    function clamp(s,n){return String(s||'').slice(0,n);}
+    form.addEventListener('submit',function(e){e.preventDefault();doSubmit();});
+    if(btn) btn.addEventListener('click', doSubmit);
+    function doSubmit(){
+      var email=document.getElementById('email').value.trim();
+      var start=Date.now();
+      var files=document.getElementById('images').files;
+      var over=[];for(var i=0;i<files.length;i++){if(files[i].size>5*1024*1024)over.push(files[i].name);}
+      if(over.length){note.textContent='Note: '+over.join(', ')+' exceed 5MB (will need compression/reduction).'; return;}
+      var fd=new FormData();
+      fd.append('interest', document.getElementById('kind').value);
+      fd.append('email', email);
+      fd.append('story', clamp(document.getElementById('story').value, 4000));
+      fd.append('website', honey);
+      fd.append('client_elapsed_ms', Date.now()-start);
+      for(var i=0;i<files.length;i++){fd.append('images', files[i], files[i].name);}
+      if(btn){btn.disabled=true;btn.textContent='PREPARING…';}
+      if(!window.DATUM_INVITE_URL){
+        setTimeout(function(){
+          note.textContent='Preview only. '+files.length+' file(s) assembled into FormData; nothing left this device. Wire window.DATUM_INVITE_URL (or Netlify Forms / Formspree / a Workers Function) to make live submissions.';
+          try{console.log('Datum invite FormData (local preview):', [...fd.entries()].map(e=>e[0]+'='+String(e[1]).slice(0,40)));}catch(e){}
+          if(btn){btn.disabled=false;btn.textContent='Record locally';}
+        },350);
+        return;
+      }
+      fetch(window.DATUM_INVITE_URL,{method:'POST',body:fd,credentials:'omit'})
+        .then(function(r){throw new Error('not approved without backend');})
+        .catch(function(){note.textContent='Submission could not be delivered. Configure window.DATUM_INVITE_URL first.';})
+        .finally(function(){if(btn){btn.disabled=false;btn.textContent='Record locally';}});
+    }
+  })();
 
   /* theme switch: Light (stone) ⇄ Obsidian (black + gold) */
   (function(){
