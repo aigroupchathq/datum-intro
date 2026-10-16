@@ -281,14 +281,18 @@ button.cell{cursor:pointer;width:100%}
 .hero .tagline{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.16em;color:var(--text-on-dark)}
 .hero .standfirst{color:rgba(244,242,238,.88);font-size:1rem;max-width:52ch}
 .credit{position:absolute;right:14px;bottom:12px;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.1em;color:var(--text-on-dark-muted)}
-.veil{position:fixed;inset:0;z-index:75;background:var(--bg-canvas);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px;pointer-events:none}
+.veil{position:fixed;inset:0;z-index:75;background:var(--bg-canvas);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px;pointer-events:none;animation:veilOut .72s ease 1.5s forwards}
 .veil-rule{display:block;width:28px;height:1px;background:var(--bg-accent-primary);margin-bottom:32px;opacity:0;animation:veilIn .6s ease .05s forwards}
 .veil p{font-weight:500;font-size:clamp(1.5rem,7vw,2.6rem);line-height:1.05;letter-spacing:-0.045em;max-width:20ch;opacity:0;animation:veilIn .6s ease .05s forwards}
 .veil.run{animation:veilOut .72s ease forwards}
 @keyframes veilIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @keyframes veilOut{to{opacity:0;visibility:hidden}}
-html.veil-off .veil{display:none}
-@media (prefers-reduced-motion:reduce){.veil{display:none!important}}
+/* Everyone sees the opening beat. Reduced-motion gets a still frame that fades, never a blank screen. */
+@media (prefers-reduced-motion:reduce){
+  .veil{animation:veilOut .4s ease 1.25s forwards}
+  .veil-rule,.veil p{animation:veilIn .01s linear forwards}
+  .veil p{animation:none;opacity:1;transform:none}
+}
 
 /* ============ MEDIA ============ */
 .figure{border-radius:var(--radius-card);overflow:hidden;border:var(--border-hairline);position:relative;background:var(--bg-surface-elevated);box-shadow:var(--shadow-card)}
@@ -394,10 +398,16 @@ html.veil-off .veil{display:none}
 .ign-dial{background:var(--bg-surface-dark);color:var(--text-on-dark);border-radius:var(--radius-card);padding:20px;text-align:center;position:relative;overflow:hidden;box-shadow:var(--shadow-card)}
 .ign-dial svg{width:min(300px,78%);height:auto;margin:0 auto}
 .ign-dial .iarc{stroke:var(--bg-accent-primary)}
+.ign-dial .ineedle{fill:var(--bg-accent-primary)}
 .ign-dial .itick{fill:var(--text-on-dark-muted)}
 .ign-dial .itick.hi{fill:var(--bg-accent-primary)}
-.ign-dial .ilab{fill:var(--text-on-dark-muted)}
+.ign-dial .itick.rev{fill:#C0402F}
+.ign-dial .ilab{fill:var(--text-on-dark-muted);opacity:.85}
+.ign-dial .ibrand{fill:var(--text-on-dark-muted);opacity:.55}
 .ign-dial .ddot{fill:var(--bg-surface-dark);stroke:var(--bg-accent-primary)}
+.ign-dial .tickline{stroke:var(--text-on-dark-muted);opacity:.62}
+.ign-dial .tickline.minor{opacity:.3}
+.ign-dial .tickline.red{stroke:#C0402F;opacity:1}
 .ign-read{font-family:var(--font-mono);margin-top:6px}
 .ign-read b{font-weight:200;font-variant-numeric:tabular-nums;font-size:clamp(2.5rem,12vw,4rem);letter-spacing:-0.04em;color:var(--text-on-dark)}
 .ign-read span{color:var(--text-on-dark-muted);font-size:.72rem;letter-spacing:.16em}
@@ -473,7 +483,7 @@ body[data-path="driver"] #drivers,body[data-path="business"] #business{box-shado
   *{transition-duration:.001ms!important;animation-duration:.001ms!important}
 }
 </style>
-<script>try{if(sessionStorage.getItem('datum_veil')==='1')document.documentElement.classList.add('veil-off');if(localStorage.getItem('datum_theme')==='obsidian')document.documentElement.dataset.theme='obsidian';}catch(e){}</script>
+<script>try{if(localStorage.getItem('datum_theme')==='obsidian')document.documentElement.dataset.theme='obsidian';}catch(e){}</script>
 </head>
 <body>
 <a class="skip" href="#why">Skip to content</a>
@@ -872,30 +882,38 @@ body[data-path="driver"] #drivers,body[data-path="business"] #business{box-shado
       <div class="ign-dial rv">
         <svg viewBox="0 0 300 300" role="img" aria-label="Working tachometer dial, Datum instrument design">
           <defs>
-            <radialGradient id="dialface" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stop-color="#1C1C22"/><stop offset="65%" stop-color="#141418"/>
-              <stop offset="90%" stop-color="#0E0E12"/><stop offset="100%" stop-color="#282832"/>
+            <radialGradient id="dialface" cx="50%" cy="40%" r="62%">
+              <stop offset="0%" stop-color="#23232B"/><stop offset="55%" stop-color="#151519"/>
+              <stop offset="88%" stop-color="#0C0C10"/><stop offset="100%" stop-color="#26262F"/>
             </radialGradient>
             <linearGradient id="bezel" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#3E3E48"/><stop offset="50%" stop-color="#1E1E24"/><stop offset="100%" stop-color="#4A4A56"/>
+              <stop offset="0%" stop-color="#585866"/><stop offset="30%" stop-color="#1B1B21"/>
+              <stop offset="64%" stop-color="#2C2C35"/><stop offset="100%" stop-color="#63636F"/>
+            </linearGradient>
+            <linearGradient id="glass" x1="16%" y1="0%" x2="62%" y2="62%">
+              <stop offset="0%" stop-color="#FFFFFF" stop-opacity=".10"/><stop offset="48%" stop-color="#FFFFFF" stop-opacity="0"/>
             </linearGradient>
             <filter id="nglow" x="-40%" y="-40%" width="180%" height="180%">
-              <feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+              <feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
             </filter>
           </defs>
-          <circle cx="150" cy="150" r="142" fill="none" stroke="url(#bezel)" stroke-width="7"/>
-          <circle cx="150" cy="150" r="132" fill="url(#dialface)" stroke="none"/>
-          <path d="M279.2,176.3 A132,132 0 0 1 243.3,243.3" fill="none" stroke="#8f2b22" stroke-width="10" opacity=".85"/>
-          <path d="M251.9,66.2 A132,132 0 0 1 281.1,137.1" fill="none" class="iarc" stroke-width="7" stroke-linecap="round" opacity=".9">
-            <animate attributeName="opacity" values=".9;.45;.9" dur="2.2s" repeatCount="indefinite"/>
+          <circle cx="150" cy="150" r="144" fill="url(#bezel)"/>
+          <circle cx="150" cy="150" r="137.5" fill="#060608"/>
+          <circle cx="150" cy="150" r="132" fill="url(#dialface)"/>
+          <path d="M273.6,174.6 A126,126 0 0 1 239.1,239.1" fill="none" stroke="#B3372B" stroke-width="8" stroke-linecap="butt" opacity=".95"/>
+          <path d="M247.4,70.1 A126,126 0 0 1 275.4,137.7" fill="none" class="iarc" stroke-width="5" stroke-linecap="round" opacity=".95">
+            <animate attributeName="opacity" values=".95;.4;.95" dur="2.2s" repeatCount="indefinite"/>
           </path>
-          <g id="ticks" font-family="monospace" font-size="11" class="itick" text-anchor="middle"></g>
+          <g id="tickmarks" stroke-linecap="round"></g>
+          <g id="ticks" font-family="monospace" font-size="11.5" class="itick" text-anchor="middle"></g>
           <g id="needle" transform="rotate(-135 150 150)" filter="url(#nglow)">
-            <line x1="150" y1="162" x2="150" y2="42" class="iarc" stroke-width="3.5" stroke-linecap="round"/>
-            <circle cx="150" cy="150" r="10" class="ddot hi" stroke-width="2.5"/>
+            <polygon points="150,33 155.5,150 150,165 144.5,150" class="ineedle"/>
           </g>
-          <text x="150" y="212" text-anchor="middle" class="ilab" font-family="monospace" font-size="10" letter-spacing="2">x1000 RPM · S54 SPIRIT</text>
-          <text x="150" y="228" text-anchor="middle" class="ilab" font-family="monospace" font-size="10" letter-spacing="3">STANDBY</text>
+          <circle cx="150" cy="150" r="15.5" fill="#0B0B0E" stroke="url(#bezel)" stroke-width="2"/>
+          <circle cx="150" cy="150" r="6" class="ddot"/>
+          <text x="150" y="212" text-anchor="middle" class="ilab" font-family="monospace" font-size="9" letter-spacing="1.6">x1000 RPM</text>
+          <text x="150" y="104" text-anchor="middle" class="ibrand" font-family="monospace" font-size="8" letter-spacing="3.4">DATUM</text>
+          <ellipse cx="116" cy="92" rx="84" ry="62" fill="url(#glass)" transform="rotate(-20 116 92)"/>
         </svg>
         <div class="ign-read"><b id="rpm">0</b> <span>RPM</span></div>
         <div class="ign-live" id="ign-live" aria-live="polite">0.0 REV/S · - MS/REV</div>
@@ -904,7 +922,7 @@ body[data-path="driver"] #drivers,body[data-path="business"] #business{box-shado
       </div>
       <div class="ign-ctl rv">
         <div class="row">
-          <button class="ibtn" id="rev">REV (+3.6K)</button>
+          <button class="ibtn" id="rev">REV</button>
           <button class="ibtn" id="redline">REDLINE</button>
         </div>
         <div>
@@ -1242,11 +1260,24 @@ body[data-path="driver"] #drivers,body[data-path="business"] #business{box-shado
         needle=document.getElementById('needle'),scrub=document.getElementById('scrub'),
         ticks=document.getElementById('ticks');
     if(!rpmEl||!needle)return;
-    for(var i=0;i<=8;i++){var a=(-135+i*33.75)*Math.PI/180,x=150+118*Math.sin(a),y=150-118*Math.cos(a);
-      var t=document.createElementNS('http://www.w3.org/2000/svg','text');
-      t.setAttribute('x',x);t.setAttribute('y',y+4);t.textContent=i;t.setAttribute('class',i>=7?'itick hi':'itick');
-      t.style.fontWeight=i>=7?'bold':'normal';
+    var NS='http://www.w3.org/2000/svg';
+    var marks=document.getElementById('tickmarks');
+    function pt(rpm,r){var a=(-135+(rpm/1000)*33.75)*Math.PI/180;return [150+r*Math.sin(a),150-r*Math.cos(a)];}
+    function mark(a,b,rpm,cls,w){if(!marks)return;var p1=pt(rpm,a),p2=pt(rpm,b);
+      var l=document.createElementNS(NS,'line');
+      l.setAttribute('x1',p1[0].toFixed(2));l.setAttribute('y1',p1[1].toFixed(2));
+      l.setAttribute('x2',p2[0].toFixed(2));l.setAttribute('y2',p2[1].toFixed(2));
+      l.setAttribute('stroke-width',w);l.setAttribute('class',cls);marks.appendChild(l);}
+    for(var i=0;i<=8;i++){
+      mark(112,121,i,(i>=7?'tickline red':'tickline'),i>=7?2.4:2.2);
+      var np=pt(i,99);
+      var t=document.createElementNS(NS,'text');
+      t.setAttribute('x',np[0].toFixed(2));t.setAttribute('y',(np[1]+4).toFixed(2));t.textContent=i;
+      t.setAttribute('class',i>=7?'itick rev':'itick');
       ticks.appendChild(t);}
+    for(var k=0.5;k<8;k+=0.5){
+      if(Math.abs(k-Math.round(k))<0.001)continue;
+      mark(116.5,121,k,'tickline minor',1.1);}
     var cur=0,tgt=0,raf=null,started=false,charging=false,best=null,holdUntil=0;
     var score=document.getElementById('ign-score'),dial=document.querySelector('.ign-dial'),
         live=document.getElementById('ign-live');
@@ -1423,14 +1454,13 @@ body[data-path="driver"] #drivers,body[data-path="business"] #business{box-shado
 })();
 </script>
 <script>
-/* VEIL — the opening beat. Lifts on its own, or on the first sign of intent. */
+/* VEIL — the opening beat. Shows on every load; lifts on its own (CSS + JS) or on the first sign of intent. */
 (function(){
   var v=document.querySelector('.veil');
-  if(!v||document.documentElement.classList.contains('veil-off'))return;
+  if(!v)return;
   var done=false;
   function lift(){
     if(done)return; done=true;
-    try{sessionStorage.setItem('datum_veil','1')}catch(e){}
     v.classList.add('run');
     setTimeout(function(){ if(v.parentNode)v.parentNode.removeChild(v); },2200);
   }
