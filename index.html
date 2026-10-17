@@ -517,6 +517,32 @@ body[data-path="driver"] #drivers,body[data-path="business"] #business{box-shado
   .hero-media img{animation:none}
   *{transition-duration:.001ms!important;animation-duration:.001ms!important}
 }
+
+/* ============ DESKTOP / WEB ============ */
+.topnav{display:none}
+@media (min-width:900px){
+  .shell{max-width:960px;padding:88px 32px 160px}
+  .topbar .inner{max-width:960px;padding:12px 32px}
+  .topnav{display:flex;align-items:center;gap:4px;flex:0 0 auto}
+  .topnav-link{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted-readable);padding:8px 12px;border-radius:var(--radius-pill);transition:color .25s ease,background-color .25s ease}
+  .topnav-link:hover{color:var(--text-primary);background:var(--bg-surface-elevated)}
+  .topnav-link[aria-current="true"]{color:var(--text-on-dark);background:var(--bg-surface-dark)}
+  .topnav-more{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-primary);padding:8px 14px;border-radius:var(--radius-pill);border:var(--border-hairline);transition:background-color .25s ease,border-color .25s ease}
+  .topnav-more:hover{border-color:var(--bg-accent-primary);background:var(--bg-surface-elevated)}
+  .pillnav{display:none}
+  .sheet{bottom:24px;max-width:560px}
+  .bento:not(.shot-grid){grid-template-columns:repeat(3,minmax(0,1fr))}
+  .bento.shot-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .bento.proof{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hero-media img{aspect-ratio:16/9}
+  .hub-media{height:320px}
+}
+@media (min-width:1200px){
+  .shell{max-width:1080px}
+  .topbar .inner{max-width:1080px}
+  .bento:not(.shot-grid){grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+
 </style>
 <script>try{if(localStorage.getItem('datum_theme')==='obsidian')document.documentElement.dataset.theme='obsidian';}catch(e){}</script>
 </head>
@@ -531,6 +557,12 @@ body[data-path="driver"] #drivers,body[data-path="business"] #business{box-shado
 <div class="topbar">
   <div class="inner">
     <div class="brand"><b>DATUM</b><small>ATELIER</small></div>
+    <nav class="topnav" aria-label="Primary">
+      <a class="topnav-link" href="#why">Why</a>
+      <a class="topnav-link" href="#drivers">Drivers</a>
+      <a class="topnav-link" href="#business">Business</a>
+      <button class="topnav-more more-trigger" type="button" aria-expanded="false" aria-controls="sections-sheet">More <i class="dot"></i></button>
+    </nav>
     <div class="topbar-right">
       <span class="status"><i></i>IN DEVELOPMENT</span>
       <button id="theme-toggle" class="theme-btn" type="button" aria-pressed="false" aria-label="Switch to Obsidian theme (black and gold)" title="Light / Obsidian theme">
@@ -544,7 +576,7 @@ body[data-path="driver"] #drivers,body[data-path="business"] #business{box-shado
   <a class="pill" href="#why"><i class="dot"></i><span>Why</span></a>
   <a class="pill" href="#drivers"><i class="dot"></i><span>Drivers</span></a>
   <a class="pill" href="#business"><i class="dot"></i><span>Business</span></a>
-  <button class="pill" id="more-btn" type="button" aria-expanded="false" aria-controls="sections-sheet"><i class="dot"></i><span>More</span></button>
+  <button class="pill more-trigger" id="more-btn" type="button" aria-expanded="false" aria-controls="sections-sheet"><i class="dot"></i><span>More</span></button>
 </nav>
 
 <div class="sheet-scrim" id="sheet-scrim" hidden></div>
@@ -1270,8 +1302,9 @@ body[data-path="driver"] #drivers,body[data-path="business"] #business{box-shado
 
   /* progress + top + nav spy */
   var bar=document.getElementById('progress'),top=document.getElementById('top');
-  var links=[].slice.call(document.querySelectorAll('.pillnav a'));
+  var links=[].slice.call(document.querySelectorAll('.pillnav a, .topnav a'));
   var moreBtn=document.getElementById('more-btn');
+  var moreBtns=[].slice.call(document.querySelectorAll('.more-trigger'));
   var sheetRows=[].slice.call(document.querySelectorAll('.sheet-row'));
   var navIds=links.map(function(a){return a.getAttribute('href').slice(1)});
   var allIds=[];
@@ -1293,7 +1326,7 @@ body[data-path="driver"] #drivers,body[data-path="business"] #business{box-shado
     if(moreBtn)moreBtn.setAttribute('aria-current',(cur&&navIds.indexOf(cur)<0)?'true':'false');
     sheetRows.forEach(function(a){a.setAttribute('aria-current',a.getAttribute('href')==='#'+cur?'true':'false')});
   }
-  document.addEventListener('scroll',onScroll,{passive:true});onScroll();
+  document.addEventListener('scroll',onScroll,{passive:true});window.addEventListener('scroll',onScroll,{passive:true});onScroll();
   top.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
 
   /* sections sheet — holds the sections beyond the four-item nav */
@@ -1306,19 +1339,21 @@ body[data-path="driver"] #drivers,body[data-path="business"] #business{box-shado
       if(hideTimer){clearTimeout(hideTimer);hideTimer=null;}
       lastFocus=document.activeElement;
       sheet.hidden=false;scrim.hidden=false;
-      requestAnimationFrame(function(){sheet.classList.add('on');scrim.classList.add('on');});
-      moreBtn.setAttribute('aria-expanded','true');
+      void sheet.offsetHeight; void scrim.offsetHeight;
+      sheet.classList.add('on');scrim.classList.add('on');
+      moreBtns.forEach(function(mb){mb.setAttribute('aria-expanded','true');});
       document.body.classList.add('sheet-open');
       var f=sheet.querySelector('.sheet-row');if(f)f.focus();
     }
     function close(){
       sheet.classList.remove('on');scrim.classList.remove('on');
-      moreBtn.setAttribute('aria-expanded','false');
+      moreBtns.forEach(function(mb){mb.setAttribute('aria-expanded','false');});
       document.body.classList.remove('sheet-open');
       hideTimer=setTimeout(function(){sheet.hidden=true;scrim.hidden=true;hideTimer=null;},450);
       if(lastFocus&&lastFocus.focus)lastFocus.focus();
     }
-    moreBtn.addEventListener('click',function(){sheet.classList.contains('on')?close():open();});
+    moreBtns.forEach(function(mb){mb.addEventListener('click',function(){sheet.classList.contains('on')?close():open();});});
+    moreBtns.forEach(function(mb){mb.setAttribute('aria-expanded',moreBtn.getAttribute('aria-expanded'));});
     closeBtn.addEventListener('click',close);
     scrim.addEventListener('click',close);
     sheet.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('.sheet-row'))close();});
