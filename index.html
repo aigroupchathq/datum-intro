@@ -3,7 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#E8E6E1">
+<meta name="theme-color" content="#E8E6E1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0A0A0B" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<meta name="format-detection" content="telephone=no">
+<meta name="application-name" content="Datum">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Datum">
+<meta name="msapplication-TileColor" content="#E8E6E1">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23121212'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23E63E21' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%23E63E21'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%23121212'/%3E%3Ccircle cx='90' cy='90' r='52' fill='none' stroke='%23E63E21' stroke-width='6'/%3E%3Ccircle cx='90' cy='90' r='14' fill='%23E63E21'/%3E%3C/svg%3E">
+<link rel="mask-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23121212'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23000' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%23000'/%3E%3C/svg%3E" color="%23E63E21">
 <title>Datum: Every Car Has a Story. Give It Continuity.</title>
 <meta name="robots" content="index,follow,max-image-preview:large">
 <meta name="description" content="Datum is an independent automotive software project in development: a connected experience for vehicle identity, history, evidence, drives and community.">
@@ -543,6 +554,36 @@ body[data-path="driver"] #drivers,body[data-path="business"] #business{box-shado
   .bento:not(.shot-grid){grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 
+
+/* ============ MICRO-DETAIL / MOTION SAFETY ============ */
+@media (prefers-reduced-motion: reduce){
+  .status i,.hub-live i,.iarc animate{animation:none!important}
+  .ign-dial .iarc{opacity:.9}
+  .veil-rule,.veil p{animation:none;opacity:1;transform:none}
+}
+@media (prefers-contrast: more){
+  :root{--border-hairline:1px solid rgba(18,18,18,.4);--pill-outline:rgba(18,18,18,.5)}
+  html[data-theme="obsidian"]{--border-hairline:1px solid rgba(244,242,238,.4);--pill-outline:rgba(244,242,238,.5)}
+  .text-on-dark,.text-primary{font-weight:500}
+}
+@media (forced-colors: active){
+  .veil,.hub-media::after,.hub-top,.hub-foot{display:none!important}
+  .pillnav,.sheet,.topbar{forced-color-adjust:none}
+}
+@media print{
+  .topbar,.pillnav,.sheet,.sheet-scrim,#progress,#top,.veil{display:none!important}
+  body{background:#fff;color:#000}
+  .shell{max-width:100%;padding:0}
+  section.block{break-inside:avoid;page-break-inside:avoid}
+  a{color:#000;text-decoration:underline}
+  img{max-width:100%;page-break-inside:avoid}
+}
+/* ============ FOCUS RINGS (premium) ============ */
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+  outline:2px solid var(--bg-accent-primary);outline-offset:3px;border-radius:8px;
+}
+.chip:focus-visible,.pill:focus-visible,.sheet-row:focus-visible{outline:2px solid var(--bg-accent-primary);outline-offset:2px}
+
 </style>
 <script>try{if(localStorage.getItem('datum_theme')==='obsidian')document.documentElement.dataset.theme='obsidian';}catch(e){}</script>
 </head>
@@ -668,7 +709,7 @@ body[data-path="driver"] #drivers,body[data-path="business"] #business{box-shado
     </div>
 
     <figure class="figure fig-16x10 rv" style="margin-top:16px">
-      <img src="assets/automotive/two_fates.webp" alt="Two classic Jaguars: one decaying, one kept. Photograph: Dietmar Becker. Demonstration imagery." loading="lazy" width="1280" height="640">
+      <img src="assets/automotive/two_fates.webp" alt="Two classic Jaguars: one decaying, one kept. Photograph: Dietmar Becker. Demonstration imagery." loading="lazy" decoding="async" fetchpriority="low" width="1280" height="640">
       <figcaption>SAME MARQUE · TWO FATES · PHOTO: DIETMAR BECKER · DEMONSTRATION IMAGERY</figcaption>
     </figure>
 
@@ -889,7 +930,7 @@ body[data-path="driver"] #drivers,body[data-path="business"] #business{box-shado
         <h3>The day it becomes yours</h3>
         <p>A 1991 coupé changes hands. Its first record opens: identity, configuration, starting mileage, a biography with page one.</p>
         <figure class="dcard-media">
-          <img src="assets/hero/acquire_1280.webp" srcset="assets/hero/acquire_1280.webp 1280w, assets/hero/acquire_1600.webp 1600w" sizes="(max-width:560px) 100vw, 560px" alt="A white vintage car parked in a garage. Photograph: Egor Vikhrev" loading="lazy" width="1600" height="1069">
+          <img src="assets/hero/acquire_1280.webp" srcset="assets/hero/acquire_1280.webp 1280w, assets/hero/acquire_1600.webp 1600w" sizes="(max-width:560px) 100vw, 560px" alt="A white vintage car parked in a garage. Photograph: Egor Vikhrev" loading="lazy" decoding="async" fetchpriority="low" width="1600" height="1069">
           <span class="circle-btn" aria-hidden="true">↗</span>
         </figure>
       </article>
@@ -898,7 +939,7 @@ body[data-path="driver"] #drivers,body[data-path="business"] #business{box-shado
         <h3>Kept where the work happens</h3>
         <p>Each service documented at the ramp, attributed to the workshop that did it, and kept with the car, not in a drawer.</p>
         <figure class="dcard-media">
-          <img src="assets/hero/care_1280.webp" srcset="assets/hero/care_1280.webp 1280w, assets/hero/care_1600.webp 1600w" sizes="(max-width:560px) 100vw, 560px" alt="A man working on a car engine in a garage. Photograph: Ahmet Debelemez" loading="lazy" width="1600" height="900">
+          <img src="assets/hero/care_1280.webp" srcset="assets/hero/care_1280.webp 1280w, assets/hero/care_1600.webp 1600w" sizes="(max-width:560px) 100vw, 560px" alt="A man working on a car engine in a garage. Photograph: Ahmet Debelemez" loading="lazy" decoding="async" fetchpriority="low" width="1600" height="900">
           <span class="circle-btn" aria-hidden="true">↗</span>
         </figure>
       </article>
@@ -907,7 +948,7 @@ body[data-path="driver"] #drivers,body[data-path="business"] #business{box-shado
         <h3>A dawn pass, deliberately recorded</h3>
         <p>The route is remembered; the exact home address never leaves the driveway. What mattered is kept. What shouldn't travel, doesn't.</p>
         <figure class="dcard-media">
-          <img src="assets/hero/drive_1280.webp" srcset="assets/hero/drive_1280.webp 1280w, assets/hero/drive_1600.webp 1600w" sizes="(max-width:560px) 100vw, 560px" alt="A long road with a mountain in the background. Photograph: Andrew Svk" loading="lazy" width="1600" height="1067">
+          <img src="assets/hero/drive_1280.webp" srcset="assets/hero/drive_1280.webp 1280w, assets/hero/drive_1600.webp 1600w" sizes="(max-width:560px) 100vw, 560px" alt="A long road with a mountain in the background. Photograph: Andrew Svk" loading="lazy" decoding="async" fetchpriority="low" width="1600" height="1067">
           <span class="circle-btn" aria-hidden="true">↗</span>
         </figure>
       </article>
@@ -916,7 +957,7 @@ body[data-path="driver"] #drivers,body[data-path="business"] #business{box-shado
         <h3>Years later, it reads whole</h3>
         <p>Engineering, evidence, people and memory in one place, ready for the next custodian, or simply for yourself.</p>
         <figure class="dcard-media">
-          <img src="assets/hero/reflect_1280.webp" srcset="assets/hero/reflect_1280.webp 1280w, assets/hero/reflect_1600.webp 1600w" sizes="(max-width:560px) 100vw, 560px" alt="A red and black steering wheel. Photograph: Stephanie Valencia" loading="lazy" width="1600" height="2400">
+          <img src="assets/hero/reflect_1280.webp" srcset="assets/hero/reflect_1280.webp 1280w, assets/hero/reflect_1600.webp 1600w" sizes="(max-width:560px) 100vw, 560px" alt="A red and black steering wheel. Photograph: Stephanie Valencia" loading="lazy" decoding="async" fetchpriority="low" width="1600" height="2400">
           <span class="circle-btn" aria-hidden="true">↗</span>
         </figure>
       </article>
@@ -1179,7 +1220,7 @@ body[data-path="driver"] #drivers,body[data-path="business"] #business{box-shado
         <p>Acquisition, care, a mountain drive, winter reflection, each moment a dated, sourced entry until the year reads like a chapter.</p>
       </article>
       <article class="dcard dark rv" style="--i:1">
-        <figure class="study-media" style="border-color:var(--hairline-on-dark-color)"><img src="assets/workshops/workshop_wall.webp" alt="Workshop craft, demonstration imagery" loading="lazy" width="512" height="341"></figure>
+        <figure class="study-media" style="border-color:var(--hairline-on-dark-color)"><img src="assets/workshops/workshop_wall.webp" alt="Workshop craft, demonstration imagery" loading="lazy" decoding="async" fetchpriority="low" width="512" height="341"></figure>
         <span class="study-label">ILLUSTRATIVE CONCEPT STUDY</span>
         <span class="meta">STUDY B: THE INDEPENDENT SPECIALIST</span>
         <h3>A fictional valve-clearance service</h3>
@@ -1311,23 +1352,23 @@ body[data-path="driver"] #drivers,body[data-path="business"] #business{box-shado
         <span class="shot-foot"><b>Connected Drive</b><p>Planned journeys, confirmed completion, kept memories.</p></span>
       </div>
       <div class="cell shot-cell">
-        <span class="shot-img"><img src="assets/automotive/two_fates.webp" alt="Engine bay detail, demonstration imagery" loading="lazy" width="512" height="341"></span>
+        <span class="shot-img"><img src="assets/automotive/two_fates.webp" alt="Engine bay detail, demonstration imagery" loading="lazy" decoding="async" fetchpriority="low" width="512" height="341"></span>
         <span class="shot-foot"><b>Living Biography</b><p>Events, evidence and provenance in order.</p></span>
       </div>
       <div class="cell shot-cell">
-        <span class="shot-img"><img src="assets/workshops/workshop_wall.webp" alt="Workshop interior, demonstration imagery" loading="lazy" width="512" height="341"></span>
+        <span class="shot-img"><img src="assets/workshops/workshop_wall.webp" alt="Workshop interior, demonstration imagery" loading="lazy" decoding="async" fetchpriority="low" width="512" height="341"></span>
         <span class="shot-foot"><b>Specialist Directory</b><p>Workshops credited for work they stand behind.</p></span>
       </div>
       <div class="cell shot-cell span2">
-        <span class="shot-img"><img src="assets/roads/dawn_road.webp" alt="Road at dawn, demonstration imagery" loading="lazy" width="800" height="533"></span>
+        <span class="shot-img"><img src="assets/roads/dawn_road.webp" alt="Road at dawn, demonstration imagery" loading="lazy" decoding="async" fetchpriority="low" width="800" height="533"></span>
         <span class="shot-foot"><b>Clubs &amp; Gatherings</b><p>Runs with privacy by design.</p></span>
       </div>
       <div class="cell shot-cell">
-        <span class="shot-img"><img src="assets/automotive/manual_shifter.webp" alt="Hand on a manual gear lever, demonstration imagery" loading="lazy" width="800" height="450"></span>
+        <span class="shot-img"><img src="assets/automotive/manual_shifter.webp" alt="Hand on a manual gear lever, demonstration imagery" loading="lazy" decoding="async" fetchpriority="low" width="800" height="450"></span>
         <span class="shot-foot"><b>Atelier Feed</b><p>Stories and craft, labelled demonstration content.</p></span>
       </div>
       <div class="cell shot-cell">
-        <span class="shot-img"><img src="assets/automotive/garage_m3.webp" alt="Sports saloon in a curated garage, demonstration imagery" loading="lazy" width="688" height="384"></span>
+        <span class="shot-img"><img src="assets/automotive/garage_m3.webp" alt="Sports saloon in a curated garage, demonstration imagery" loading="lazy" decoding="async" fetchpriority="low" width="688" height="384"></span>
         <span class="shot-foot"><b>Motor World</b><p>Engineering, history and culture from any vehicle.</p></span>
       </div>
     </div>
@@ -1391,7 +1432,7 @@ body[data-path="driver"] #drivers,body[data-path="business"] #business{box-shado
       <div class="drawer-body" id="invite-body">
         <div class="drawer-inner">
           <div class="drawer-pad">
-            <form class="invite-form" id="invite-form" enctype="multipart/form-data" method="post" action="#invite">
+            <form class="invite-form" id="invite-form" enctype="multipart/form-data" method="post" action="#invite" novalidate aria-describedby="demo-notice">
               <div class="field">
                 <label for="kind">I am interested as</label>
                 <select id="kind" name="interest">
@@ -1400,11 +1441,12 @@ body[data-path="driver"] #drivers,body[data-path="business"] #business{box-shado
               </div>
               <div class="field">
                 <label for="email">Email address (optional)</label>
-                <input id="email" name="email" type="email" placeholder="you@example.com">
+                <input id="email" name="email" type="email" inputmode="email" autocomplete="email" spellcheck="false" placeholder="you@example.com" aria-describedby="email-hint">
               </div>
               <div class="field">
                 <label for="story">Your story</label>
-                <textarea id="story" name="story" rows="3" placeholder="Tell us about a car, a morning, or a moment that meant something."></textarea>
+                <textarea id="story" name="story" rows="3" maxlength="4000" placeholder="Tell us about a car, a morning, or a moment that meant something."></textarea>
+                <span id="email-hint" class="fine" style="margin-top:2px">Optional. Used only to reply. Never sold or shared.</span>
               </div>
               <label class="file-label">
                 <input type="file" id="images" name="images" accept="image/jpeg,image/webp" multiple hidden>
@@ -1413,8 +1455,8 @@ body[data-path="driver"] #drivers,body[data-path="business"] #business{box-shado
               <button class="btn" type="button" id="demo-btn">Record locally</button>
               <p class="fine">Max 5MB per image · EXIF (location/data) stripped client-side where possible · Never sold or shared · We only use what you choose to send.</p>
             </form>
-            <div class="notice">DEMONSTRATION CONTROL: registration is not yet open. Nothing is submitted or collected by this page in its current form. To make it functional, wire this form to a privacy-respecting backend (e.g. Formspree/Netlify Forms/Cloudflare Pages Functions) with spam protection (honeypot + Turnstile). Images will be handled according to that backend's policy.</div>
-            <p class="fine" id="demo-note" style="margin-top:12px">Choose an audience and press the button to preview the interaction.</p>
+            <div class="notice" id="demo-notice" role="note">DEMONSTRATION CONTROL: registration is not yet open. Nothing is submitted or collected by this page in its current form. To make it functional, wire this form to a privacy-respecting backend (e.g. Formspree/Netlify Forms/Cloudflare Pages Functions) with spam protection (honeypot + Turnstile). Images will be handled according to that backend's policy.</div>
+            <p class="fine" id="demo-note" style="margin-top:12px" role="status" aria-live="polite" aria-atomic="true">Choose an audience and press the button to preview the interaction.</p>
           </div>
         </div>
       </div>
@@ -1777,7 +1819,7 @@ body[data-path="driver"] #drivers,body[data-path="business"] #business{box-shado
       if(!window.DATUM_INVITE_URL){
         setTimeout(function(){
           note.textContent='Preview only. '+files.length+' file(s) assembled into FormData; nothing left this device. Wire window.DATUM_INVITE_URL (or Netlify Forms / Formspree / a Workers Function) to make live submissions.';
-          try{console.log('Datum invite FormData (local preview):', [...fd.entries()].map(e=>e[0]+'='+String(e[1]).slice(0,40)));}catch(e){}
+          /* payload stays in-browser in preview mode; never logged */
           if(btn){btn.disabled=false;btn.textContent='Record locally';}
         },350);
         return;
