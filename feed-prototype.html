@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#E8E6E1">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#E8E6E1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0A0A0B" media="(prefers-color-scheme: dark)">
+<meta name="format-detection" content="telephone=no">
+<meta name="application-name" content="Datum Journal">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Datum">
+<meta name="msapplication-TileColor" content="#E8E6E1">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23121212'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23E63E21' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%23E63E21'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%23121212'/%3E%3Ccircle cx='90' cy='90' r='52' fill='none' stroke='%23E63E21' stroke-width='6'/%3E%3Ccircle cx='90' cy='90' r='14' fill='%23E63E21'/%3E%3C/svg%3E">
+<link rel="mask-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23121212'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23000' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%23000'/%3E%3C/svg%3E" color="%23E63E21">
+<title>Theo · 1991 964 Carrera</title>
+<meta name="description" content="A quieter timeline for cars that matter. Dated entries, long-form text, one image.">
+<style>
+:root{
+  --bg-canvas:#E8E6E1;--bg-surface-elevated:#F4F2EE;--bg-accent-primary:#E63E21;
+  --bg-surface-dark:#121212;--text-primary:#121212;--text-muted:rgba(18,18,18,.55);
+  --text-muted-readable:rgba(18,18,18,.68);--text-on-dark:#F4F2EE;--text-on-accent:#121212;
+  --text-on-dark-muted:rgba(244,242,238,.58);
+  --border-hairline:1px solid rgba(18,18,18,.08);--radius-card:20px;--radius-pill:9999px;
+  --ease-spring:cubic-bezier(0.22,1,0.36,1);--shadow-card:0 8px 24px rgba(18,18,18,.06);
+  --glass:rgba(232,230,225,.72);--pill-outline:rgba(18,18,18,.12);
+  --font-sans:'Inter','Plus Jakarta Sans','Archivo',system-ui,-apple-system,sans-serif;
+  --font-mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --font-display:'Archivo','Inter','Plus Jakarta Sans',system-ui,sans-serif;
+}
+html[data-theme="obsidian"]{
+  --bg-canvas:#0A0A0B;--bg-surface-elevated:#141417;--bg-accent-primary:#C5A059;
+  --bg-surface-dark:#000000;--text-primary:#F5F5F7;--text-muted:rgba(245,245,247,.5);
+  --text-muted-readable:rgba(245,245,247,.68);--text-on-dark:#F5F5F7;--text-on-accent:#141414;
+  --text-on-dark-muted:rgba(245,245,247,.52);--border-hairline:1px solid rgba(245,245,247,.08);
+  --glass:rgba(10,10,11,.78);--pill-outline:rgba(245,245,247,.12);--shadow-card:0 8px 24px rgba(0,0,0,.35);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{background:var(--bg-canvas);color:var(--text-primary);font-family:var(--font-sans);font-size:16px;line-height:1.65;letter-spacing:-.005em;overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background-color .4s ease,color .4s ease}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:1.5px solid var(--bg-accent-primary);outline-offset:3px;border-radius:6px}
+::selection{background:var(--bg-accent-primary);color:var(--text-on-accent)}
+
+/* ============ SHELL ============ */
+.shell{max-width:680px;margin:0 auto;padding:72px 20px 120px}
+@media (min-width:1024px){.shell{max-width:720px;padding:80px 24px 140px}}
+
+/* ============ TOPBAR ============ */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:80;background:var(--glass);backdrop-filter:blur(16px);border-bottom:var(--border-hairline)}
+.topbar .inner{max-width:720px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:baseline;gap:6px;font-weight:500;letter-spacing:-.02em}
+.brand b{font-size:.95rem;letter-spacing:.02em}
+.brand small{font-size:.68rem;color:var(--text-muted-readable);letter-spacing:.16em}
+.topbar-right{display:flex;align-items:center;gap:8px;flex:0 0 auto}
+.now-reading{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.1em;color:var(--text-muted-readable);white-space:nowrap;transition:opacity .25s ease}
+@media (max-width:768px){.now-reading{display:none}}
+.theme-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--pill-outline);background:transparent;color:var(--text-primary);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .35s var(--ease-spring),border-color .25s ease}
+.theme-btn:active{transform:scale(.94)}
+.theme-btn svg{width:14px;height:14px;display:block}
+.status{display:inline-flex;align-items:center;gap:5px;font-size:.68rem;letter-spacing:.04em;border:1px solid var(--pill-outline);border-radius:var(--radius-pill);padding:4px 9px;white-space:nowrap;color:var(--text-muted-readable)}
+.status i{width:6px;height:6px;border-radius:50%;background:var(--bg-accent-primary);animation:pulse 2.4s infinite}
+@keyframes pulse{50%{opacity:.3}}
+
+/* ============ CAR HERO ============ */
+.hero{padding:0 0 40px;margin-bottom:48px}
+.hero .car-name{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--bg-accent-primary);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.hero .car-name::before{content:'';width:20px;height:1px;background:var(--bg-accent-primary)}
+.hero h1{font-family:var(--font-display);font-weight:500;font-size:clamp(2.4rem,6.5vw,3.8rem);line-height:.98;letter-spacing:-.04em;margin-bottom:10px}
+.hero h1 em{font-style:italic;color:var(--bg-accent-primary);font-weight:400}
+.hero .standfirst{font-size:1rem;line-height:1.6;color:var(--text-muted-readable);max-width:48ch;margin-bottom:20px}
+.hero .meta{display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted-readable)}
+.hero .meta b{color:var(--text-primary);font-weight:500}
+.hero .meta span+span::before{content:'·';margin-right:14px;color:var(--text-muted)}
+.hero .portrait{margin-top:24px;border-radius:16px;overflow:hidden;border:var(--border-hairline);background:var(--bg-surface-elevated)}
+.hero .portrait img{width:100%;aspect-ratio:16/9;object-fit:cover}
+.hero .portrait .cap{padding:8px 14px;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.06em;color:var(--text-muted-readable);text-transform:uppercase;border-top:var(--border-hairline);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.hero .portrait .cap b{color:var(--text-primary);font-weight:500}
+
+/* ============ JOURNAL ============ */
+.journal{display:flex;flex-direction:column}
+.entry{padding:48px 0;border-bottom:var(--border-hairline);position:relative;transition:opacity .6s ease,transform .6s var(--ease-spring)}
+.entry:last-child{border-bottom:0}
+.entry.rv{opacity:0;transform:translateY(8px)}
+.entry.rv.on{opacity:1;transform:translateY(0)}
+.entry-head{display:flex;align-items:baseline;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.entry-date{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--bg-accent-primary);white-space:nowrap;flex:0 0 auto;display:inline-flex;align-items:center;gap:8px}
+.entry-date b{font-weight:500;color:var(--text-primary);letter-spacing:.06em}
+.entry-date .read-mark{display:inline-flex;align-items:center;justify-content:center;width:12px;height:12px;border-radius:50%;background:var(--bg-accent-primary);color:var(--text-on-accent);font-size:.55rem;opacity:0;transform:scale(.6);transition:opacity .35s ease,transform .35s var(--ease-spring)}
+.entry-date .read-mark.on{opacity:1;transform:scale(1)}
+.entry-date .read-time{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.06em;color:var(--text-muted);margin-left:2px}
+.entry-num{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.12em;color:var(--text-muted-readable);margin-left:auto;opacity:.7}
+.entry-title{font-family:var(--font-display);font-weight:500;font-size:clamp(1.35rem,3.5vw,1.9rem);line-height:1.1;letter-spacing:-.025em;margin-bottom:12px;max-width:24ch}
+.entry-title em{font-style:italic;color:var(--bg-accent-primary);font-weight:400}
+.entry-byline{display:flex;align-items:center;gap:8px;margin-bottom:16px;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.04em;color:var(--text-muted-readable);line-height:1.5}
+.entry-byline .avatar{width:24px;height:24px;font-size:.55rem}
+.entry-body{font-size:1rem;line-height:1.7;color:var(--text-primary);max-width:60ch}
+.entry-body p+p{margin-top:12px}
+.entry-body .drop::first-letter{font-family:var(--font-display);font-weight:500;font-size:3rem;line-height:.85;float:left;padding:4px 10px 0 0;color:var(--bg-accent-primary)}
+.entry-body .quote{border-left:2px solid var(--bg-accent-primary);padding:2px 0 2px 16px;margin:16px 0;font-style:italic;font-size:1.02rem;line-height:1.5;color:var(--text-muted-readable);max-width:52ch}
+.entry-body .quote cite{display:block;margin-top:8px;font-family:var(--font-mono);font-style:normal;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted-readable)}
+.entry-media{margin:20px 0;border-radius:12px;overflow:hidden;border:var(--border-hairline);background:var(--bg-surface-elevated);cursor:zoom-in;position:relative}
+.entry-media img{width:100%;aspect-ratio:16/9;object-fit:cover;transition:transform .6s var(--ease-spring)}
+.entry-media:hover img{transform:scale(1.015)}
+.entry-media .cap{padding:8px 14px;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.06em;color:var(--text-muted-readable);text-transform:uppercase;border-top:var(--border-hairline);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.entry-media .cap b{color:var(--text-primary);font-weight:500}
+.entry-edited{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.06em;color:var(--text-muted);margin-top:12px;font-style:italic}
+.entry-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:14px}
+.entry-tag{display:inline-flex;align-items:center;font-family:var(--font-mono);font-size:.58rem;letter-spacing:.06em;text-transform:uppercase;border:var(--border-hairline);border-radius:var(--radius-pill);padding:3px 8px;color:var(--text-muted-readable)}
+.entry-tag.accent{border-color:var(--bg-accent-primary);color:var(--bg-accent-primary)}
+
+/* ============ COMPOSER ============ */
+.composer{background:var(--bg-surface-elevated);border:var(--border-hairline);border-radius:var(--radius-card);padding:18px 20px;margin-bottom:48px}
+.composer-kicker{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted-readable);margin-bottom:8px}
+.composer textarea{width:100%;min-height:60px;resize:vertical;background:transparent;border:0;color:var(--text-primary);font:inherit;font-size:1rem;line-height:1.6;outline:none}
+.composer textarea::placeholder{color:var(--text-muted-readable)}
+.composer-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px;padding-top:12px;border-top:var(--border-hairline);flex-wrap:wrap}
+.composer-tools{display:flex;gap:5px;flex-wrap:wrap}
+.tool{display:inline-flex;align-items:center;gap:5px;padding:6px 10px;border-radius:var(--radius-pill);border:var(--border-hairline);font-family:var(--font-mono);font-size:.62rem;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted-readable);transition:background-color .25s ease,border-color .25s ease,color .25s ease;min-height:30px}
+.tool:hover{border-color:var(--bg-accent-primary);color:var(--text-primary)}
+.tool svg{width:12px;height:12px}
+.composer-submit{background:var(--bg-accent-primary);color:var(--text-on-accent);border-radius:var(--radius-pill);padding:7px 14px;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;font-weight:500;min-height:32px;transition:transform .35s var(--ease-spring)}
+.composer-submit:active{transform:scale(.97)}
+
+/* ============ EMPTY ============ */
+.empty{padding:48px 16px;text-align:center;color:var(--text-muted-readable)}
+.empty b{display:block;font-family:var(--font-display);font-size:1.2rem;font-weight:500;color:var(--text-primary);margin-bottom:6px;letter-spacing:-.02em}
+.empty p{font-size:.85rem;max-width:36ch;margin:0 auto;line-height:1.5}
+.empty .first-run{margin-top:16px;display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--bg-accent-primary);border:1px dashed var(--dash-outline);border-radius:var(--radius-pill);padding:8px 14px;cursor:pointer;transition:background-color .25s ease}
+.empty .first-run:hover{background:var(--bg-surface-elevated)}
+
+/* ============ LIGHTBOX ============ */
+.lightbox{position:fixed;inset:0;z-index:120;background:rgba(18,18,18,.92);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .35s ease;backdrop-filter:blur(8px)}
+.lightbox.on{opacity:1;pointer-events:auto}
+.lightbox img{max-width:100%;max-height:80vh;border-radius:12px;box-shadow:0 24px 64px rgba(0,0,0,.5)}
+.lightbox .lb-cap{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:.7rem;letter-spacing:.08em;color:var(--text-on-dark);text-align:center;max-width:90vw}
+.lightbox .lb-close{position:absolute;top:20px;right:20px;width:36px;height:36px;border-radius:50%;border:1px solid rgba(244,242,238,.3);background:rgba(18,18,18,.6);color:var(--text-on-dark);font-size:1.1rem;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .35s var(--ease-spring)}
+.lightbox .lb-close:active{transform:scale(.92)}
+html[data-theme="obsidian"] .lightbox{background:rgba(0,0,0,.94)}
+
+/* ============ TOAST ============ */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(12px);z-index:130;display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;background:var(--bg-surface-dark);color:var(--text-on-dark);border:var(--border-hairline);border-radius:var(--radius-pill);padding:10px 16px;box-shadow:var(--shadow-card);opacity:0;pointer-events:none;transition:opacity .25s ease,transform .35s var(--ease-spring);white-space:nowrap}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast i{width:7px;height:7px;border-radius:50%;background:var(--bg-accent-primary);flex:0 0 auto}
+
+/* ============ FOOTER ============ */
+footer{margin-top:48px;padding-top:20px;border-top:var(--border-hairline);font-family:var(--font-mono);font-size:.68rem;letter-spacing:.06em;color:var(--text-muted-readable);text-align:center}
+footer b{color:var(--text-primary)}
+.back-to-top{position:fixed;bottom:24px;right:24px;width:40px;height:40px;border-radius:50%;background:var(--bg-surface-dark);color:var(--text-on-dark);border:var(--border-hairline);display:inline-flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transform:translateY(8px);transition:opacity .25s ease,transform .35s var(--ease-spring);z-index:70;box-shadow:var(--shadow-card)}
+.back-to-top.on{opacity:1;pointer-events:auto;transform:translateY(0)}
+.back-to-top:active{transform:scale(.94) translateY(0)}
+.back-to-top svg{width:16px;height:16px}
+footer .hint{margin-top:6px;font-size:.62rem;opacity:.7}
+
+@media (max-width:480px){
+  .topbar .inner{gap:6px;padding:10px 14px}
+  .brand small{font-size:.62rem;letter-spacing:.1em}
+  .status{font-size:.6rem;padding:4px 7px;gap:5px}
+  .composer{padding:16px 18px}
+  .entry{padding:40px 0}
+  .entry-title{font-size:1.25rem}
+  .entry-media{margin:16px 0}
+  .car-hero h1{font-size:2.2rem}
+}
+@media (prefers-reduced-motion:reduce){
+  .status i{animation:none}
+  .entry-media img{transition:none}
+  .entry.rv{opacity:1;transform:none;transition:none}
+}
+@media print{
+  .topbar,.read-progress{display:none!important}
+  body{background:#fff;color:#000}
+  .shell{max-width:100%;padding:0}
+  .entry{break-inside:avoid;page-break-inside:avoid;padding:24px 0}
+  .entry-media{break-inside:avoid}
+  .composer{display:none!important}
+  .entry-title{color:#000}
+  a{color:#000;text-decoration:underline}
+  img{max-width:100%;page-break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<script>try{if(localStorage.getItem('datum_theme')==='obsidian')document.documentElement.dataset.theme='obsidian';}catch(e){}</script>
+
+<div class="topbar">
+  <div class="inner">
+    <div class="brand"><b>DATUM</b><small>JOURNAL</small></div>
+    <div class="topbar-right">
+      <span class="now-reading" id="now-reading" aria-live="polite"></span>
+      <span class="status"><i></i>LIVE</span>
+      <button id="theme-toggle" class="theme-btn" type="button" aria-pressed="false" aria-label="Switch to Obsidian theme (black and gold)" title="Light / Obsidian theme">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 1.5 A6.5 6.5 0 0 1 8 14.5 Z" fill="currentColor"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="read-progress" id="read-progress" aria-hidden="true"></div>
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lb-close" id="lb-close" type="button" aria-label="Close image">✕</button>
+  <img id="lb-img" src="" alt="">
+  <div class="lb-cap" id="lb-cap"></div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"><i></i></div>
+
+<main class="shell">
+  <header class="car-hero rv">
+    <div class="kicker"><i></i>Theo · 1991 964 Carrera · custodian since 2019</div>
+    <h1>Theo.</h1>
+    <div class="car-name">1991 964 Carrera · 142,318 km · RHD · Guards Red <button class="car-switcher" type="button" aria-label="Switch car">Theo ▾</button></div>
+    <p class="standfirst">Theo is a car with a name and a life worth recording. Every entry below is something Theo experienced, something done to Theo, or something Theo taught someone. The narrator changes. The car stays.</p>
+    <div class="meta">
+      <span><b>47</b> entries</span>
+      <span><b>12</b> custodians across Theo's life</span>
+      <span><b>3</b> specialists attributed</span>
+      <span>Updated · weekly</span>
+    </div>
+    <div class="car-portrait">
+      <img src="assets/hero/drive_1280.webp" srcset="assets/hero/drive_1280.webp 1280w, assets/hero/drive_1600.webp 1600w" sizes="(max-width:780px) 100vw, 780px" alt="A long road with a mountain in the background. Photograph: Andrew Svk" loading="lazy" decoding="async" fetchpriority="low" width="1600" height="1067">
+      <div class="cap"><span>THEO · FIRST DRIVE OF THE YEAR</span><b>14.2 km · 3 stops · 1 h 12 m · 14 APR 2026</b></div>
+    </div>
+  </header>
+
+  <div class="filters rv" role="tablist" aria-label="Filter entries">
+    <button class="filter on" type="button" data-filter="all" aria-pressed="true">All</button>
+    <button class="filter" type="button" data-filter="drive" aria-pressed="false">Drives</button>
+    <button class="filter" type="button" data-filter="service" aria-pressed="false">Service</button>
+    <button class="filter" type="button" data-filter="provenance" aria-pressed="false">Provenance</button>
+    <button class="filter" type="button" data-filter="reflection" aria-pressed="false">Reflection</button>
+    <span class="read-count" id="read-count" aria-live="polite"><b>0</b> of 5 seen</span>
+  </div>
+
+  <div class="composer rv">
+    <div class="composer-kicker">New entry · private by default · nothing publishes without your explicit choice · added to Theo's record</div>
+    <textarea placeholder="What did Theo teach you today? Write it the way you'd want to read it in ten years."></textarea>
+    <div class="composer-foot">
+      <div class="composer-tools">
+        <button class="tool" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>Image</button>
+        <button class="tool" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Drive</button>
+        <button class="tool" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>Evidence</button>
+      </div>
+      <button class="composer-submit" type="button">Save to Theo's record</button>
+    </div>
+  </div>
+
+  <div class="journal">
+    <article class="entry rv" id="entry-047" data-type="drive" tabindex="-1">
+      <div class="entry-head">
+        <span class="entry-date"><b>14 APR</b> · 2026 <span class="read-mark" aria-hidden="true">✓</span> <span class="read-time"></span></span>
+        <span class="entry-num">ENTRY 047 <button class="entry-permalink" type="button" aria-label="Copy link to this entry" data-entry="entry-047"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button></span>
+      </div>
+      <h2 class="entry-title">The first cold start of the year, and what Theo remembered</h2>
+      <div class="entry-byline">
+        <span class="avatar">MA</span>
+        <span>Narrated by Marcus A. · 1991 964 Carrera · 142,318 km · with Theo since 2019</span>
+      </div>
+      <div class="entry-media" data-lightbox="assets/hero/drive_1600.webp" data-caption="THEO · DRIVE · DAWN PASS · 14.2 km · 3 stops" data-credit="Photograph: Andrew Svk">
+        <img src="assets/hero/drive_1280.webp" srcset="assets/hero/drive_1280.webp 1280w, assets/hero/drive_1600.webp 1600w" sizes="(max-width:780px) 100vw, 780px" alt="A long road with a mountain in the background. Photograph: Andrew Svk" loading="lazy" decoding="async" fetchpriority="low" width="1600" height="1067">
+        <div class="cap"><span>THEO · DRIVE · DAWN PASS</span><b>14.2 km · 3 stops · 1 h 12 m</b></div>
+      </div>
+      <div class="entry-body">
+        <p class="drop">The garage smelled like oil and patience. Two pumps of the pedal, a cough, then the flat-six settled into its idle like it remembered the routine better than I did. The revs sat at eight hundred and fifty, steady, as if the winter had been a pause rather than an absence.</p>
+        <p>I had been nervous. Not of Theo — of the idea that something might have changed while he sat. That a seal had dried, a battery had surrendered, a memory had faded. None of it had. Theo does not forget. He waits.</p>
+        <p class="quote">"Theo does not forget. He waits."<cite>MARCUS A. · 14 APR 2026</cite></p>
+        <p>Afterwards I sat in the driver's seat with the door open and listened to the cooling ticks. Theo's record now shows a cold start at 07:42, ambient 6 °C, battery 12.4 V. Small facts. But in twenty years they will read like a diary entry from a custodian who cared enough to write them down.</p>
+      </div>
+      <p class="entry-edited">Last edited 14 Apr 2026 · 07:58 · by Marcus A.</p>
+      <div class="entry-tags">
+        <span class="entry-tag accent">DRIVE</span><span class="entry-tag">COLD START</span><span class="entry-tag">SPRING</span><span class="entry-tag">RECORDED</span>
+      </div>
+    </article>
+
+    <article class="entry rv" id="entry-046" data-type="service" tabindex="-1">
+      <div class="entry-head">
+        <span class="entry-date"><b>11 APR</b> · 2026 <span class="read-mark" aria-hidden="true">✓</span> <span class="read-time"></span></span>
+        <span class="entry-num">ENTRY 046 <button class="entry-permalink" type="button" aria-label="Copy link to this entry" data-entry="entry-046"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button></span>
+      </div>
+      <h2 class="entry-title">Theo's valve clearance service, recorded at the ramp</h2>
+      <div class="entry-byline">
+        <span class="avatar">SP</span>
+        <span>Narrated by Sierra Precision · Independent specialist · attributed records since 2019</span>
+      </div>
+      <div class="entry-body">
+        <p class="drop">Eight shims measured, four replaced, all photographed at the ramp. The custodian sees the whole job — torque values, before and after photographs, the technician's signature — sealed to Theo. Not a receipt. A record.</p>
+        <p>The traditional headache is hunting down scattered receipts, lost invoices, fragmented folders. Here the service is recorded where it happens, attributed to who did it, and stays with Theo for life. No paper to lose. No claim to doubt.</p>
+      </div>
+      <div class="entry-media" data-lightbox="assets/automotive/two_fates.webp" data-caption="THEO · SERVICE · VALVE CLEARANCE · 8 SHIMS · 4 REPLACED" data-credit="Photograph: Dietmar Becker">
+        <img src="assets/automotive/two_fates.webp" srcset="assets/automotive/two_fates.webp 1280w" sizes="(max-width:780px) 100vw, 780px" alt="Two classic Jaguars: one decaying, one kept. Photograph: Dietmar Becker. Demonstration imagery." loading="lazy" decoding="async" fetchpriority="low" width="1280" height="640">
+        <div class="cap"><span>THEO · SERVICE · VALVE CLEARANCE</span><b>8 shims · 4 replaced · attributed · sealed</b></div>
+      </div>
+      <div class="entry-tags">
+        <span class="entry-tag accent">SERVICE</span><span class="entry-tag">EVIDENCE AT SOURCE</span><span class="entry-tag">ATTRIBUTED</span>
+      </div>
+    </article>
+
+    <article class="entry rv" id="entry-045" data-type="provenance" tabindex="-1">
+      <div class="entry-head">
+        <span class="entry-date"><b>09 APR</b> · 2026 <span class="read-mark" aria-hidden="true">✓</span> <span class="read-time"></span></span>
+        <span class="entry-num">ENTRY 045 <button class="entry-permalink" type="button" aria-label="Copy link to this entry" data-entry="entry-045"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button></span>
+      </div>
+      <h2 class="entry-title">Theo's build sheet, and the chain it completes</h2>
+      <div class="entry-byline">
+        <span class="avatar">EL</span>
+        <span>Narrated by Elena L. · specialist in provenance · with Theo since 2021</span>
+      </div>
+      <div class="entry-body">
+        <p class="drop">Found the original build sheet in a folder I nearly threw away. Matched Theo's chassis number to the engine number to the gearbox. Three documents, forty-seven years, one car.</p>
+        <p>Provenance is not a claim; it is a chain. Each link either holds or it doesn't. Theo's record is now sealed — chassis, engine, gearbox, all reconciled, all attributed, all permanent.</p>
+      </div>
+      <div class="entry-tags">
+        <span class="entry-tag accent">PROVENANCE</span><span class="entry-tag">ARCHIVE</span><span class="entry-tag">SEALED</span>
+      </div>
+    </article>
+
+    <article class="entry rv" id="entry-044" data-type="drive" tabindex="-1">
+      <div class="entry-head">
+        <span class="entry-date"><b>02 APR</b> · 2026 <span class="read-mark" aria-hidden="true">✓</span> <span class="read-time"></span></span>
+        <span class="entry-num">ENTRY 044 <button class="entry-permalink" type="button" aria-label="Copy link to this entry" data-entry="entry-044"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button></span>
+      </div>
+      <h2 class="entry-title">Three passes of the same mountain road</h2>
+      <div class="entry-byline">
+        <span class="avatar">TO</span>
+        <span>Narrated by Tomás O. · Lancia Delta Integrale · 94,120 km · with Theo since 2022</span>
+      </div>
+      <div class="entry-body">
+        <p class="drop">The first was reconnaissance. The second was the line. The third was the one I'll remember — because the record knows it happened, and so do I.</p>
+        <p>What mattered is kept. What shouldn't travel, doesn't. The route is remembered; the exact home address never leaves the driveway.</p>
+      </div>
+      <div class="entry-media" data-lightbox="assets/roads/dawn_road.webp" data-caption="DRIVE · MOUNTAIN PASS · 3 PASSES" data-credit="Demonstration imagery">
+        <img src="assets/roads/dawn_road.webp" srcset="assets/roads/dawn_road.webp 800w" sizes="(max-width:780px) 100vw, 780px" alt="Road at dawn, demonstration imagery" loading="lazy" decoding="async" fetchpriority="low" width="800" height="533">
+        <div class="cap"><span>DRIVE · MOUNTAIN PASS</span><b>3 passes · 1 remembered · privacy by design</b></div>
+      </div>
+      <div class="entry-tags">
+        <span class="entry-tag accent">DRIVE</span><span class="entry-tag">MOUNTAIN</span><span class="entry-tag">RECORDED</span>
+      </div>
+    </article>
+
+    <article class="entry rv" id="entry-043" data-type="reflection" tabindex="-1">
+      <div class="entry-head">
+        <span class="entry-date"><b>28 MAR</b> · 2026 <span class="read-mark" aria-hidden="true">✓</span> <span class="read-time"></span></span>
+        <span class="entry-num">ENTRY 043 <button class="entry-permalink" type="button" aria-label="Copy link to this entry" data-entry="entry-043"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button></span>
+      </div>
+      <h2 class="entry-title">Attribution that travels with the machine</h2>
+      <div class="entry-byline">
+        <span class="avatar">SP</span>
+        <span>Narrated by Sierra Precision · Independent specialist · attributed records since 2019</span>
+      </div>
+      <div class="entry-body">
+        <p class="drop">Each record carries its source. Good work stays visible on every vehicle it touched — reputation that travels with the machine, not with a file folder.</p>
+        <p>Service records are not standalone tools. They are one foundational pillar of the broader Datum ecosystem: living biographies, private driver memories, lifelong custodianship preservation.</p>
+      </div>
+      <div class="entry-tags">
+        <span class="entry-tag accent">ATTRIBUTION</span><span class="entry-tag">ECOSYSTEM</span><span class="entry-tag">TRUST</span>
+      </div>
+    </article>
+  </div>
+
+  <div class="empty">
+    <b>End of Theo's journal.</b>
+    <p>You've read everything shared about Theo this month. New entries arrive as custodians choose to publish them — nothing publishes without an explicit decision.</p>
+    <button class="first-run" type="button">Write the next entry about Theo</button>
+  </div>
+</main>
+
+<button class="back-to-top" id="back-to-top" type="button" aria-label="Back to top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+
+<footer>
+  <div>DATUM JOURNAL · THEO'S TIMELINE · <b>NOTHING PUBLISHES WITHOUT YOUR EXPLICIT CHOICE</b></div>
+  <div style="margin-top:8px;font-size:.62rem;opacity:.7">Keyboard: <b>j</b>/<b>k</b> move between entries · <b>o</b> open image · <b>Esc</b> close</div>
+</footer>
+
+<script>
+  // theme toggle
+  (function(){
+    var root=document.documentElement,btn=document.getElementById('theme-toggle');
+    function apply(t){if(t==='obsidian'){root.dataset.theme='obsidian';btn.setAttribute('aria-pressed','true');btn.setAttribute('aria-label','Switch to Light theme');}else{root.removeAttribute('data-theme');btn.setAttribute('aria-pressed','false');btn.setAttribute('aria-label','Switch to Obsidian theme (black and gold)');}
+      var m=document.querySelector('meta[name="theme-color"]:not([media])');if(m)m.content=t==='obsidian'?'#0A0A0B':'#E8E6E1';}
+    try{apply(localStorage.getItem('datum_theme')==='obsidian'?'obsidian':'light');}catch(e){apply('light');}
+    btn.addEventListener('click',function(){var n=root.getAttribute('data-theme')==='obsidian'?'light':'obsidian';apply(n);try{localStorage.setItem('datum_theme',n);}catch(e){}});
+  })();
+
+  // reading time estimate (car-first: how long to read Theo's entry)
+  (function(){
+    document.querySelectorAll('.entry').forEach(function(e){
+      var body=e.querySelector('.entry-body');
+      if(!body) return;
+      var words=body.textContent.trim().split(/\s+/).length;
+      var mins=Math.max(1,Math.round(words/200));
+      var date=e.querySelector('.entry-date');
+      if(date){
+        var rt=document.createElement('span');
+        rt.className='read-time';
+        rt.textContent=mins+' min read';
+        date.appendChild(rt);
+      }
+    });
+  })();
+
+  // entry number watermarks (car-first: the entry belongs to the car)
+  (function(){
+    document.querySelectorAll('.entry').forEach(function(e){
+      var num=e.querySelector('.entry-num');
+      if(!num) return;
+      var m=num.textContent.match(/ENTRY\s*(\d+)/);
+      if(!m) return;
+      var w=document.createElement('span');
+      w.className='entry-watermark';
+      w.setAttribute('aria-hidden','true');
+      w.textContent=m[1];
+      e.insertBefore(w,e.firstChild);
+    });
+  })();
+
+  // reveal on scroll
+  (function(){
+    if(!('IntersectionObserver' in window)) return;
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target);}});},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+    document.querySelectorAll('.rv').forEach(function(e){io.observe(e);});
+  })();
+
+  // composer expand
+  (function(){
+    var ta=document.querySelector('.composer textarea');
+    if(!ta) return;
+    ta.addEventListener('focus',function(){ta.style.minHeight='120px';});
+    ta.addEventListener('blur',function(){if(!ta.value)ta.style.minHeight='80px';});
+  })();
+
+  // filters
+  (function(){
+    var filters=document.querySelectorAll('.filter');
+    var entries=document.querySelectorAll('.entry');
+    var readCount=document.getElementById('read-count');
+    var readSet=new Set();
+    try{var stored=JSON.parse(localStorage.getItem('datum_journal_read')||'[]');stored.forEach(function(id){readSet.add(id);});}catch(e){}
+    function updateReadCount(){
+      var total=entries.length;
+      var read=readSet.size;
+      if(readCount) readCount.innerHTML='<b>'+read+'</b> of '+total+' seen';
+      entries.forEach(function(e){
+        var mark=e.querySelector('.read-mark');
+        if(mark) mark.classList.toggle('on', readSet.has(e.id));
+      });
+    }
+    updateReadCount();
+    filters.forEach(function(f){
+      f.addEventListener('click',function(){
+        filters.forEach(function(x){x.classList.remove('on');x.setAttribute('aria-pressed','false');});
+        f.classList.add('on');f.setAttribute('aria-pressed','true');
+        var type=f.getAttribute('data-filter');
+        entries.forEach(function(e){
+          var t=e.getAttribute('data-type')||'all';
+          e.classList.toggle('hidden', type!=='all' && t!==type);
+        });
+        try{history.replaceState(null,'','#filter-'+type);}catch(err){}
+      });
+    });
+    (function(){
+      var m=location.hash.match(/^#filter-(.+)$/);
+      if(m){var btn=[].slice.call(filters).find(function(f){return f.getAttribute('data-filter')===m[1];});if(btn)btn.click();}
+    })();
+    if('IntersectionObserver' in window){
+      var rio=new IntersectionObserver(function(es){es.forEach(function(e){
+        if(e.isIntersecting && e.intersectionRatio>0.3){readSet.add(e.target.id);try{localStorage.setItem('datum_journal_read',JSON.stringify([...readSet]));}catch(err){}updateReadCount();}
+      });},{threshold:[0.3]});
+      entries.forEach(function(e){rio.observe(e);});
+    }
+  })();
+
+  // permalinks (copy link)
+  document.querySelectorAll('.entry-permalink').forEach(function(b){
+    b.addEventListener('click',function(){
+      var id=b.getAttribute('data-entry');
+      var url=location.origin+location.pathname+'#'+id;
+      var done=function(){b.setAttribute('data-copied','true');setTimeout(function(){b.removeAttribute('data-copied');},1400);showToast('Link copied');};
+      if(navigator.clipboard && navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(done).catch(fallback);}
+      else fallback();
+      function fallback(){try{var ta=document.createElement('textarea');ta.value=url;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);done();}catch(e){showToast('Copy failed');}}
+    });
+  });
+
+  // lightbox
+  (function(){
+    var lb=document.getElementById('lightbox'),lbImg=document.getElementById('lb-img'),lbCap=document.getElementById('lb-cap'),lbClose=document.getElementById('lb-close');
+    if(!lb) return;
+    function open(src,cap){lbImg.src=src;lbCap.textContent=cap||'';lb.classList.add('on');document.body.style.overflow='hidden';}
+    function close(){lb.classList.remove('on');document.body.style.overflow='';}
+    document.querySelectorAll('.entry-media').forEach(function(m){
+      m.addEventListener('click',function(){open(m.getAttribute('data-lightbox'), (m.getAttribute('data-caption')||'')+'  ·  '+(m.getAttribute('data-credit')||''));});
+    });
+    lbClose.addEventListener('click',close);
+    lb.addEventListener('click',function(e){if(e.target===lb)close();});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape' && lb.classList.contains('on')) close();});
+  })();
+
+  // keyboard navigation
+  (function(){
+    var entries=[].slice.call(document.querySelectorAll('.entry'));
+    if(!entries.length) return;
+    var idx=0;
+    function focusEntry(i){
+      if(i<0||i>=entries.length) return;
+      idx=i;
+      entries[i].focus();
+      entries[i].scrollIntoView({behavior:'smooth',block:'start'});
+    }
+    document.addEventListener('keydown',function(e){
+      if(e.target && (e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.tagName==='SELECT')) return;
+      if(e.key==='j'){e.preventDefault();focusEntry(Math.min(entries.length-1,idx+1));}
+      else if(e.key==='k'){e.preventDefault();focusEntry(Math.max(0,idx-1));}
+      else if(e.key==='o'){var m=entries[idx].querySelector('.entry-media');if(m)m.click();}
+    });
+  })();
+
+  // reading progress + now-reading indicator
+  (function(){
+    var bar=document.getElementById('read-progress');
+    var now=document.getElementById('now-reading');
+    var entries=[].slice.call(document.querySelectorAll('.entry'));
+    function update(){
+      var y=window.scrollY||window.pageYOffset;
+      var h=document.documentElement.scrollHeight-window.innerHeight;
+      if(bar) bar.style.width=(h>0? (y/h*100):0)+'%';
+      var cur=null;
+      entries.forEach(function(e){if(e.getBoundingClientRect().top < window.innerHeight*0.4) cur=e;});
+      if(now && cur){var num=cur.querySelector('.entry-num');now.textContent=num?num.textContent.split('·')[0].trim()+' · THEO':'';}
+    }
+    window.addEventListener('scroll',update,{passive:true});
+    update();
+  })();
+
+  // back to top
+  (function(){
+    var btn=document.getElementById('back-to-top');if(!btn) return;
+    function update(){btn.classList.toggle('on', window.scrollY > 600);}
+    window.addEventListener('scroll',update,{passive:true});update();
+    btn.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+  })();
+
+  // toast helper
+  function showToast(msg){
+    var t=document.getElementById('toast');if(!t) return;
+    t.innerHTML='<i></i>'+msg;
+    t.classList.add('on');
+    clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('on');},1800);
+  }
+
+  // composer expand
+  (function(){
+    var ta=document.querySelector('.composer textarea');
+    if(!ta) return;
+    ta.addEventListener('focus',function(){ta.style.minHeight='120px';});
+    ta.addEventListener('blur',function(){if(!ta.value)ta.style.minHeight='80px';});
+  })();
+
+  // first-run / write-next button
+  (function(){
+    var btn=document.querySelector('.empty .first-run');
+    if(!btn) return;
+    btn.addEventListener('click',function(){
+      var ta=document.querySelector('.composer textarea');
+      if(ta){ta.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(function(){ta.focus();},400);}
+    });
+  })();
+</script>
+
+</body>
+</html>

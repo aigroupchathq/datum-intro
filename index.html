@@ -165,6 +165,9 @@ section.block{scroll-margin-top:84px}
 #pathbanner span{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;letter-spacing:.02em;background:var(--bg-surface-dark);color:var(--text-on-dark);border-radius:var(--radius-pill);padding:8px 8px 8px 14px;box-shadow:var(--shadow-card);max-width:calc(100vw - 24px)}
 #pathbanner span b{color:var(--text-on-dark)}
 #pathbanner button{color:var(--text-on-dark-muted);cursor:pointer;font-size:.8rem;border:var(--hairline-on-dark);border-radius:var(--radius-pill);padding:3px 9px;white-space:nowrap}
+.share-toast{position:fixed;top:64px;left:50%;transform:translateX(-50%) translateY(-8px);z-index:130;display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;background:var(--bg-surface-dark);color:var(--text-on-dark);border:var(--hairline-on-dark);border-radius:var(--radius-pill);padding:9px 15px;box-shadow:var(--shadow-card);opacity:0;pointer-events:none;transition:opacity .25s ease,transform .35s var(--ease-spring);max-width:calc(100vw - 24px);white-space:nowrap}
+.share-toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.share-toast i{width:7px;height:7px;border-radius:50%;background:var(--bg-accent-primary);flex:0 0 auto}
 
 /* Bottom pill nav */
 .pillnav{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:100;width:calc(100% - 24px);max-width:440px;background:var(--glass);backdrop-filter:blur(16px);border-radius:var(--radius-pill);padding:6px;display:flex;gap:6px;border:var(--border-hairline);box-shadow:var(--shadow-card)}
@@ -222,6 +225,10 @@ h2.title em{font-style:italic}
 .btn.ghost{background:transparent;color:var(--text-primary);border:1px solid var(--pill-outline)}
 .btn.on-dark{background:var(--text-on-dark);color:var(--text-primary)}
 .btn.ghost.on-dark{background:transparent;color:var(--text-on-dark);border-color:var(--hairline-on-dark-color)}
+.btn.share-btn{padding:11px 16px;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;gap:7px;background:rgba(18,18,18,.38);backdrop-filter:blur(6px)}
+.btn.share-btn svg{flex:0 0 auto;color:var(--bg-accent-primary);transition:transform .35s var(--ease-spring)}
+.btn.share-btn:hover svg{transform:rotate(-10deg) scale(1.06)}
+.btn.share-btn[data-copied="true"]{border-color:var(--bg-accent-primary);background:rgba(18,18,18,.78);color:var(--text-on-dark)}
 .cta-row{display:flex;gap:10px;flex-wrap:wrap}
 .snap{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .snap::-webkit-scrollbar{display:none}
@@ -253,9 +260,10 @@ button.cell{cursor:pointer;width:100%}
 .cell.node[aria-selected="true"] .cell-title{color:var(--text-on-accent)}
 .cell.node[aria-selected="true"] .meta{color:rgba(18,18,18,.74)}
 
-/* ============ PATTERN B — STICKY CARD DECK ============ */
+/* ============ PATTERN B — STICKY CARD DECK & PROVENANCE FOLIO ============ */
 .deck{display:flex;flex-direction:column;gap:16px;margin-top:20px}
-.dcard{position:sticky;top:calc(72px + (var(--i,0) * 14px));border-radius:var(--radius-card);padding:22px;background:var(--bg-surface-elevated);border:var(--border-hairline);box-shadow:var(--shadow-card);transition:transform .35s var(--ease-spring),background-color .25s ease}
+.dcard{position:relative;border-radius:var(--radius-card);padding:22px;background:var(--bg-surface-elevated);border:var(--border-hairline);box-shadow:var(--shadow-card);transition:transform .35s var(--ease-spring),background-color .25s ease}
+.deck:not(.folio-deck)>.dcard{position:sticky;top:calc(72px + (var(--i,0) * 14px))}
 .dcard.dark{background:var(--bg-surface-dark);color:var(--text-on-dark);border-color:transparent}
 .dcard.accent{background:var(--bg-accent-primary);color:var(--text-on-accent);border-color:transparent}
 .dcard p{color:var(--text-muted-readable);font-size:.95rem}
@@ -271,7 +279,7 @@ button.cell{cursor:pointer;width:100%}
 .dsplit{display:flex;align-items:center;gap:16px;margin-top:16px}
 .thumb{flex:0 0 auto;width:72px;height:72px;border-radius:50%;overflow:hidden;border:var(--border-hairline);background:var(--bg-canvas)}
 .thumb img{width:100%;height:100%;object-fit:cover}
-.circle-btn{flex:0 0 auto;margin-left:auto;width:48px;height:48px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:var(--bg-surface-dark);color:var(--text-on-dark);font-size:1rem;transition:transform .35s var(--ease-spring)}
+.circle-btn{flex:0 0 auto;margin-left:auto;width:48px;height:48px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:var(--bg-surface-dark);color:var(--text-on-dark);font-size:1rem;transition:transform .35s var(--ease-spring),background-color .25s ease,color .25s ease}
 .dcard.dark .circle-btn{background:var(--text-on-dark);color:var(--text-primary)}
 .dcard.accent .circle-btn{background:var(--bg-surface-dark);color:var(--text-on-dark)}
 .circle-btn:active{transform:scale(.94)}
@@ -279,6 +287,71 @@ button.cell{cursor:pointer;width:100%}
 .dcard.dark .sublist{border-top:var(--hairline-on-dark)}
 .dcard.accent .sublist{border-top:1px solid rgba(18,18,18,.2)}
 .sublist .meta{display:block;margin-bottom:8px}
+
+/* Provenance Folio (Section 04 · Drivers) */
+.folio-quote{position:relative;overflow:hidden;border:1px solid var(--hairline-on-dark-color);scroll-margin-top:76px}
+.folio-quote-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding-bottom:12px;margin-bottom:14px;border-bottom:1px dashed var(--hairline-on-dark-color);font-family:var(--font-mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-on-dark-muted)}
+.folio-quote-head .fq-badge{display:inline-flex;align-items:center;gap:6px;color:var(--bg-accent-primary);background:rgba(244,242,238,.06);border:1px solid var(--hairline-on-dark-color);border-radius:var(--radius-pill);padding:4px 9px}
+.folio-quote-head .fq-badge i{width:6px;height:6px;border-radius:50%;background:var(--bg-accent-primary);display:inline-block}
+.folio-wrap{margin-top:22px;position:relative;scroll-margin-top:76px}
+.folio-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding:0 6px;margin-bottom:-2px;position:relative;z-index:6}
+.folio-tab{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;padding:9px 10px 11px;border-radius:14px 14px 0 0;background:var(--bg-canvas);border:var(--border-hairline);border-bottom:none;border-top:2px solid transparent;color:var(--text-muted-readable);font-family:var(--font-mono);text-align:left;cursor:pointer;min-width:0;transition:transform .3s var(--ease-spring),background-color .25s ease,color .25s ease,border-color .25s ease}
+.folio-tab .ft-num{font-size:.58rem;letter-spacing:.14em;color:var(--text-muted-readable);line-height:1}
+.folio-tab .ft-lbl{font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;line-height:1.15}
+.folio-tab:hover{color:var(--text-primary);background:var(--bg-surface-elevated)}
+.folio-tab[aria-selected="true"]{background:var(--bg-surface-elevated);color:var(--text-primary);border-top-color:var(--bg-accent-primary);transform:translateY(2px);box-shadow:0 -4px 14px rgba(0,0,0,.06)}
+.folio-tab[aria-selected="true"] .ft-num{color:var(--bg-accent-primary);font-weight:500}
+.folio-deck{display:grid;grid-template-areas:"stack";position:relative;margin-top:0;padding-bottom:42px;perspective:1200px;touch-action:pan-y}
+.folio-deck>.folio-card{grid-area:stack;display:flex;flex-direction:column;position:relative;top:auto;width:100%;min-width:0;margin:0;user-select:none;cursor:grab;transform-origin:50% 92%;will-change:transform,opacity;transition:transform .52s var(--ease-spring),opacity .42s ease,box-shadow .42s ease,border-color .25s ease}
+.folio-deck>.folio-card:active{cursor:grabbing}
+.folio-deck>.folio-card[data-pos="0"]{z-index:4;opacity:1;transform:translate3d(0,0,0) scale(1) rotate(0deg);pointer-events:auto;box-shadow:0 18px 42px -16px rgba(0,0,0,.24),0 2px 6px rgba(0,0,0,.08)}
+.folio-deck>.folio-card[data-pos="1"]{z-index:3;opacity:.94;transform:translate3d(0,14px,0) scale(.966) rotate(.85deg);border-color:var(--dash-outline);pointer-events:none}
+.folio-deck>.folio-card[data-pos="2"]{z-index:2;opacity:.8;transform:translate3d(0,27px,0) scale(.932) rotate(-.7deg);border-color:var(--dash-outline);pointer-events:none}
+.folio-deck>.folio-card[data-pos="3"]{z-index:1;opacity:.58;transform:translate3d(0,39px,0) scale(.898) rotate(.45deg);border-color:var(--dash-outline);pointer-events:none}
+.folio-deck>.folio-card[data-dragging="true"]{transition:none!important;cursor:grabbing}
+.folio-deck>.folio-card.is-throwing-left{z-index:5;transform:translate3d(-38%,-10px,0) scale(.92) rotate(-4.5deg)!important;opacity:.25!important;transition:transform .21s ease-out,opacity .21s ease-out!important}
+.folio-deck>.folio-card.is-throwing-right{z-index:5;transform:translate3d(38%,-10px,0) scale(.92) rotate(4.5deg)!important;opacity:.25!important;transition:transform .21s ease-out,opacity .21s ease-out!important}
+.folio-inspect-btn{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-primary);background:var(--bg-canvas);border:var(--border-hairline);border-radius:var(--radius-pill);padding:5px 10px;cursor:pointer;flex:0 0 auto;transition:background-color .25s ease,color .25s ease,border-color .25s ease,transform .25s var(--ease-spring)}
+.folio-inspect-btn:hover{border-color:var(--bg-accent-primary)}
+.folio-inspect-btn .arrow{display:inline-block;transition:transform .35s var(--ease-spring)}
+.folio-card.is-inspected .folio-inspect-btn{background:var(--bg-accent-primary);color:var(--text-on-accent);border-color:transparent}
+.folio-card.is-inspected .folio-inspect-btn .arrow{transform:rotate(135deg)}
+.folio-card.is-inspected .dcard-media .circle-btn{background:var(--bg-accent-primary);color:var(--text-on-accent);transform:rotate(135deg)}
+.dcard-media .folio-seal{position:absolute;left:12px;top:12px;font-family:var(--font-mono);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-on-dark);background:rgba(18,18,18,.68);border:1px solid rgba(244,242,238,.22);border-radius:var(--radius-pill);padding:5px 10px;backdrop-filter:blur(6px);pointer-events:none}
+.dcard-media button.circle-btn{border:none;cursor:pointer}
+.folio-ledger{display:grid;grid-template-rows:0fr;transition:grid-template-rows .42s var(--ease-spring)}
+.folio-card.is-inspected .folio-ledger{grid-template-rows:1fr}
+.folio-ledger-inner{overflow:hidden;min-height:0}
+.folio-ledger-pad{padding-top:14px;margin-top:4px;border-top:1px dashed var(--dash-outline)}
+.folio-ledger-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;font-family:var(--font-mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--bg-accent-primary);margin-bottom:10px}
+.folio-ledger-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.folio-ledger-cell{background:var(--bg-canvas);border:var(--border-hairline);border-radius:12px;padding:9px 11px;min-width:0}
+.folio-ledger-cell span{display:block;font-family:var(--font-mono);font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted-readable);margin-bottom:3px}
+.folio-ledger-cell b{display:block;font-size:.8rem;font-weight:500;color:var(--text-primary);letter-spacing:-0.01em;overflow-wrap:anywhere}
+.folio-plate-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:auto;padding-top:12px;border-top:1px dashed var(--dash-outline);font-family:var(--font-mono);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted-readable)}
+.folio-plate-foot b{color:var(--text-primary);font-weight:500}
+.folio-bar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px;padding:10px 12px;border-radius:18px;background:var(--bg-surface-elevated);border:var(--border-hairline);box-shadow:var(--shadow-card)}
+.folio-ctl-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;font-family:var(--font-mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-primary);background:var(--bg-canvas);border:var(--border-hairline);border-radius:var(--radius-pill);padding:9px 14px;min-height:38px;cursor:pointer;flex:0 0 auto;transition:transform .25s var(--ease-spring),background-color .25s ease,border-color .25s ease,color .25s ease}
+.folio-ctl-btn:hover{border-color:var(--bg-accent-primary)}
+.folio-ctl-btn:active{transform:scale(.96)}
+.folio-ctl-btn.primary{background:var(--bg-surface-dark);color:var(--text-on-dark);border-color:transparent}
+.folio-ctl-btn.primary:hover{background:var(--bg-accent-primary);color:var(--text-on-accent)}
+.folio-status{display:flex;flex-direction:column;align-items:center;gap:5px;min-width:0;text-align:center}
+.folio-dots{display:inline-flex;align-items:center;gap:6px}
+.folio-dots i{width:6px;height:6px;border-radius:50%;background:var(--text-muted-readable);opacity:.32;transition:transform .3s var(--ease-spring),background-color .25s ease,opacity .25s ease,width .3s var(--ease-spring)}
+.folio-dots i.on{width:18px;border-radius:99px;background:var(--bg-accent-primary);opacity:1}
+.folio-count{font-family:var(--font-mono);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted-readable);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+@media (min-width:900px){
+  .folio-card .dcard-media img{max-height:310px}
+}
+@media (max-width:400px){
+  .folio-tabs{gap:4px;padding:0 2px}
+  .folio-tab{padding:7px 6px 9px}
+  .folio-tab .ft-lbl{font-size:.58rem;letter-spacing:.03em}
+  .folio-ledger-grid{grid-template-columns:1fr}
+  .folio-ctl-btn{padding:8px 10px;font-size:.6rem}
+  .folio-inspect-btn .fib-txt{display:none}
+}
 
 /* ============ PATTERN C — EXPANDABLE DRAWER ============ */
 .drawer{border-radius:28px;overflow:hidden;background:var(--bg-surface-elevated);border:var(--border-hairline);box-shadow:var(--shadow-card);margin-top:20px}
@@ -306,7 +379,7 @@ button.cell{cursor:pointer;width:100%}
 .hero-media{position:absolute;inset:0}
 .hero-media img{width:100%;height:100%;object-fit:cover;object-position:center 40%;opacity:.55;animation:kenburns 26s ease-in-out infinite alternate}
 @keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.08)}}
-.hero-body{position:relative;padding:26px 20px 22px;display:flex;flex-direction:column;gap:12px;min-height:76svh;justify-content:flex-end}
+.hero-body{position:relative;padding:26px 20px 36px;display:flex;flex-direction:column;gap:12px;min-height:76svh;justify-content:flex-end}
 .kicker{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;color:var(--text-on-dark-muted)}
 .hero h1{font-size:clamp(2.1rem,10vw,3.1rem);letter-spacing:-0.045em;line-height:.98}
 .hero .tagline{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.16em;color:var(--text-on-dark)}
@@ -408,8 +481,16 @@ button.cell{cursor:pointer;width:100%}
 .xquote cite{display:block;margin-top:12px;font-style:normal;font-family:var(--font-mono);font-size:.66rem;letter-spacing:.1em;color:var(--text-muted-readable);text-transform:uppercase}
 .xbody{font-size:.98rem;color:var(--text-primary);padding:0}
 .xbody .x-lede{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:14px;flex-wrap:wrap}
+.xbody .x-lens-row{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;max-width:100%}
+.xbody .x-glyph{display:inline-flex;align-items:center;justify-content:center;height:30px;padding:0 10px;background:var(--bg-canvas);border:var(--border-hairline);border-radius:var(--radius-pill);color:var(--text-primary);flex:0 0 auto}
+.xbody .x-glyph svg{display:block;height:18px;width:auto;overflow:visible}
+.xbody .x-glyph .g-acc{stroke:var(--bg-accent-primary);fill:var(--bg-accent-primary)}
+.xbody .x-glyph .g-stroke{stroke:var(--bg-accent-primary);fill:none}
+.xbody .x-glyph .g-ink{stroke:currentColor;fill:none}
+.xbody .x-glyph .g-dot{fill:currentColor;opacity:.42}
 .xbody .x-lens{display:inline-flex;align-items:center;font-family:var(--font-mono);font-size:.66rem;letter-spacing:.26em;color:var(--bg-accent-primary);background:var(--bg-canvas);border:var(--border-hairline);border-radius:var(--radius-pill);padding:7px 13px;text-transform:uppercase;white-space:nowrap}
-.xbody .x-metric{font-family:var(--font-mono);font-weight:200;font-variant-numeric:tabular-nums;font-size:clamp(1.05rem,4vw,1.55rem);line-height:1.05;letter-spacing:-.025em;color:var(--text-on-dark, var(--text-primary));overflow-wrap:anywhere;max-width:100%}
+.xbody .x-metric{font-family:var(--font-mono);font-weight:200;font-variant-numeric:tabular-nums;font-size:clamp(1.05rem,4vw,1.55rem);line-height:1.05;letter-spacing:-.025em;color:var(--text-primary);overflow-wrap:anywhere;max-width:100%}
+.drawer.dark .xbody .x-metric{color:var(--text-on-dark)}
 .xbody .pillar{flex:1 1 180px;min-width:150px;max-width:100%;text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
 .xbody .pillar small{display:block;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-muted-readable)}
 .xbody .pull{font-size:1.12rem;line-height:1.5;font-weight:500;letter-spacing:-.015em;margin-top:6px;max-width:44ch}
@@ -533,13 +614,18 @@ body[data-path="driver"] #drivers,body[data-path="business"] #business{box-shado
 .topnav{display:none}
 @media (min-width:900px){
   .shell{max-width:960px;padding:88px 32px 160px}
-  .topbar .inner{max-width:960px;padding:12px 32px}
-  .topnav{display:flex;align-items:center;gap:4px;flex:0 0 auto}
-  .topnav-link{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted-readable);padding:8px 12px;border-radius:var(--radius-pill);transition:color .25s ease,background-color .25s ease}
-  .topnav-link:hover{color:var(--text-primary);background:var(--bg-surface-elevated)}
-  .topnav-link[aria-current="true"]{color:var(--text-on-dark);background:var(--bg-surface-dark)}
-  .topnav-more{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-primary);padding:8px 14px;border-radius:var(--radius-pill);border:var(--border-hairline);transition:background-color .25s ease,border-color .25s ease}
-  .topnav-more:hover{border-color:var(--bg-accent-primary);background:var(--bg-surface-elevated)}
+  .topbar .inner{max-width:960px;padding:10px 32px}
+  .topnav{display:inline-flex;align-items:center;gap:2px;flex:0 0 auto;padding:4px;border-radius:var(--radius-pill);background:var(--bg-surface-elevated);border:var(--border-hairline);box-shadow:0 2px 10px rgba(0,0,0,.04)}
+  .topnav-link{position:relative;display:inline-flex;align-items:center;gap:6px;font-family:var(--font-sans);font-size:.8rem;font-weight:500;letter-spacing:-0.01em;text-transform:none;color:var(--text-muted-readable);padding:6px 13px;border-radius:var(--radius-pill);transition:color .22s ease,background-color .22s ease,box-shadow .22s ease}
+  .topnav-link::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--bg-accent-primary);opacity:0;transform:scale(.4);transition:opacity .22s ease,transform .25s var(--ease-spring)}
+  .topnav-link:hover{color:var(--text-primary);background:var(--bg-canvas)}
+  .topnav-link[aria-current="true"]{color:var(--text-primary);background:var(--bg-canvas);box-shadow:inset 0 0 0 1px var(--pill-outline),0 1px 3px rgba(0,0,0,.06)}
+  .topnav-link[aria-current="true"]::before{opacity:1;transform:scale(1)}
+  .topnav-sep{width:1px;height:16px;background:var(--hairline-color);margin:0 3px;flex:0 0 auto}
+  .topnav-more{display:inline-flex;align-items:center;gap:5px;font-family:var(--font-sans);font-size:.8rem;font-weight:500;letter-spacing:-0.01em;text-transform:none;color:var(--text-muted-readable);padding:6px 12px;border-radius:var(--radius-pill);border:none;cursor:pointer;transition:color .22s ease,background-color .22s ease}
+  .topnav-more:hover,.topnav-more[aria-expanded="true"]{color:var(--text-primary);background:var(--bg-canvas)}
+  .topnav-more .chev-sm{font-size:.68rem;opacity:.65;transition:transform .25s var(--ease-spring)}
+  .topnav-more[aria-expanded="true"] .chev-sm{transform:rotate(180deg);opacity:1;color:var(--bg-accent-primary)}
   .pillnav{display:none}
   .sheet{bottom:24px;max-width:560px}
   .bento:not(.shot-grid){grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -571,7 +657,9 @@ body[data-path="driver"] #drivers,body[data-path="business"] #business{box-shado
   .pillnav,.sheet,.topbar{forced-color-adjust:none}
 }
 @media print{
-  .topbar,.pillnav,.sheet,.sheet-scrim,#progress,#top,.veil{display:none!important}
+  .topbar,.pillnav,.sheet,.sheet-scrim,#progress,#top,.veil,#share-toast,.share-btn,.folio-tabs,.folio-bar{display:none!important}
+  .folio-deck{display:flex!important;flex-direction:column!important;padding-bottom:0!important}
+  .folio-deck>.folio-card{transform:none!important;opacity:1!important;pointer-events:auto!important;margin-bottom:16px!important}
   body{background:#fff;color:#000}
   .shell{max-width:100%;padding:0}
   section.block{break-inside:avoid;page-break-inside:avoid}
@@ -602,7 +690,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
       <a class="topnav-link" href="#why">Why</a>
       <a class="topnav-link" href="#drivers">Drivers</a>
       <a class="topnav-link" href="#business">Business</a>
-      <button class="topnav-more more-trigger" type="button" aria-expanded="false" aria-controls="sections-sheet">More <i class="dot"></i></button>
+      <span class="topnav-sep" aria-hidden="true"></span>
+      <button class="topnav-more more-trigger" type="button" aria-expanded="false" aria-controls="sections-sheet"><span>More</span><span class="chev-sm" aria-hidden="true">▾</span></button>
     </nav>
     <div class="topbar-right">
       <span class="status"><i></i>IN DEVELOPMENT</span>
@@ -639,6 +728,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 </div>
 
 <div id="pathbanner" aria-live="polite"><span id="pathbanner-txt"></span></div>
+<div id="share-toast" class="share-toast" role="status" aria-live="polite" aria-atomic="true"><i aria-hidden="true"></i><span id="share-toast-txt"></span></div>
 <button id="top" aria-label="Back to top">↑</button>
 
 <main class="shell">
@@ -654,6 +744,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
       <div class="cta-row">
         <a class="btn on-dark" href="#why">Explore the Vision</a>
         <a class="btn ghost on-dark" href="#business">For Automotive Businesses</a>
+        <button class="btn ghost on-dark share-btn" id="share-btn" type="button" aria-label="Share or copy link to Datum">
+          <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M6.5 9.5 9.5 6.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M8.8 10.7 7.4 12.1a2.5 2.5 0 0 1-3.5-3.5l1.4-1.4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M7.2 5.3 8.6 3.9a2.5 2.5 0 0 1 3.5 3.5l-1.4 1.4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <span id="share-label">Copy link</span>
+        </button>
       </div>
     </div>
     <span class="credit">PHOTOGRAPH: THEO · UNSPLASH LICENCE</span>
@@ -911,7 +1005,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 
   </section>
 
-  <!-- ============ 04 · DRIVERS (Pattern B sticky deck) ============ -->
+  <!-- ============ 04 · DRIVERS (Interactive 3D Provenance Folio Deck) ============ -->
   <section id="drivers" class="block path-driver">
     <div class="sec-head">
       <div class="eyebrow rv">04 · For drivers &amp; enthusiasts</div>
@@ -920,47 +1014,152 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
       <p class="lede rv" style="font-size:.82rem">Four licensed photographs from Unsplash, chosen to show what custodianship actually feels like.</p>
     </div>
 
-    <div class="dcard dark rv">
+    <div class="dcard dark folio-quote rv">
+      <div class="folio-quote-head">
+        <span>CUSTODIAN DOSSIER · SPECIMEN 1991 COUPÉ</span>
+        <span class="fq-badge"><i aria-hidden="true"></i><span id="folio-quote-badge">PLATE 01 / 04 · ACQUISITION</span></span>
+      </div>
       <blockquote class="pull">“The car finally had papers that couldn't get lost, wet, or doubted.”<cite style="color:var(--text-on-dark-muted)">ILLUSTRATIVE CUSTODIAN</cite></blockquote>
     </div>
 
-    <div class="deck" style="margin-top:20px">
-      <article class="dcard rv" style="--i:0">
-        <span class="dcard-top"><span class="meta">CHAPTER 01: ACQUISITION</span><span class="arrow" aria-hidden="true">↗</span></span>
-        <h3>The day it becomes yours</h3>
-        <p>A 1991 coupé changes hands. Its first record opens: identity, configuration, starting mileage, a biography with page one.</p>
-        <figure class="dcard-media">
-          <img src="assets/hero/acquire_1280.webp" srcset="assets/hero/acquire_1280.webp 1280w, assets/hero/acquire_1600.webp 1600w" sizes="(max-width:560px) 100vw, 560px" alt="A white vintage car parked in a garage. Photograph: Egor Vikhrev" loading="lazy" decoding="async" fetchpriority="low" width="1600" height="1069">
-          <span class="circle-btn" aria-hidden="true">↗</span>
-        </figure>
-      </article>
-      <article class="dcard rv" style="--i:1">
-        <span class="dcard-top"><span class="meta">CHAPTER 02: ROUTINE CARE</span><span class="arrow" aria-hidden="true">↗</span></span>
-        <h3>Kept where the work happens</h3>
-        <p>Each service documented at the ramp, attributed to the workshop that did it, and kept with the car, not in a drawer.</p>
-        <figure class="dcard-media">
-          <img src="assets/hero/care_1280.webp" srcset="assets/hero/care_1280.webp 1280w, assets/hero/care_1600.webp 1600w" sizes="(max-width:560px) 100vw, 560px" alt="A man working on a car engine in a garage. Photograph: Ahmet Debelemez" loading="lazy" decoding="async" fetchpriority="low" width="1600" height="900">
-          <span class="circle-btn" aria-hidden="true">↗</span>
-        </figure>
-      </article>
-      <article class="dcard rv" style="--i:2">
-        <span class="dcard-top"><span class="meta">CHAPTER 03: A MEANINGFUL DRIVE</span><span class="arrow" aria-hidden="true">↗</span></span>
-        <h3>A dawn pass, deliberately recorded</h3>
-        <p>The route is remembered; the exact home address never leaves the driveway. What mattered is kept. What shouldn't travel, doesn't.</p>
-        <figure class="dcard-media">
-          <img src="assets/hero/drive_1280.webp" srcset="assets/hero/drive_1280.webp 1280w, assets/hero/drive_1600.webp 1600w" sizes="(max-width:560px) 100vw, 560px" alt="A long road with a mountain in the background. Photograph: Andrew Svk" loading="lazy" decoding="async" fetchpriority="low" width="1600" height="1067">
-          <span class="circle-btn" aria-hidden="true">↗</span>
-        </figure>
-      </article>
-      <article class="dcard rv" style="--i:3">
-        <span class="dcard-top"><span class="meta">CHAPTER 04: REFLECTION</span><span class="arrow" aria-hidden="true">↗</span></span>
-        <h3>Years later, it reads whole</h3>
-        <p>Engineering, evidence, people and memory in one place, ready for the next custodian, or simply for yourself.</p>
-        <figure class="dcard-media">
-          <img src="assets/hero/reflect_1280.webp" srcset="assets/hero/reflect_1280.webp 1280w, assets/hero/reflect_1600.webp 1600w" sizes="(max-width:560px) 100vw, 560px" alt="A red and black steering wheel. Photograph: Stephanie Valencia" loading="lazy" decoding="async" fetchpriority="low" width="1600" height="2400">
-          <span class="circle-btn" aria-hidden="true">↗</span>
-        </figure>
-      </article>
+    <div class="folio-wrap rv" id="drivers-folio">
+      <div class="folio-tabs" role="tablist" aria-label="Custodianship chapters">
+        <button class="folio-tab" type="button" role="tab" id="folio-tab-0" aria-selected="true" aria-controls="folio-card-0" data-folio-tab="0">
+          <span class="ft-num">01</span><span class="ft-lbl">Acquire</span>
+        </button>
+        <button class="folio-tab" type="button" role="tab" id="folio-tab-1" aria-selected="false" aria-controls="folio-card-1" data-folio-tab="1">
+          <span class="ft-num">02</span><span class="ft-lbl">Care</span>
+        </button>
+        <button class="folio-tab" type="button" role="tab" id="folio-tab-2" aria-selected="false" aria-controls="folio-card-2" data-folio-tab="2">
+          <span class="ft-num">03</span><span class="ft-lbl">Drive</span>
+        </button>
+        <button class="folio-tab" type="button" role="tab" id="folio-tab-3" aria-selected="false" aria-controls="folio-card-3" data-folio-tab="3">
+          <span class="ft-num">04</span><span class="ft-lbl">Reflect</span>
+        </button>
+      </div>
+
+      <div class="deck folio-deck" id="folio-deck">
+        <article class="dcard folio-card" id="folio-card-0" role="tabpanel" aria-labelledby="folio-tab-0" data-folio-card="0" data-pos="0" style="--i:0">
+          <span class="dcard-top">
+            <span class="meta">CHAPTER 01: ACQUISITION</span>
+            <button type="button" class="folio-inspect-btn" data-folio-inspect="0" aria-expanded="false" aria-controls="folio-ledger-0"><span class="fib-txt">Inspect record</span><span class="arrow" aria-hidden="true">↗</span></button>
+          </span>
+          <h3>The day it becomes yours</h3>
+          <p>A 1991 coupé changes hands. Its first record opens: identity, configuration, starting mileage, a biography with page one.</p>
+          <figure class="dcard-media">
+            <img src="assets/hero/acquire_1280.webp" srcset="assets/hero/acquire_1280.webp 1280w, assets/hero/acquire_1600.webp 1600w" sizes="(max-width:560px) 100vw, 560px" alt="A white vintage car parked in a garage. Photograph: Egor Vikhrev" loading="lazy" decoding="async" fetchpriority="low" width="1600" height="1069">
+            <span class="folio-seal">PLATE 01 · PAGE ONE OPENED</span>
+            <button type="button" class="circle-btn" data-folio-inspect="0" aria-label="Inspect illustrative record for Chapter 01">↗</button>
+          </figure>
+          <div class="folio-ledger" id="folio-ledger-0">
+            <div class="folio-ledger-inner">
+              <div class="folio-ledger-pad">
+                <div class="folio-ledger-head"><span>ILLUSTRATIVE RECORD ENTRY · CH. 01</span><span>STATUS: RECORDED</span></div>
+                <div class="folio-ledger-grid">
+                  <div class="folio-ledger-cell"><span>ENTRY TYPE</span><b>Commission &amp; Handover</b></div>
+                  <div class="folio-ledger-cell"><span>STARTING MILEAGE</span><b>64,210 mi · Photographed</b></div>
+                  <div class="folio-ledger-cell"><span>FOUNDING PAPERS</span><b>3 documents · Build specification</b></div>
+                  <div class="folio-ledger-cell"><span>VISIBILITY</span><b>Custodian private · Illustrative</b></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="folio-plate-foot"><span>FOLIO 01 / 04 · <b>1991 COUPÉ</b></span><span>SWIPE OR FLICK PLATE ⇄</span></div>
+        </article>
+
+        <article class="dcard folio-card" id="folio-card-1" role="tabpanel" aria-labelledby="folio-tab-1" data-folio-card="1" data-pos="1" style="--i:1">
+          <span class="dcard-top">
+            <span class="meta">CHAPTER 02: ROUTINE CARE</span>
+            <button type="button" class="folio-inspect-btn" data-folio-inspect="1" aria-expanded="false" aria-controls="folio-ledger-1"><span class="fib-txt">Inspect record</span><span class="arrow" aria-hidden="true">↗</span></button>
+          </span>
+          <h3>Kept where the work happens</h3>
+          <p>Each service documented at the ramp, attributed to the workshop that did it, and kept with the car, not in a drawer.</p>
+          <figure class="dcard-media">
+            <img src="assets/hero/care_1280.webp" srcset="assets/hero/care_1280.webp 1280w, assets/hero/care_1600.webp 1600w" sizes="(max-width:560px) 100vw, 560px" alt="A man working on a car engine in a garage. Photograph: Ahmet Debelemez" loading="lazy" decoding="async" fetchpriority="low" width="1600" height="900">
+            <span class="folio-seal">PLATE 02 · RAMP ATTRIBUTED</span>
+            <button type="button" class="circle-btn" data-folio-inspect="1" aria-label="Inspect illustrative record for Chapter 02">↗</button>
+          </figure>
+          <div class="folio-ledger" id="folio-ledger-1">
+            <div class="folio-ledger-inner">
+              <div class="folio-ledger-pad">
+                <div class="folio-ledger-head"><span>ILLUSTRATIVE RECORD ENTRY · CH. 02</span><span>SOURCE: WORKSHOP RAMP</span></div>
+                <div class="folio-ledger-grid">
+                  <div class="folio-ledger-cell"><span>ENTRY TYPE</span><b>Valve Clearance &amp; Inspection</b></div>
+                  <div class="folio-ledger-cell"><span>ATTRIBUTED TO</span><b>Independent Specialist · Bay 02</b></div>
+                  <div class="folio-ledger-cell"><span>ATTACHED EVIDENCE</span><b>Clearance sheet + 4 ramp photos</b></div>
+                  <div class="folio-ledger-cell"><span>CONTINUITY</span><b>Stays with vehicle · Illustrative</b></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="folio-plate-foot"><span>FOLIO 02 / 04 · <b>WORKSHOP ENTRY</b></span><span>SWIPE OR FLICK PLATE ⇄</span></div>
+        </article>
+
+        <article class="dcard folio-card" id="folio-card-2" role="tabpanel" aria-labelledby="folio-tab-2" data-folio-card="2" data-pos="2" style="--i:2">
+          <span class="dcard-top">
+            <span class="meta">CHAPTER 03: A MEANINGFUL DRIVE</span>
+            <button type="button" class="folio-inspect-btn" data-folio-inspect="2" aria-expanded="false" aria-controls="folio-ledger-2"><span class="fib-txt">Inspect record</span><span class="arrow" aria-hidden="true">↗</span></button>
+          </span>
+          <h3>A dawn pass, deliberately recorded</h3>
+          <p>The route is remembered; the exact home address never leaves the driveway. What mattered is kept. What shouldn't travel, doesn't.</p>
+          <figure class="dcard-media">
+            <img src="assets/hero/drive_1280.webp" srcset="assets/hero/drive_1280.webp 1280w, assets/hero/drive_1600.webp 1600w" sizes="(max-width:560px) 100vw, 560px" alt="A long road with a mountain in the background. Photograph: Andrew Svk" loading="lazy" decoding="async" fetchpriority="low" width="1600" height="1067">
+            <span class="folio-seal">PLATE 03 · ORIGIN GUARDED</span>
+            <button type="button" class="circle-btn" data-folio-inspect="2" aria-label="Inspect illustrative record for Chapter 03">↗</button>
+          </figure>
+          <div class="folio-ledger" id="folio-ledger-2">
+            <div class="folio-ledger-inner">
+              <div class="folio-ledger-pad">
+                <div class="folio-ledger-head"><span>ILLUSTRATIVE RECORD ENTRY · CH. 03</span><span>PRIVACY: ORIGIN STRIPPED</span></div>
+                <div class="folio-ledger-grid">
+                  <div class="folio-ledger-cell"><span>ENTRY TYPE</span><b>Remembered Dawn Pass</b></div>
+                  <div class="folio-ledger-cell"><span>ROUTE SUMMARY</span><b>118 km · 05:42 departure</b></div>
+                  <div class="folio-ledger-cell"><span>PRIVACY BOUNDARY</span><b>Home address never leaves device</b></div>
+                  <div class="folio-ledger-cell"><span>SHARING</span><b>1 fellow custodian · Illustrative</b></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="folio-plate-foot"><span>FOLIO 03 / 04 · <b>DAWN PASS</b></span><span>SWIPE OR FLICK PLATE ⇄</span></div>
+        </article>
+
+        <article class="dcard folio-card" id="folio-card-3" role="tabpanel" aria-labelledby="folio-tab-3" data-folio-card="3" data-pos="3" style="--i:3">
+          <span class="dcard-top">
+            <span class="meta">CHAPTER 04: REFLECTION</span>
+            <button type="button" class="folio-inspect-btn" data-folio-inspect="3" aria-expanded="false" aria-controls="folio-ledger-3"><span class="fib-txt">Inspect record</span><span class="arrow" aria-hidden="true">↗</span></button>
+          </span>
+          <h3>Years later, it reads whole</h3>
+          <p>Engineering, evidence, people and memory in one place, ready for the next custodian, or simply for yourself.</p>
+          <figure class="dcard-media">
+            <img src="assets/hero/reflect_1280.webp" srcset="assets/hero/reflect_1280.webp 1280w, assets/hero/reflect_1600.webp 1600w" sizes="(max-width:560px) 100vw, 560px" alt="A red and black steering wheel. Photograph: Stephanie Valencia" loading="lazy" decoding="async" fetchpriority="low" width="1600" height="2400">
+            <span class="folio-seal">PLATE 04 · BIOGRAPHY WHOLE</span>
+            <button type="button" class="circle-btn" data-folio-inspect="3" aria-label="Inspect illustrative record for Chapter 04">↗</button>
+          </figure>
+          <div class="folio-ledger" id="folio-ledger-3">
+            <div class="folio-ledger-inner">
+              <div class="folio-ledger-pad">
+                <div class="folio-ledger-head"><span>ILLUSTRATIVE RECORD ENTRY · CH. 04</span><span>CONTINUITY: INTACT</span></div>
+                <div class="folio-ledger-grid">
+                  <div class="folio-ledger-cell"><span>ENTRY TYPE</span><b>Continuous Vehicle Biography</b></div>
+                  <div class="folio-ledger-cell"><span>CHRONOLOGY</span><b>Chapters 01–04 · Dated &amp; sourced</b></div>
+                  <div class="folio-ledger-cell"><span>HANDOVER STATE</span><b>Permissioned transfer link ready</b></div>
+                  <div class="folio-ledger-cell"><span>CUSTODIANSHIP</span><b>Survives handover · Illustrative</b></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="folio-plate-foot"><span>FOLIO 04 / 04 · <b>WHOLE RECORD</b></span><span>SWIPE OR FLICK PLATE ⇄</span></div>
+        </article>
+      </div>
+
+      <div class="folio-bar">
+        <button type="button" class="folio-ctl-btn" id="folio-prev" aria-label="Previous chapter plate">← Prev</button>
+        <div class="folio-status">
+          <span class="folio-dots" id="folio-dots" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></span>
+          <span class="folio-count" id="folio-count" aria-live="polite">PLATE 01 / 04 · ACQUISITION</span>
+        </div>
+        <button type="button" class="folio-ctl-btn primary" id="folio-next" aria-label="Next chapter plate">Next plate →</button>
+      </div>
     </div>
 
     <div class="cta-row rv" style="margin-top:22px"><a class="btn" href="#invite">Explore the Driver Experience</a></div>
@@ -1075,7 +1274,29 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
       <p class="lede rv">Every machine carries engineering, history and culture inside it. Choose one. Follow the thread from metal to meaning.</p>
     </div>
 
-    <div class="xquote rv" style="margin-top:16px"><p style="font-size:.98rem">Datum's Motor World connects any car to its engineering, its racing past and its culture, so the machine you already love keeps unfolding.</p><cite>HOW IT WORKS</cite></div>
+    <div class="xquote rv" style="margin-top:16px"><p id="x-quote" style="font-size:.98rem">Datum's Motor World connects any car to its engineering, its racing past and its culture, so the machine you already love keeps unfolding.</p><cite>HOW IT WORKS</cite></div>
+
+    <div class="drawer open xstage rv" data-drawer style="margin-top:16px">
+      <button class="drawer-sum" type="button" aria-expanded="true" aria-controls="x-body-wrap">
+        <span class="drawer-sum-main">
+          <span class="meta" id="x-name">THREE DISCOVERY LENSES · ANY VEHICLE</span>
+          <span class="drawer-sum-title">Inspect through three lenses</span>
+        </span>
+        <span class="chev" aria-hidden="true">＋</span>
+      </button>
+      <div class="drawer-body" id="x-body-wrap">
+        <div class="drawer-inner">
+          <div class="drawer-pad">
+            <div class="snap xtabs" role="tablist" aria-label="Discovery lenses" style="margin-bottom:14px">
+              <button class="chip" type="button" role="tab" aria-selected="true" data-lens="engine">ENGINE</button>
+              <button class="chip" type="button" role="tab" aria-selected="false" data-lens="history">HISTORY</button>
+              <button class="chip" type="button" role="tab" aria-selected="false" data-lens="culture">CULTURE</button>
+            </div>
+            <div class="xbody" id="x-body" role="tabpanel" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <p class="lede rv" style="margin-top:28px">Or follow one thread end to end. Vehicle, engine, system, knowledge, motorsport:</p>
 
@@ -1144,7 +1365,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
           <ellipse cx="116" cy="92" rx="84" ry="62" fill="url(#glass)" transform="rotate(-20 116 92)"/>
         </svg>
         <div class="ign-read"><b id="rpm">0</b> <span>RPM</span></div>
-        <div class="ign-live" id="ign-live" aria-live="polite">0.0 REV/S · - MS/REV</div>
+        <div class="ign-live" id="ign-live" aria-live="polite">0.0 REV/S · MS/REV</div>
         <div class="ign-state" id="ign-state">TDC READY</div>
         <div class="ign-score" id="ign-score" aria-live="polite">BEST ·</div>
       </div>
@@ -1581,6 +1802,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 
   /* explorer */
   var MW={
+    any:{name:'Three discovery lenses · any vehicle',
+      engine:{q:'Every engine has an architecture, a character and a lineage.',h:'Trace the <b>mechanical layout, induction, valve train and shared engine family</b> that give a machine its voice, and see which other cars carry the same heart.',s:[['ARCHITECTURE','Layout · induction · valvetrain'],['LINEAGE','Shared engine & platform family'],['SYSTEMS','Management · cooling · driveline'],['KNOWLEDGE','Known weak points & care']]},
+      history:{q:'A model exists because a rulebook, an era or an engineer demanded it.',h:'Follow the <b>design brief, homologation story, production evolution and motorsport bloodline</b> that explain why the car was built the way it was.',s:[['ORIGIN','Brief · chief engineer · era'],['EVOLUTION','Series changes & revisions'],['MOTORSPORT','Homologation & competition'],['PROVENANCE','How individual records connect']]},
+      culture:{q:'Cars outlive their factories when they enter shared memory.',h:'Explore the <b>liveries, roads, films, clubs and owners’ stories</b> that turned a piece of transport into a cultural reference point worth keeping.',s:[['VOICE','Sound · silhouette · feel'],['SCENE','Clubs · passes · gatherings'],['ARCHIVE','Period road tests & media'],['CUSTODIANS','Living owner stories']]}},
     nine:{name:'Porsche 911 Carrera 3.2 · 1984–1989',
       engine:{q:'An air-cooled flat-six that breathes through simplicity.',h:'<b>3.2 litres, ~231 PS, rear-mounted and air-cooled</b>, the final evolution of the original 911 silhouette. Light, balanced, entirely mechanical.',s:[['ENGINE','3.2L flat-six · ~231 PS'],['LAYOUT','Rear-engine · RWD'],['WEIGHT','~1,210 kg'],['CHARACTER','Mechanical · analogue']]},
       history:{q:'The G-series carried Porsche through the eighties.',h:'Born of the <b>1974 impact-bumper generation</b> and refined yearly, crowned by the celebrated <b>1987 Club Sport</b> lightweight.',s:[['ERA','1974–1989 G-series'],['ICON','1987 Club Sport'],['RACING','Rally & circuit privateers'],['STATUS','Modern classic']]},
@@ -1593,19 +1818,30 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
       engine:{q:'Turbocharged all-wheel-drive fury in a family hatchback.',h:'A <b>2.0-litre turbo four driving all four wheels</b>, rally technology wearing a shopping-car silhouette. Absurd, brilliant, unbeatable.',s:[['ENGINE','2.0L turbo · up to 215 PS'],['DRIVE','Permanent AWD'],['BODY','Widened hatchback'],['FEELING','Gravel-bred urgency']]},
       history:{q:'Six straight world rally championships.',h:'The Integrale won the <b>Manufacturers’ title six years running (1987–1992)</b>, a dominance no rally car has matched since.',s:[['WRC','6× manufacturers’ titles'],['YEARS','1987–1992'],['DRIVERS','Biasion · Kankkunen'],['RECORD','Unbroken']]},
       culture:{q:'Martini stripes on a shopping car.',h:'Rally liveries, <b>turbo-era posters and a permanent place in driving games</b> made the Delta the hero of everyone who grew up watching stages sideways.',s:[['LIVERY','Martini legend'],['GAMES','Rally icon'],['FANS','Global tifosi'],['STATUS','Cult classic']]}}};
+  var GLYPH={
+    engine:'<svg viewBox="0 0 36 22" width="32" height="18" aria-hidden="true"><path d="M5 18 A13 13 0 0 1 31 18" class="g-ink" stroke-width="1.5" stroke-linecap="round"/><path d="M24.5 6.8 A13 13 0 0 1 31 18" class="g-stroke" stroke-width="2" stroke-linecap="round"/><line x1="9.2" y1="10.2" x2="10.8" y2="11.6" class="g-ink" stroke-width="1.2" stroke-linecap="round"/><line x1="18" y1="5" x2="18" y2="7.2" class="g-ink" stroke-width="1.2" stroke-linecap="round"/><line x1="18" y1="17" x2="25.2" y2="8.8" class="g-stroke" stroke-width="1.6" stroke-linecap="round"/><circle cx="18" cy="17" r="2.1" class="g-acc"/></svg>',
+    history:'<svg viewBox="0 0 48 20" width="42" height="18" aria-hidden="true"><line x1="4" y1="11" x2="44" y2="11" class="g-ink" stroke-width="1.3" stroke-linecap="round"/><line x1="10" y1="7" x2="10" y2="11" class="g-ink" stroke-width="1.1"/><line x1="24" y1="7" x2="24" y2="11" class="g-ink" stroke-width="1.1"/><line x1="38" y1="6" x2="38" y2="11" class="g-stroke" stroke-width="1.3"/><circle cx="10" cy="11" r="2.4" class="g-dot"/><circle cx="24" cy="11" r="2.4" class="g-dot"/><circle cx="38" cy="11" r="3" class="g-acc"/><circle cx="38" cy="11" r="5.2" class="g-stroke" stroke-width="1"/></svg>',
+    culture:'<svg viewBox="0 0 42 20" width="38" height="18" aria-hidden="true"><path d="M3 4.5 H31 L38.5 10 L31 15.5 H3 V12.2 A2.2 2.2 0 0 0 3 7.8 Z" class="g-ink" stroke-width="1.35" stroke-linejoin="round"/><line x1="24" y1="5.2" x2="24" y2="14.8" class="g-stroke" stroke-width="1.2" stroke-dasharray="2 2"/><line x1="8.5" y1="8.4" x2="19.5" y2="8.4" class="g-ink" stroke-width="1.2" stroke-linecap="round"/><line x1="8.5" y1="11.6" x2="16.5" y2="11.6" class="g-stroke" stroke-width="1.2" stroke-linecap="round"/><circle cx="31.2" cy="10" r="1.6" class="g-acc"/></svg>'
+  };
   function renderX(){
+    var body=document.getElementById('x-body');
+    var activeTab=document.querySelector('.xtabs [aria-selected="true"]');
+    if(!body||!activeTab) return;
     var picked=document.querySelector('.xpick [aria-selected="true"]');
-     if(!picked) return;
-    var car=picked.dataset.car;
-    var lens=document.querySelector('.xtabs [aria-selected="true"]').dataset.lens;
-    var d=MW[car][lens];
-    document.getElementById('x-img').src=picked.dataset.img;
-    document.getElementById('x-cap').textContent='FEATURED MARQUE · '+MW[car].name.toUpperCase().split('·')[0].trim()+(car==='delta'?' · PHOTO: ALBMARTINIRACING, CC BY-SA 3.0':'');
-    document.getElementById('x-name').textContent=MW[car].name;
-    var body=document.getElementById('x-body');var kicker={engine:'ENGINE · HOW IT WORKS',history:'HISTORY · PROVEN',culture:'CULTURE · LIVED'}[lens]||'';body.setAttribute('data-lens',lens);var h='<div class="x-lede"><span class="x-lens">'+kicker+'</span><span class="pillar"><small>lead datum</small><i class="x-metric">'+d.s[0][1]+'</i></span></div>'+'<p class="pull"><i>'+d.q+'</i></p>'+'<p class="body-p">'+d.h+'</p>'+'<div class="spec">';
+    var car=picked?picked.dataset.car:'any';
+    var lens=activeTab.dataset.lens;
+    var d=(MW[car]||MW.any)[lens];
+    if(!d) return;
+    var imgEl=document.getElementById('x-img'),capEl=document.getElementById('x-cap'),nameEl=document.getElementById('x-name'),quoteEl=document.getElementById('x-quote');
+    if(imgEl&&picked&&picked.dataset.img) imgEl.src=picked.dataset.img;
+    if(capEl&&picked) capEl.textContent='FEATURED MARQUE · '+MW[car].name.toUpperCase().split('·')[0].trim()+(car==='delta'?' · PHOTO: ALBMARTINIRACING, CC BY-SA 3.0':'');
+    if(nameEl) nameEl.textContent=(MW[car]||MW.any).name.toUpperCase();
+    var kicker={engine:'ENGINE · HOW IT WORKS',history:'HISTORY · PROVEN',culture:'CULTURE · LIVED'}[lens]||'';
+    body.setAttribute('data-lens',lens);
+    var h='<div class="x-lede"><span class="x-lens-row"><span class="x-glyph" aria-hidden="true">'+(GLYPH[lens]||'')+'</span><span class="x-lens">'+kicker+'</span></span><span class="pillar"><small>lead datum</small><i class="x-metric">'+d.s[0][1]+'</i></span></div>'+'<p class="pull"><i>'+d.q+'</i></p>'+'<p class="body-p">'+d.h+'</p>'+'<div class="spec">';
     d.s.forEach(function(x){h+='<div><span>'+x[0]+'</span><strong>'+x[1]+'</strong></div>'});
-    document.getElementById('x-body').innerHTML=h+'</div>'+'<p class="meta-line">LENS '+lens.toUpperCase()+' · '+MW[car].name.toUpperCase()+'</p>';
-    document.getElementById('x-quote').textContent='\u201C'+d.q+'\u201D';
+    body.innerHTML=h+'</div>'+'<p class="meta-line">LENS '+lens.toUpperCase()+' · '+(MW[car]||MW.any).name.toUpperCase()+'</p>';
+    if(quoteEl&&picked) quoteEl.textContent='\u201C'+d.q+'\u201D';
   }
   document.querySelectorAll('.xpick button').forEach(function(b){b.addEventListener('click',function(){
     document.querySelectorAll('.xpick button').forEach(function(x){x.setAttribute('aria-selected','false')});
@@ -1645,7 +1881,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
     function draw(){needle.setAttribute('transform','rotate('+(-135+Math.min(cur,8000)/8000*270).toFixed(1)+' 150 150)');
       var r=Math.round(cur);
       rpmEl.textContent=r;
-      live.textContent=r>30?(r/60).toFixed(1)+' REV/S · '+(60000/Math.max(r,1)).toFixed(1)+' MS/REV':'0.0 REV/S · - MS/REV';
+      live.textContent=r>30?(r/60).toFixed(1)+' REV/S · '+(60000/Math.max(r,1)).toFixed(1)+' MS/REV':'0.0 REV/S · MS/REV';
       if(Date.now()<holdUntil)return;
       state.textContent=started?'RUNNING':(r>=7000?'REDLINE':(r>50?'SPOOLING':'TDC READY'));}
     function loop(){var d=tgt-cur;
@@ -1846,6 +2082,251 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
     }
     apply(root.getAttribute('data-theme')==='obsidian'?'obsidian':'light');
     btn.addEventListener('click',function(){apply(root.getAttribute('data-theme')==='obsidian'?'light':'obsidian');});
+  })();
+
+  /* hero share / copy-link affordance */
+  (function(){
+    var btn=document.getElementById('share-btn'),label=document.getElementById('share-label'),
+        toast=document.getElementById('share-toast'),toastTxt=document.getElementById('share-toast-txt');
+    if(!btn)return;
+    var canon=document.querySelector('link[rel="canonical"]');
+    var tTimer=null;
+    function showToast(msg,btnMsg){
+      if(label)label.textContent=btnMsg||'Copied';
+      btn.setAttribute('data-copied','true');
+      if(toast&&toastTxt){
+        toastTxt.textContent=msg;
+        toast.classList.add('on');
+      }
+      clearTimeout(tTimer);
+      tTimer=setTimeout(function(){
+        if(label)label.textContent='Copy link';
+        btn.removeAttribute('data-copied');
+        if(toast)toast.classList.remove('on');
+      },2400);
+    }
+    function fallbackCopy(url){
+      var ta=document.createElement('textarea');
+      ta.value=url;ta.setAttribute('readonly','');
+      ta.style.position='fixed';ta.style.left='-9999px';ta.style.opacity='0';
+      document.body.appendChild(ta);ta.select();
+      var ok=false;
+      try{ok=document.execCommand('copy');}catch(e){}
+      document.body.removeChild(ta);
+      showToast(ok?'Copied · datumatelier.uk':'Link · datumatelier.uk','Copied');
+    }
+    function copyUrl(url){
+      if(navigator.clipboard&&typeof navigator.clipboard.writeText==='function'){
+        navigator.clipboard.writeText(url).then(function(){
+          showToast('Copied · datumatelier.uk','Copied');
+        }).catch(function(){fallbackCopy(url);});
+      }else{
+        fallbackCopy(url);
+      }
+    }
+    btn.addEventListener('click',function(){
+      var url=(canon&&canon.href)||window.location.href;
+      if(typeof navigator.share==='function'&&!window.__datumForceClipboard){
+        navigator.share({title:document.title,text:'Datum — Custodianship. Record. Trust.',url:url})
+          .then(function(){showToast('Shared · datumatelier.uk','Shared');})
+          .catch(function(err){
+            if(err&&err.name==='AbortError')return;
+            copyUrl(url);
+          });
+      }else{
+        copyUrl(url);
+      }
+    });
+  })();
+
+  /* drivers provenance folio: 3D stack, pointer drag/swipe physics, stepped tabs & record ledger */
+  (function(){
+    var wrap=document.getElementById('drivers-folio'),
+        deck=document.getElementById('folio-deck');
+    if(!wrap||!deck)return;
+    var tabs=Array.prototype.slice.call(wrap.querySelectorAll('[data-folio-tab]')),
+        cards=Array.prototype.slice.call(deck.querySelectorAll('[data-folio-card]')),
+        dots=Array.prototype.slice.call(wrap.querySelectorAll('#folio-dots i')),
+        countEl=document.getElementById('folio-count'),
+        quoteBadge=document.getElementById('folio-quote-badge'),
+        prevBtn=document.getElementById('folio-prev'),
+        nextBtn=document.getElementById('folio-next');
+    var total=cards.length;
+    if(!total)return;
+    var LABELS=[
+      'PLATE 01 / 04 · ACQUISITION',
+      'PLATE 02 / 04 · ROUTINE CARE',
+      'PLATE 03 / 04 · MEANINGFUL DRIVE',
+      'PLATE 04 / 04 · REFLECTION'
+    ];
+    var active=0,animating=false,throwTimer=null;
+    function reducedMotion(){
+      return window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    }
+    function applyStack(idx){
+      active=((idx%total)+total)%total;
+      for(var i=0;i<total;i++){
+        var pos=(i-active+total)%total;
+        cards[i].setAttribute('data-pos',String(pos));
+        cards[i].setAttribute('aria-hidden',pos===0?'false':'true');
+        cards[i].classList.remove('is-throwing-left','is-throwing-right');
+        cards[i].removeAttribute('data-dragging');
+        cards[i].style.transform='';
+        cards[i].style.opacity='';
+      }
+      for(var j=0;j<tabs.length;j++){
+        var sel=(j===active);
+        tabs[j].setAttribute('aria-selected',sel?'true':'false');
+        tabs[j].tabIndex=sel?0:-1;
+      }
+      for(var k=0;k<dots.length;k++){
+        dots[k].classList.toggle('on',k===active);
+      }
+      var lbl=LABELS[active]||('PLATE 0'+(active+1)+' / 0'+total);
+      if(countEl)countEl.textContent=lbl;
+      if(quoteBadge)quoteBadge.textContent=lbl;
+    }
+    function goTo(targetIdx,throwDir){
+      var next=((targetIdx%total)+total)%total;
+      if(next===active)return;
+      clearTimeout(throwTimer);
+      if(!throwDir||reducedMotion()||animating){
+        animating=false;
+        applyStack(next);
+        return;
+      }
+      animating=true;
+      var topCard=cards[active];
+      topCard.removeAttribute('data-dragging');
+      topCard.style.transform='';
+      topCard.classList.add(throwDir<0?'is-throwing-left':'is-throwing-right');
+      throwTimer=setTimeout(function(){
+        animating=false;
+        applyStack(next);
+      },190);
+    }
+    tabs.forEach(function(tab){
+      tab.addEventListener('click',function(){
+        var idx=parseInt(tab.getAttribute('data-folio-tab'),10);
+        if(!isNaN(idx))goTo(idx,idx>active?-1:1);
+      });
+      tab.addEventListener('keydown',function(e){
+        if(e.key==='ArrowRight'||e.key==='ArrowDown'){
+          e.preventDefault();
+          var n=(active+1)%total;
+          goTo(n,-1);
+          if(tabs[n])tabs[n].focus();
+        }else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){
+          e.preventDefault();
+          var p=(active-1+total)%total;
+          goTo(p,1);
+          if(tabs[p])tabs[p].focus();
+        }else if(e.key==='Home'){
+          e.preventDefault();
+          goTo(0,1);
+          if(tabs[0])tabs[0].focus();
+        }else if(e.key==='End'){
+          e.preventDefault();
+          goTo(total-1,-1);
+          if(tabs[total-1])tabs[total-1].focus();
+        }
+      });
+    });
+    if(prevBtn)prevBtn.addEventListener('click',function(){goTo(active-1,1);});
+    if(nextBtn)nextBtn.addEventListener('click',function(){goTo(active+1,-1);});
+
+    /* inspect record toggle (both top pill and photo circle button) */
+    wrap.addEventListener('click',function(e){
+      var btn=e.target.closest('[data-folio-inspect]');
+      if(!btn)return;
+      e.stopPropagation();
+      var idx=parseInt(btn.getAttribute('data-folio-inspect'),10);
+      var card=cards[idx];
+      if(!card)return;
+      var open=card.classList.toggle('is-inspected');
+      var triggers=card.querySelectorAll('[data-folio-inspect]');
+      for(var i=0;i<triggers.length;i++){
+        triggers[i].setAttribute('aria-expanded',open?'true':'false');
+      }
+      var txt=card.querySelector('.fib-txt');
+      if(txt)txt.textContent=open?'Close record':'Inspect record';
+    });
+
+    /* pointer drag & touch-swipe physics */
+    var dragState=null;
+    deck.addEventListener('pointerdown',function(e){
+      if(animating)return;
+      if(e.button!==undefined&&e.button!==0)return;
+      if(e.target.closest('button,a'))return;
+      var topCard=cards[active];
+      if(!topCard||!topCard.contains(e.target))return;
+      var nextCard=cards[(active+1)%total];
+      dragState={
+        id:e.pointerId,
+        startX:e.clientX,
+        startY:e.clientY,
+        startT:Date.now(),
+        dx:0,
+        locked:false,
+        canceled:false,
+        topCard:topCard,
+        nextCard:nextCard
+      };
+    });
+    deck.addEventListener('pointermove',function(e){
+      if(!dragState||dragState.canceled||e.pointerId!==dragState.id)return;
+      var dx=e.clientX-dragState.startX;
+      var dy=e.clientY-dragState.startY;
+      if(!dragState.locked){
+        if(Math.abs(dy)>12&&Math.abs(dy)>Math.abs(dx)){
+          dragState.canceled=true;
+          return;
+        }
+        if(Math.abs(dx)>8&&Math.abs(dx)>Math.abs(dy)*1.15){
+          dragState.locked=true;
+          dragState.topCard.setAttribute('data-dragging','true');
+          if(dragState.nextCard)dragState.nextCard.setAttribute('data-dragging','true');
+          try{dragState.topCard.setPointerCapture(e.pointerId);}catch(err){}
+        }else{
+          return;
+        }
+      }
+      dragState.dx=dx;
+      var lift=-Math.min(14,Math.abs(dx)*0.07);
+      var rot=(dx*0.045).toFixed(2);
+      dragState.topCard.style.transform='translate3d('+dx.toFixed(1)+'px,'+lift.toFixed(1)+'px,0) rotate('+rot+'deg)';
+      if(dragState.nextCard){
+        var p=Math.min(1,Math.abs(dx)/140);
+        var ny=(13*(1-p)).toFixed(1);
+        var ns=(0.962+0.038*p).toFixed(3);
+        var nr=(0.85*(1-p)).toFixed(2);
+        dragState.nextCard.style.transform='translate3d(0,'+ny+'px,0) scale('+ns+') rotate('+nr+'deg)';
+      }
+    });
+    function endDrag(e){
+      if(!dragState||(e&&e.pointerId!==undefined&&e.pointerId!==dragState.id))return;
+      var st=dragState;
+      dragState=null;
+      st.topCard.removeAttribute('data-dragging');
+      st.topCard.style.transform='';
+      if(st.nextCard){
+        st.nextCard.removeAttribute('data-dragging');
+        st.nextCard.style.transform='';
+      }
+      if(!st.locked||st.canceled)return;
+      var dt=Math.max(1,Date.now()-st.startT);
+      var vx=st.dx/dt;
+      if(Math.abs(st.dx)>52||Math.abs(vx)>0.35){
+        if(st.dx<0){
+          goTo(active+1,-1);
+        }else{
+          goTo(active-1,1);
+        }
+      }
+    }
+    deck.addEventListener('pointerup',endDrag);
+    deck.addEventListener('pointercancel',endDrag);
+    applyStack(0);
   })();
 })();
 </script>
