@@ -273,6 +273,8 @@ button.cell{cursor:pointer;width:100%}
 .dcard.dark h3{color:var(--text-on-dark)}
 .dcard.accent h3{color:var(--text-on-accent)}
 .dcard .dcard-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.tech-badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--bg-accent-primary);border-radius:var(--radius-pill);padding:5px 10px;margin-bottom:12px;color:var(--bg-accent-primary);background:rgba(197,160,89,.08)}
+html[data-theme="obsidian"] .tech-badge{background:rgba(197,160,89,.12)}
 .dcard .dcard-top .meta{color:var(--text-muted-readable)}
 .dcard.dark .dcard-top .meta{color:var(--text-on-dark-muted)}
 .dcard.accent .dcard-top .meta{color:rgba(18,18,18,.74)}
@@ -564,6 +566,7 @@ input[type=range].scrub{width:100%;accent-color:var(--bg-accent-primary);height:
 .dcard.dark .study-label{border-color:var(--hairline-on-dark-color);color:var(--text-on-dark-muted)}
 .dcard.accent .study-label{border-color:rgba(18,18,18,.3);color:rgba(18,18,18,.74)}
 .study-media{border-radius:16px;overflow:hidden;margin-bottom:14px;border:var(--border-hairline)}
+.windshield-study{width:100%;height:auto;display:block;border-radius:16px;overflow:hidden;background:#0a0a0f}
 .dcard-media{position:relative;border-radius:14px;overflow:hidden;margin-bottom:16px;border:var(--border-hairline);background:var(--bg-canvas)}
 .dcard-media img{width:100%;height:auto !important;aspect-ratio:16/10 !important;object-fit:cover;display:block}
 .dcard-media .circle-btn{position:absolute;right:12px;top:12px;box-shadow:0 4px 16px rgba(0,0,0,.45)}
@@ -1263,6 +1266,98 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
       </article>
     </div>
 
+    <!-- Datum capabilities: ADAS + Vision Intelligence -->
+    <div class="sec-head" style="margin-top:32px">
+      <div class="eyebrow rv">Datum capabilities</div>
+      <h2 class="title rv">Advanced systems, <em>built into the custodianship layer.</em></h2>
+      <p class="lede rv">Datum is not only a record. It is a connected vehicle intelligence platform. Two capabilities in active development:</p>
+    </div>
+
+    <div class="deck" style="margin-top:16px">
+      <article class="dcard dark rv" style="--i:0">
+        <span class="dcard-top"><span class="meta">ADAS</span><span class="arrow" aria-hidden="true">-></span></span>
+        <span class="tech-badge">PRE-RELEASE TECHNOLOGY PREVIEW · SAE LEVEL 0</span>
+        <h3>Datum ADAS</h3>
+        <p>Advanced Driver Assistance Systems that deliver high-end luxury vehicle HUD features, typically restricted to $80,000+ luxury cars, with zero subscription fees and zero data harvesting. The windshield becomes a projection surface for the car's own intelligence: navigation, diagnostics, and custodianship data, rendered in the golden corridor, without a single byte leaving the vehicle.</p>
+        <div class="sublist">
+          <span class="meta">Included</span>
+          <div class="snap">
+            <span class="tag" style="border-color:var(--hairline-on-dark-color);color:var(--text-on-dark-muted)">Windshield projection HUD</span>
+            <span class="tag" style="border-color:var(--hairline-on-dark-color);color:var(--text-on-dark-muted)">Zero subscription fees</span>
+            <span class="tag" style="border-color:var(--hairline-on-dark-color);color:var(--text-on-dark-muted)">Zero data harvesting</span>
+            <span class="tag" style="border-color:var(--hairline-on-dark-color);color:var(--text-on-dark-muted)">SAE Level 0 (pre-release)</span>
+            <span class="tag" style="border-color:var(--hairline-on-dark-color);color:var(--text-on-dark-muted)">Under development</span>
+          </div>
+        </div>
+      </article>
+      <article class="dcard rv" style="--i:1">
+        <span class="dcard-top"><span class="meta">VISION INTELLIGENCE</span><span class="arrow" aria-hidden="true">-></span></span>
+        <h3>Vision intelligence</h3>
+        <p>On-device computer vision that sees what the car sees. Object detection, scene understanding, and contextual awareness, all processed locally, never streamed to a cloud. The car's eyes become part of its record: what it encountered, what it avoided, what it learned. Powered by edge-optimised models (YOLOv8, TensorRT) running on compact hardware.</p>
+        <div class="sublist">
+          <span class="meta">Included</span>
+          <div class="snap">
+            <span class="tag">On-device inference</span>
+            <span class="tag">Zero cloud dependency</span>
+            <span class="tag">Scene understanding</span>
+            <span class="tag">Edge-optimised models</span>
+            <span class="tag">Privacy by design</span>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <figure class="figure rv" style="margin-top:16px;border-color:var(--hairline-on-dark-color)">
+      <svg class="windshield-study" viewBox="0 0 640 360" role="img" aria-label="Windshield projection study: golden corridor reflecting off dark glass at night, SAE Level 0" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="glassbg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#0a0a0f"/><stop offset="50%" stop-color="#0e0e14"/><stop offset="100%" stop-color="#14141c"/>
+          </linearGradient>
+          <linearGradient id="goldcorridor" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#C5A059" stop-opacity="0"/><stop offset="30%" stop-color="#C5A059" stop-opacity=".15"/>
+            <stop offset="50%" stop-color="#E6C87A" stop-opacity=".35"/><stop offset="70%" stop-color="#C5A059" stop-opacity=".15"/>
+            <stop offset="100%" stop-color="#C5A059" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="glasssheen" x1="20%" y1="0%" x2="80%" y2="100%">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity=".06"/><stop offset="40%" stop-color="#ffffff" stop-opacity="0"/>
+            <stop offset="60%" stop-color="#ffffff" stop-opacity=".03"/><stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+          </linearGradient>
+          <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <rect x="0" y="0" width="640" height="360" fill="url(#glassbg)"/>
+        <g opacity=".4">
+          <circle cx="80" cy="60" r="1.2" fill="#C5A059"/><circle cx="120" cy="45" r="1" fill="#E6C87A"/>
+          <circle cx="200" cy="55" r="1.5" fill="#C5A059"/><circle cx="320" cy="40" r="1" fill="#E6C87A"/>
+          <circle cx="420" cy="50" r="1.3" fill="#C5A059"/><circle cx="500" cy="38" r="1" fill="#E6C87A"/>
+          <circle cx="560" cy="58" r="1.4" fill="#C5A059"/><circle cx="600" cy="42" r="1" fill="#E6C87A"/>
+        </g>
+        <path d="M120 360 L180 60 L460 60 L520 360 Z" fill="url(#glassbg)" stroke="rgba(245,245,247,.08)" stroke-width="1"/>
+        <path d="M180 60 L460 60 L520 360 L120 360 Z" fill="url(#goldcorridor)" opacity=".9"/>
+        <g stroke="#E6C87A" stroke-width="1.5" opacity=".5" fill="none">
+          <path d="M220 80 L200 340"/>
+          <path d="M280 80 L270 340"/>
+          <path d="M320 80 L320 340"/>
+          <path d="M360 80 L370 340"/>
+          <path d="M420 80 L440 340"/>
+        </g>
+        <path d="M320 80 L320 340" stroke="#E6C87A" stroke-width="2" stroke-dasharray="8 6" opacity=".8"/>
+        <g font-family="monospace" font-size="9" fill="#C5A059" opacity=".85">
+          <text x="200" y="120" letter-spacing="2">SPEED · 68</text>
+          <text x="200" y="140" letter-spacing="2">RPM · 2,400</text>
+          <text x="400" y="120" letter-spacing="2" text-anchor="end">NAV · 2.4 km</text>
+          <text x="400" y="140" letter-spacing="2" text-anchor="end">FUEL · 62%</text>
+        </g>
+        <g opacity=".15">
+          <rect x="180" y="320" width="280" height="20" rx="4" fill="#C5A059"/>
+          <text x="320" y="334" font-family="monospace" font-size="8" letter-spacing="2" text-anchor="middle" fill="#0a0a0f">DATUM · CUSTODIANSHIP ACTIVE</text>
+        </g>
+        <text x="32" y="348" font-family="monospace" font-size="8.5" letter-spacing="2" fill="var(--text-muted-readable,#7a7a82)">WINDSHIELD PROJECTION · GOLDEN CORRIDOR · NIGHT · SAE LEVEL 0 · PRE-RELEASE TECHNOLOGY PREVIEW</text>
+      </svg>
+      <figcaption>WINDSHIELD PROJECTION · GOLDEN CORRIDOR · NIGHT · SAE LEVEL 0 · DEMONSTRATION IMAGERY</figcaption>
+    </figure>
+
     <div class="cta-row rv" style="margin-top:22px"><a class="btn" href="#invite">Explore Business Collaboration</a></div>
   </section>
 
@@ -1603,6 +1698,43 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
     </div>
     <div class="dcard dark rv">
       <p style="color:rgba(244,242,238,.88);font-size:1rem">Datum is an independent, founder-led automotive technology initiative, in development. It began with a passion for automobiles and an interest in connecting the engineering, history, care and human relationships around them. There is no corporate apparatus to announce, only work to show, and an invitation to shape it.</p>
+    </div>
+
+    <!-- Founder -->
+    <div class="founder rv" style="margin-top:20px">
+      <div class="founder-card">
+        <div class="founder-head">
+          <span class="founder-avatar" aria-hidden="true">VD</span>
+          <div class="founder-meta">
+            <span class="founder-name">Vaishnav Deshmukh</span>
+            <span class="founder-role">Founder · Creator · Designer · Developer</span>
+          </div>
+        </div>
+        <p class="founder-bio">Systems engineer and designer with a master's in logistics and a foundation in market behaviour. Builds quiet, evidence-backed tools for complicated, very human problems — from clinical ward logistics to zero-knowledge identity to the custodianship record you are reading now. Based in Greater London, working with teams worldwide.</p>
+        <div class="founder-skills">
+          <span class="meta">Skills &amp; domains</span>
+          <div class="snap">
+            <span class="tag" style="border-color:var(--hairline-on-dark-color);color:var(--text-on-dark-muted)">Product design &amp; systems engineering</span>
+            <span class="tag" style="border-color:var(--hairline-on-dark-color);color:var(--text-on-dark-muted)">UX/UI design (WCAG 2.2 AA)</span>
+            <span class="tag" style="border-color:var(--hairline-on-dark-color);color:var(--text-on-dark-muted)">Full-stack development (TypeScript, Node.js, Python)</span>
+            <span class="tag" style="border-color:var(--hairline-on-dark-color);color:var(--text-on-dark-muted)">Computer vision &amp; vision intelligence</span>
+            <span class="tag" style="border-color:var(--hairline-on-dark-color);color:var(--text-on-dark-muted)">ADAS (Advanced Driver Assistance Systems)</span>
+            <span class="tag" style="border-color:var(--hairline-on-dark-color);color:var(--text-on-dark-muted)">Offline-first architecture (IndexedDB, CRDTs)</span>
+            <span class="tag" style="border-color:var(--hairline-on-dark-color);color:var(--text-on-dark-muted)">Privacy-preserving systems (ZK proofs)</span>
+            <span class="tag" style="border-color:var(--hairline-on-dark-color);color:var(--text-on-dark-muted)">Data visualisation (Three.js, WebGL)</span>
+            <span class="tag" style="border-color:var(--hairline-on-dark-color);color:var(--text-on-dark-muted)">Automotive systems (HL7 FHIR, GS1, BLE telemetry)</span>
+            <span class="tag" style="border-color:var(--hairline-on-dark-color);color:var(--text-on-dark-muted)">Logistics &amp; supply chain</span>
+            <span class="tag" style="border-color:var(--hairline-on-dark-color);color:var(--text-on-dark-muted)">Behavioural economics</span>
+            <span class="tag" style="border-color:var(--hairline-on-dark-color);color:var(--text-on-dark-muted)">Tactile UX &amp; cognitive ergonomics</span>
+            <span class="tag" style="border-color:var(--hairline-on-dark-color);color:var(--text-on-dark-muted)">Prompt engineering &amp; LLM systems</span>
+          </div>
+        </div>
+        <div class="founder-links">
+          <a class="btn ghost on-dark" href="https://github.com/aigroupchathq" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a class="btn ghost on-dark" href="https://linkedin.com/in/vaishnavdeshmukh" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a class="btn ghost on-dark" href="mailto:deshmukhvaishnav@gmail.com">Email</a>
+        </div>
+      </div>
     </div>
   </section>
 
