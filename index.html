@@ -400,6 +400,17 @@ html[data-theme="obsidian"] .tech-badge{background:rgba(197,160,89,.12)}
   .veil p{animation:none;opacity:1;transform:none}
 }
 
+/* ---------- SPLASH: the second opening beat (cellular unity) ----------
+   A full-screen canvas that takes over once the veil has lifted, plays
+   one pass, then dissolves into the hero. Starts hidden so the veil and
+   hero behave exactly as before if the script never runs. */
+.splash{position:fixed;inset:0;z-index:95;background:#000;opacity:0;visibility:hidden;cursor:pointer;transition:opacity .5s ease}
+.splash.on{opacity:1;visibility:visible}
+.splash.out{opacity:0;transition:opacity .9s ease}
+.splash canvas{display:block;width:100%;height:100%}
+html.splash-on{overflow:hidden}
+@media (prefers-reduced-motion:reduce){.splash{display:none!important}}
+
 /* ============ MEDIA ============ */
 .figure{border-radius:var(--radius-card);overflow:hidden;border:var(--border-hairline);position:relative;background:var(--bg-surface-elevated);box-shadow:var(--shadow-card)}
 .figure img{width:100%;height:100%;object-fit:cover;display:block}
@@ -685,6 +696,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 
 <!-- Opening beat: lifted on its own or on first intent -->
 <div class="veil" inert aria-hidden="true"><span class="veil-rule"></span><p>A car's life does not end with its keeper.</p></div>
+
+<!-- Second opening beat: cellular unity, plays once per session (splash-unity.js) -->
+<div class="splash" id="splash" aria-hidden="true"><canvas id="splash-c"></canvas></div>
 
 <div class="topbar">
   <div class="inner">
@@ -2462,6 +2476,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   })();
 })();
 </script>
+<script src="splash-unity.js"></script>
 <script>
 /* VEIL — the opening beat. Shows on every load; lifts on its own (CSS + JS) or on the first sign of intent. */
 (function(){
@@ -2471,6 +2486,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   function lift(){
     if(done)return; done=true;
     v.classList.add('run');
+    try{document.dispatchEvent(new CustomEvent('datum:veil-lifted'));}catch(e){}
     setTimeout(function(){ if(v.parentNode)v.parentNode.removeChild(v); },2200);
   }
   ['keydown','wheel','touchstart','pointerdown','scroll'].forEach(function(t){
