@@ -405,26 +405,26 @@ html[data-theme="obsidian"] .tech-badge{background:rgba(197,160,89,.12)}
    dialog semantics, focus on the skip control, page content inert.
    Reduced motion gets the still plate (JS picks the path), never a
    blank screen and never the animation. */
-.splash{position:fixed;inset:0;z-index:95;background:#0a0a0b;opacity:0;visibility:hidden;cursor:pointer;transition:opacity .5s ease}
+.splash{position:fixed;inset:0;z-index:95;background:#000;opacity:0;visibility:hidden;cursor:pointer;transition:opacity .5s ease}
 .splash.on{opacity:1;visibility:visible}
 .splash.out{opacity:0;transition:opacity .9s ease}
 .splash canvas{display:block;width:100%;height:100%}
 html.splash-on{overflow:hidden}
 .splash-word{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;opacity:0;transition:opacity .6s ease .15s}
 .splash.on .splash-word{opacity:1}
-.splash-word b{display:block;font-family:var(--font-mono);font-weight:500;font-size:clamp(1rem,2.2vw,1.25rem);letter-spacing:.5em;padding-left:.5em;color:#e6c87a;text-shadow:0 0 26px rgba(230,200,122,.35)}
-.splash-word span{display:block;margin-top:7px;font-family:var(--font-mono);font-weight:400;font-size:clamp(.55rem,1.1vw,.62rem);letter-spacing:.66em;padding-left:.66em;color:#c5a059}
-.splash-count{position:absolute;left:22px;bottom:18px;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.22em;color:rgba(244,242,238,.55);opacity:0;transition:opacity .5s ease .45s,color .3s ease;text-transform:uppercase;white-space:nowrap}
+.splash-word b{display:block;font-family:var(--font-mono);font-weight:500;font-size:clamp(1rem,2.2vw,1.25rem);letter-spacing:.5em;padding-left:.5em;color:rgba(255,255,255,.92);text-shadow:0 0 26px rgba(255,255,255,.22)}
+.splash-word span{display:block;margin-top:7px;font-family:var(--font-mono);font-weight:400;font-size:clamp(.55rem,1.1vw,.62rem);letter-spacing:.66em;padding-left:.66em;color:rgba(255,255,255,.5)}
+.splash-count{position:absolute;left:22px;bottom:18px;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.22em;color:rgba(255,255,255,.5);opacity:0;transition:opacity .5s ease .45s,color .3s ease;text-transform:uppercase;white-space:nowrap}
 .splash.on .splash-count{opacity:1}
-.splash-count.locked{color:#c5a059}
-.splash-skip{position:absolute;right:18px;bottom:14px;background:rgba(10,10,11,.55);border:1px solid rgba(244,242,238,.22);color:rgba(244,242,238,.62);font-family:var(--font-mono);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;padding:8px 13px;border-radius:var(--radius-pill);cursor:pointer;opacity:0;transition:opacity .4s ease .55s,color .25s ease,border-color .25s ease,background-color .25s ease}
+.splash-count.locked{color:#fff}
+.splash-skip{position:absolute;right:18px;bottom:14px;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.65);font-family:var(--font-mono);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;padding:8px 13px;border-radius:var(--radius-pill);cursor:pointer;opacity:0;transition:opacity .4s ease .55s,color .25s ease,border-color .25s ease,background-color .25s ease}
 .splash.on .splash-skip{opacity:1}
-.splash-skip:hover{color:#e6c87a;border-color:rgba(230,200,122,.55)}
-.splash-skip:focus-visible{outline:2px solid #e6c87a;outline-offset:2px}
+.splash-skip:hover{color:#fff;border-color:rgba(255,255,255,.6)}
+.splash-skip:focus-visible{outline:2px solid #fff;outline-offset:2px}
 .splash-still{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:32px}
 .splash.is-still .splash-still{display:flex}
 .splash.is-still .splash-word,.splash.is-still .splash-count,.splash.is-still .splash-skip{display:none}
-.splash-still b{display:block;font-family:var(--font-mono);font-weight:500;font-size:clamp(1rem,3vw,1.3rem);letter-spacing:.28em;color:#e6c87a}
+.splash-still b{display:block;font-family:var(--font-mono);font-weight:500;font-size:clamp(1rem,3vw,1.3rem);letter-spacing:.28em;color:#fff}
 .splash-still span{margin-top:16px;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.2em;color:rgba(244,242,238,.5);text-transform:uppercase}
 
 /* ---------- WORLD IGNITION: the buttons that hand over the opening ---------- */
@@ -2519,7 +2519,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   })();
 })();
 </script>
-<script src="splash-unity.js?v=3"></script>
+<script src="splash-unity.js?v=4"></script>
 <script>
 /* IGNITION - buttons hand the opening beat to the world film.
    The Motor World button routes the post-merge landing into the
