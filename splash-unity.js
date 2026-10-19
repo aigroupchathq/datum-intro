@@ -102,7 +102,7 @@
     el.removeAttribute('aria-hidden');
     el.setAttribute('role', 'dialog');
     el.setAttribute('aria-modal', 'true');
-    el.setAttribute('aria-label', "Datam world. The car's records converge into one history.");
+    el.setAttribute('aria-label', "Datum world. The car's records converge into one history.");
     el.classList.add('on');
     document.documentElement.classList.add('splash-on');
     setInert(true);
