@@ -401,15 +401,44 @@ html[data-theme="obsidian"] .tech-badge{background:rgba(197,160,89,.12)}
 }
 
 /* ---------- SPLASH: the second opening beat (cellular unity) ----------
-   A full-screen canvas that takes over once the veil has lifted, plays
-   one pass, then dissolves into the hero. Starts hidden so the veil and
-   hero behave exactly as before if the script never runs. */
-.splash{position:fixed;inset:0;z-index:95;background:#000;opacity:0;visibility:hidden;cursor:pointer;transition:opacity .5s ease}
+   Dormant until a button ignites it. While playing it is a modal:
+   dialog semantics, focus on the skip control, page content inert.
+   Reduced motion gets the still plate (JS picks the path), never a
+   blank screen and never the animation. */
+.splash{position:fixed;inset:0;z-index:95;background:#0a0a0b;opacity:0;visibility:hidden;cursor:pointer;transition:opacity .5s ease}
 .splash.on{opacity:1;visibility:visible}
 .splash.out{opacity:0;transition:opacity .9s ease}
 .splash canvas{display:block;width:100%;height:100%}
 html.splash-on{overflow:hidden}
-@media (prefers-reduced-motion:reduce){.splash{display:none!important}}
+.splash-word{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;opacity:0;transition:opacity .6s ease .15s}
+.splash.on .splash-word{opacity:1}
+.splash-word b{display:block;font-family:var(--font-mono);font-weight:500;font-size:clamp(1rem,2.2vw,1.25rem);letter-spacing:.5em;padding-left:.5em;color:#e6c87a;text-shadow:0 0 26px rgba(230,200,122,.35)}
+.splash-word span{display:block;margin-top:7px;font-family:var(--font-mono);font-weight:400;font-size:clamp(.55rem,1.1vw,.62rem);letter-spacing:.66em;padding-left:.66em;color:#c5a059}
+.splash-count{position:absolute;left:22px;bottom:18px;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.22em;color:rgba(244,242,238,.55);opacity:0;transition:opacity .5s ease .45s,color .3s ease;text-transform:uppercase;white-space:nowrap}
+.splash.on .splash-count{opacity:1}
+.splash-count.locked{color:#c5a059}
+.splash-skip{position:absolute;right:18px;bottom:14px;background:rgba(10,10,11,.55);border:1px solid rgba(244,242,238,.22);color:rgba(244,242,238,.62);font-family:var(--font-mono);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;padding:8px 13px;border-radius:var(--radius-pill);cursor:pointer;opacity:0;transition:opacity .4s ease .55s,color .25s ease,border-color .25s ease,background-color .25s ease}
+.splash.on .splash-skip{opacity:1}
+.splash-skip:hover{color:#e6c87a;border-color:rgba(230,200,122,.55)}
+.splash-skip:focus-visible{outline:2px solid #e6c87a;outline-offset:2px}
+.splash-still{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:32px}
+.splash.is-still .splash-still{display:flex}
+.splash.is-still .splash-word,.splash.is-still .splash-count,.splash.is-still .splash-skip{display:none}
+.splash-still b{display:block;font-family:var(--font-mono);font-weight:500;font-size:clamp(1rem,3vw,1.3rem);letter-spacing:.28em;color:#e6c87a}
+.splash-still span{margin-top:16px;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.2em;color:rgba(244,242,238,.5);text-transform:uppercase}
+
+/* ---------- WORLD IGNITION: the buttons that hand over the opening ---------- */
+.world-btn{display:inline-flex;align-items:center;gap:11px;background:transparent;border:1px solid var(--bg-accent-primary);color:var(--bg-accent-primary);border-radius:var(--radius-pill);padding:12px 22px;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;min-height:48px;transition:background-color .25s ease,color .25s ease,transform .25s var(--ease-spring)}
+.world-btn:hover{background:rgba(197,160,89,.1)}
+.world-btn:active{transform:scale(.98)}
+.world-btn:focus-visible{outline:2px solid var(--bg-accent-primary);outline-offset:3px}
+.world-btn .arrow{margin-left:-2px}
+.pulse-dot{width:8px;height:8px;border-radius:50%;background:var(--bg-accent-primary);box-shadow:0 0 0 0 rgba(197,160,89,.55);animation:pulseDot 2.6s infinite}
+@keyframes pulseDot{0%{box-shadow:0 0 0 0 rgba(197,160,89,.55)}70%{box-shadow:0 0 0 9px rgba(197,160,89,0)}100%{box-shadow:0 0 0 0 rgba(197,160,89,0)}}
+.world-link{margin-top:14px;display:inline-flex;align-items:center;gap:8px;background:none;border:0;border-bottom:1px dashed rgba(244,242,238,.3);color:var(--text-on-dark-muted);font-family:var(--font-mono);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;padding:0 0 3px;transition:color .25s ease,border-color .25s ease}
+.world-link:hover{color:var(--bg-accent-primary);border-color:var(--bg-accent-primary)}
+.world-link:focus-visible{outline:2px solid var(--bg-accent-primary);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){.pulse-dot{animation:none}}
 
 /* ============ MEDIA ============ */
 .figure{border-radius:var(--radius-card);overflow:hidden;border:var(--border-hairline);position:relative;background:var(--bg-surface-elevated);box-shadow:var(--shadow-card)}
@@ -697,8 +726,18 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 <!-- Opening beat: lifted on its own or on first intent -->
 <div class="veil" inert aria-hidden="true"><span class="veil-rule"></span><p>A car's life does not end with its keeper.</p></div>
 
-<!-- Second opening beat: cellular unity, plays once per session (splash-unity.js) -->
-<div class="splash" id="splash" aria-hidden="true"><canvas id="splash-c"></canvas></div>
+<!-- Second opening beat: cellular unity. Dormant until a button ignites it (?splash=1 previews it). -->
+<div class="splash" id="splash" aria-hidden="true">
+  <canvas id="splash-c" aria-hidden="true"></canvas>
+  <div class="splash-word" id="splash-word" aria-hidden="true"><b>DATUM</b><span>ATELIER</span></div>
+  <div class="splash-count" id="splash-count">31 records &middot; converging</div>
+  <button class="splash-skip" id="splash-skip" type="button">Esc &middot; skip</button>
+  <div class="splash-still" id="splash-still">
+    <b>31 records.</b>
+    <b>One history.</b>
+    <span>Reduced motion &middot; the world arrives whole</span>
+  </div>
+</div>
 
 <div class="topbar">
   <div class="inner">
@@ -1381,6 +1420,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
       <div class="eyebrow rv">Motor World · discovery</div>
       <h2 class="title rv">Bring the car you love.<br>We will show you <em>why it's so much.</em></h2>
       <p class="lede rv">Every machine carries engineering, history and culture inside it. Choose one. Follow the thread from metal to meaning.</p>
+      <button class="world-btn rv" type="button" id="ignite-world" data-after="motorworld">
+        <span class="pulse-dot" aria-hidden="true"></span>Enter the Datam world<span class="arrow" aria-hidden="true">&rarr;</span>
+      </button>
     </div>
 
     <div class="xquote rv" style="margin-top:16px"><p id="x-quote" style="font-size:.98rem">Datum's Motor World connects any car to its engineering, its racing past and its culture, so the machine you already love keeps unfolding.</p><cite>HOW IT WORKS</cite></div>
@@ -1832,6 +1874,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 
   <footer>
     <div class="fbrand"><b>DATUM</b><small>ATELIER</small></div>
+    <button class="world-link" type="button" id="replay-world">&#9673; Replay the Datam world</button>
     <p class="fmeta">An independent project in development. Seeking thoughtful feedback and future collaborators.</p>
     <p class="disclaim">Datum is not a vehicle-ownership registry, government database, inspection authority or certified verification network. Record integrity must never be read as independent proof of real-world events. Illustrative studies are not customer deployments. No personal data is collected on this page.</p>
   </footer>
@@ -2476,7 +2519,21 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   })();
 })();
 </script>
-<script src="splash-unity.js"></script>
+<script src="splash-unity.js?v=2"></script>
+<script>
+/* IGNITION - buttons hand the opening beat to the world film.
+   The Motor World button routes the post-merge landing into the
+   drawer's ENGINE lens; the footer keeps it a quiet replay. */
+(function(){
+  function fire(btn, after){
+    if (window.DATUM_WORLD) window.DATUM_WORLD.ignite({ after: after, source: btn });
+  }
+  var a = document.getElementById('ignite-world');
+  if (a) a.addEventListener('click', function(){ fire(a, 'motorworld'); });
+  var b = document.getElementById('replay-world');
+  if (b) b.addEventListener('click', function(){ fire(b, null); });
+})();
+</script>
 <script>
 /* VEIL — the opening beat. Shows on every load; lifts on its own (CSS + JS) or on the first sign of intent. */
 (function(){
