@@ -119,6 +119,7 @@
 
     el.classList.remove('out', 'is-still');
     el.removeAttribute('aria-hidden');
+    el.inert = false;
     el.setAttribute('role', 'dialog');
     el.setAttribute('aria-modal', 'true');
     el.setAttribute('aria-label', "Datum world. The car's records converge into one history.");
@@ -162,6 +163,7 @@
       el.removeAttribute('role');
       el.removeAttribute('aria-modal');
       el.setAttribute('aria-hidden', 'true');
+      el.inert = true;
       ending = false;
       if (route === 'motorworld') land('motorworld');
       if (sourceBtn && document.contains(sourceBtn)) { try { sourceBtn.focus({ preventScroll: true }); } catch (e) {} }

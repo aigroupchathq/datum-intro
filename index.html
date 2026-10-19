@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -24,18 +24,19 @@
 <meta property="og:title" content="Datum — Every Car Has a Story. Give It Continuity.">
 <meta property="og:description" content="A connected experience for vehicle identity, history, evidence, drives and co-custodianship — built to keep a machine's memory attached to the machine.">
 <meta property="og:url" content="https://datumatelier.uk/">
-<meta property="og:image" content="https://datumatelier.uk/assets/hero/hero_1600.webp">
-<meta property="og:image:width" content="1600">
-<meta property="og:image:height" content="900">
+<meta property="og:image" content="https://datumatelier.uk/assets/hero/og-datum-1200x630.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="A car in an open garage at dusk, bathed in warm light.">
 <meta property="og:locale" content="en_GB">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Datum — Every Car Has a Story. Give It Continuity.">
 <meta name="twitter:description" content="Vehicle identity, history, evidence, drives and co-custodianship — software built to keep a machine's memory attached to the machine.">
-<meta name="twitter:image" content="https://datumatelier.uk/assets/hero/hero_1600.webp">
+<meta name="twitter:image" content="https://datumatelier.uk/assets/hero/og-datum-1200x630.jpg">
 <meta name="twitter:image:alt" content="A car in an open garage at dusk, bathed in warm light.">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Datum","applicationCategory":"UtilityApplication","description":"An independent automotive software project in development: a connected experience for vehicle identity, history, evidence, drives and co-custodianship.","url":"https://datumatelier.uk/","offers":{"@type":"Offer","price":"0","priceCurrency":"GBP"},"author":{"@type":"Person","name":"Datum Atelier"}}
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Datum","applicationCategory":"UtilityApplication","description":"An independent automotive software project in development: a connected experience for vehicle identity, history, evidence, drives and co-custodianship.","url":"https://datumatelier.uk/","image":"https://datumatelier.uk/assets/hero/og-datum-1200x630.jpg","inLanguage":"en-GB","author":{"@type":"Person","name":"Vaishnav Deshmukh"}}
 </script>
 <style>
 /* ============================================================
@@ -55,7 +56,8 @@
   --text-muted-readable:rgba(18,18,18,.72);
   --text-on-dark:#F4F2EE;
   --text-on-dark-muted:rgba(244,242,238,.62);
-  --text-on-accent:#121212;
+  --text-on-accent:#0A0A0A;
+  --accent-text:#B32A12;
   /* line + glass */
   --border-hairline:1px solid rgba(18,18,18,.12);
   --hairline-color:rgba(18,18,18,.12);
@@ -87,6 +89,7 @@ html[data-theme="obsidian"]{
   --text-on-dark:#F5F5F7;
   --text-on-dark-muted:rgba(245,245,247,.62);
   --text-on-accent:#141414;
+  --accent-text:#C5A059;
   --border-hairline:1px solid rgba(245,245,247,.14);
   --hairline-color:rgba(245,245,247,.14);
   --hairline-on-dark:1px solid rgba(245,245,247,.16);
@@ -127,8 +130,7 @@ a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:0}
 :focus-visible{outline:2px solid var(--bg-accent-primary);outline-offset:2px;border-radius:8px}
 ::selection{background:var(--bg-accent-primary);color:var(--text-on-accent)}
-.skip{position:absolute;left:-999px;top:0;z-index:200;background:var(--bg-surface-dark);color:var(--text-on-dark);padding:12px 16px;border-radius:0 0 12px 0;font-size:.85rem}
-.skip:focus{left:0}
+/* skip link: single definition lives at .skip-link below */
 
 /* ============ APP SHELL ============ */
 .shell{max-width:560px;margin:0 auto;padding:72px 16px 150px}
@@ -223,7 +225,7 @@ h2.title em{font-style:italic}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--bg-accent-primary);color:var(--text-on-accent);border-radius:var(--radius-pill);padding:13px 22px;font-weight:500;font-size:.9rem;border:0;cursor:pointer;min-height:48px;transition:transform .35s var(--ease-spring),background-color .25s ease,opacity .25s ease}
 .btn:active{transform:scale(.97)}
 .btn.ghost{background:transparent;color:var(--text-primary);border:1px solid var(--pill-outline)}
-.btn.on-dark{background:var(--text-on-dark);color:var(--text-primary)}
+.btn.on-dark{background:var(--text-on-dark);color:var(--text-on-accent)}
 .btn.ghost.on-dark{background:transparent;color:var(--text-on-dark);border-color:var(--hairline-on-dark-color)}
 .btn.share-btn{padding:11px 16px;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;gap:7px;background:rgba(18,18,18,.38);backdrop-filter:blur(6px)}
 .btn.share-btn svg{flex:0 0 auto;color:var(--bg-accent-primary);transition:transform .35s var(--ease-spring)}
@@ -252,13 +254,13 @@ button.cell{cursor:pointer;width:100%}
 .cell-desc{display:block;font-size:.8rem;color:var(--text-muted-readable);margin-top:6px;letter-spacing:-0.01em}
 .cell.accent .cell-title{color:var(--text-on-accent)}
 .cell.dark .cell-title{color:var(--text-on-dark)}
-.cell.accent .cell-desc{color:rgba(18,18,18,.74)}
+.cell.accent .cell-desc{color:#0A0A0A}
 .cell.dark .cell-desc{color:var(--text-on-dark-muted)}
-.cell.accent .meta{color:rgba(18,18,18,.74)}
+.cell.accent .meta{color:#0A0A0A}
 .cell.dark .meta{color:var(--text-on-dark-muted)}
 .cell.node[aria-selected="true"]{background:var(--bg-accent-primary);color:var(--text-on-accent)}
 .cell.node[aria-selected="true"] .cell-title{color:var(--text-on-accent)}
-.cell.node[aria-selected="true"] .meta{color:rgba(18,18,18,.74)}
+.cell.node[aria-selected="true"] .meta{color:#0A0A0A}
 
 /* ============ PATTERN B — STICKY CARD DECK & PROVENANCE FOLIO ============ */
 .deck{display:flex;flex-direction:column;gap:16px;margin-top:20px}
@@ -268,7 +270,9 @@ button.cell{cursor:pointer;width:100%}
 .dcard.accent{background:var(--bg-accent-primary);color:var(--text-on-accent);border-color:transparent}
 .dcard p{color:var(--text-muted-readable);font-size:.95rem}
 .dcard.dark p{color:var(--text-on-dark-muted)}
-.dcard.accent p{color:rgba(18,18,18,.74)}
+.dcard.accent p{color:#0A0A0A}
+.dcard.accent .meta,.dcard.accent cite{color:#0A0A0A}
+.dcard.accent .tag{color:#0A0A0A;border-color:rgba(10,10,10,.3)}
 .dcard h3{font-size:clamp(1.3rem,4.6vw,1.7rem);margin:6px 0 8px}
 .dcard.dark h3{color:var(--text-on-dark)}
 .dcard.accent h3{color:var(--text-on-accent)}
@@ -276,13 +280,13 @@ button.cell{cursor:pointer;width:100%}
 .tech-badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--bg-accent-primary);border-radius:var(--radius-pill);padding:5px 10px;margin-bottom:12px;color:var(--bg-accent-primary);background:rgba(197,160,89,.08)}
 html[data-theme="obsidian"] .tech-badge{background:rgba(197,160,89,.12)}
 .dcard .dcard-top .meta{color:var(--text-muted-readable)}
-.dcard.dark .dcard-top .meta{color:var(--text-on-dark-muted)}
-.dcard.accent .dcard-top .meta{color:rgba(18,18,18,.74)}
+.dcard.dark .meta{color:var(--text-on-dark-muted)}
+.dcard.accent .dcard-top .meta{color:#0A0A0A}
 .dsplit{display:flex;align-items:center;gap:16px;margin-top:16px}
 .thumb{flex:0 0 auto;width:72px;height:72px;border-radius:50%;overflow:hidden;border:var(--border-hairline);background:var(--bg-canvas)}
 .thumb img{width:100%;height:100%;object-fit:cover}
 .circle-btn{flex:0 0 auto;margin-left:auto;width:48px;height:48px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:var(--bg-surface-dark);color:var(--text-on-dark);font-size:1rem;transition:transform .35s var(--ease-spring),background-color .25s ease,color .25s ease}
-.dcard.dark .circle-btn{background:var(--text-on-dark);color:var(--text-primary)}
+.dcard.dark .circle-btn{background:var(--text-on-dark);color:var(--text-on-accent)}
 .dcard.accent .circle-btn{background:var(--bg-surface-dark);color:var(--text-on-dark)}
 .circle-btn:active{transform:scale(.94)}
 .sublist{margin-top:16px;padding-top:14px;border-top:var(--border-hairline)}
@@ -302,7 +306,7 @@ html[data-theme="obsidian"] .tech-badge{background:rgba(197,160,89,.12)}
 .folio-tab .ft-lbl{font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;line-height:1.15}
 .folio-tab:hover{color:var(--text-primary);background:var(--bg-surface-elevated)}
 .folio-tab[aria-selected="true"]{background:var(--bg-surface-elevated);color:var(--text-primary);border-top-color:var(--bg-accent-primary);transform:translateY(2px);box-shadow:0 -4px 14px rgba(0,0,0,.06)}
-.folio-tab[aria-selected="true"] .ft-num{color:var(--bg-accent-primary);font-weight:500}
+.folio-tab[aria-selected="true"] .ft-num{color:var(--accent-text);font-weight:500}
 .folio-deck{display:grid;grid-template-areas:"stack";position:relative;margin-top:0;padding-bottom:42px;perspective:1200px;touch-action:pan-y}
 .folio-deck>.folio-card{grid-area:stack;display:flex;flex-direction:column;position:relative;top:auto;width:100%;min-width:0;margin:0;user-select:none;cursor:grab;transform-origin:50% 92%;will-change:transform,opacity;transition:transform .52s var(--ease-spring),opacity .42s ease,box-shadow .42s ease,border-color .25s ease}
 .folio-deck>.folio-card:active{cursor:grabbing}
@@ -325,7 +329,7 @@ html[data-theme="obsidian"] .tech-badge{background:rgba(197,160,89,.12)}
 .folio-card.is-inspected .folio-ledger{grid-template-rows:1fr}
 .folio-ledger-inner{overflow:hidden;min-height:0}
 .folio-ledger-pad{padding-top:14px;margin-top:4px;border-top:1px dashed var(--dash-outline)}
-.folio-ledger-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;font-family:var(--font-mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--bg-accent-primary);margin-bottom:10px}
+.folio-ledger-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;font-family:var(--font-mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-text);margin-bottom:10px}
 .folio-ledger-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .folio-ledger-cell{background:var(--bg-canvas);border:var(--border-hairline);border-radius:12px;padding:9px 11px;min-width:0}
 .folio-ledger-cell span{display:block;font-family:var(--font-mono);font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted-readable);margin-bottom:3px}
@@ -366,7 +370,7 @@ html[data-theme="obsidian"] .tech-badge{background:rgba(197,160,89,.12)}
 .drawer.dark .drawer-sum-title{color:var(--text-on-dark)}
 .drawer.accent .drawer-sum-title{color:var(--text-on-accent)}
 .drawer.dark .meta{color:var(--text-on-dark-muted)}
-.drawer.accent .meta{color:rgba(18,18,18,.74)}
+.drawer.accent .meta{color:#0A0A0A}
 .chev{flex:0 0 auto;width:34px;height:34px;border-radius:50%;border:var(--border-hairline);display:inline-flex;align-items:center;justify-content:center;font-size:1rem;transition:transform .45s var(--ease-spring)}
 .drawer.dark .chev{border-color:var(--hairline-on-dark-color)}
 .drawer.accent .chev{border-color:rgba(18,18,18,.3)}
@@ -428,7 +432,7 @@ html.splash-on{overflow:hidden}
 .splash-still span{margin-top:16px;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.2em;color:rgba(244,242,238,.5);text-transform:uppercase}
 
 /* ---------- WORLD IGNITION: the buttons that hand over the opening ---------- */
-.world-btn{display:inline-flex;align-items:center;gap:11px;background:transparent;border:1px solid var(--bg-accent-primary);color:var(--bg-accent-primary);border-radius:var(--radius-pill);padding:12px 22px;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;min-height:48px;transition:background-color .25s ease,color .25s ease,transform .25s var(--ease-spring)}
+.world-btn{display:inline-flex;align-items:center;gap:11px;background:transparent;border:1px solid var(--bg-accent-primary);color:var(--accent-text);border-radius:var(--radius-pill);padding:12px 22px;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;min-height:48px;transition:background-color .25s ease,color .25s ease,transform .25s var(--ease-spring)}
 .world-btn:hover{background:rgba(197,160,89,.1)}
 .world-btn:active{transform:scale(.98)}
 .world-btn:focus-visible{outline:2px solid var(--bg-accent-primary);outline-offset:3px}
@@ -455,7 +459,7 @@ html.splash-on{overflow:hidden}
 
 /* ============ TIMELAPSE (Pattern C, split dark/light) ============ */
 .tl-verdict{font-weight:500;letter-spacing:-0.035em;line-height:1.1;font-size:clamp(1.2rem,5vw,1.7rem);margin:14px 0}
-.tl-verdict b{color:var(--bg-accent-primary)}
+.tl-verdict b{color:var(--accent-text)}
 .tl-verdict em{font-style:italic}
 .tl-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.06em;color:var(--text-muted-readable);text-transform:uppercase}
 .tl-head #tl-year{font-weight:200;font-variant-numeric:tabular-nums;font-size:clamp(1.6rem,8vw,2.6rem);letter-spacing:-0.03em;color:var(--text-primary);line-height:1}
@@ -484,7 +488,7 @@ html.splash-on{overflow:hidden}
 .tl-side-f{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.08em;color:var(--text-muted-readable);margin-top:auto;padding-top:8px;text-transform:uppercase}
 .tl-col.rot .tl-side-f{color:var(--text-on-dark-muted)}
 .tl-side-f b{display:block;font-weight:200;font-variant-numeric:tabular-nums;font-size:clamp(2rem,9vw,2.6rem);letter-spacing:-0.04em;line-height:1;color:var(--text-primary)}
-.tl-col.holds .tl-side-f b{color:var(--bg-accent-primary)}
+.tl-col.holds .tl-side-f b{color:var(--accent-text)}
 .tl-col.rot .tl-side-f b{color:var(--text-on-dark)}
 .tl-foot{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.06em;color:var(--text-muted-readable);margin-top:14px;text-transform:uppercase;line-height:1.7}
 
@@ -495,7 +499,7 @@ html.splash-on{overflow:hidden}
 #platecover span{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.08em;color:var(--text-on-dark);pointer-events:none;text-align:center;padding:4px}
 #grip{position:absolute;right:-8px;bottom:-8px;width:22px;height:22px;border-radius:50%;background:var(--bg-accent-primary);border:2px solid var(--bg-surface-dark);cursor:nwse-resize}
 .plate-verdict{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.02em;color:var(--text-muted-readable);margin:12px 0;line-height:1.6}
-.plate-verdict b{color:var(--bg-accent-primary)}
+.plate-verdict b{color:var(--accent-text)}
 
 /* ============ MEET (orbit as bento) ============ */
 .hub-card{position:relative;border-radius:var(--radius-card);overflow:hidden;border:var(--border-hairline);margin-bottom:16px;box-shadow:var(--shadow-card);background:var(--bg-surface-dark)}
@@ -530,18 +534,18 @@ html.splash-on{overflow:hidden}
 .xbody .x-glyph .g-stroke{stroke:var(--bg-accent-primary);fill:none}
 .xbody .x-glyph .g-ink{stroke:currentColor;fill:none}
 .xbody .x-glyph .g-dot{fill:currentColor;opacity:.42}
-.xbody .x-lens{display:inline-flex;align-items:center;font-family:var(--font-mono);font-size:.66rem;letter-spacing:.26em;color:var(--bg-accent-primary);background:var(--bg-canvas);border:var(--border-hairline);border-radius:var(--radius-pill);padding:7px 13px;text-transform:uppercase;white-space:nowrap}
+.xbody .x-lens{display:inline-flex;align-items:center;font-family:var(--font-mono);font-size:.66rem;letter-spacing:.26em;color:var(--accent-text);background:var(--bg-canvas);border:var(--border-hairline);border-radius:var(--radius-pill);padding:7px 13px;text-transform:uppercase;white-space:nowrap}
 .xbody .x-metric{font-family:var(--font-mono);font-weight:200;font-variant-numeric:tabular-nums;font-size:clamp(1.05rem,4vw,1.55rem);line-height:1.05;letter-spacing:-.025em;color:var(--text-primary);overflow-wrap:anywhere;max-width:100%}
 .drawer.dark .xbody .x-metric{color:var(--text-on-dark)}
 .xbody .pillar{flex:1 1 180px;min-width:150px;max-width:100%;text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
 .xbody .pillar small{display:block;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-muted-readable)}
 .xbody .pull{font-size:1.12rem;line-height:1.5;font-weight:500;letter-spacing:-.015em;margin-top:6px;max-width:44ch}
-.xbody .pull i{font-family:var(--font-mono);font-style:normal;font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--bg-accent-primary);display:block;margin-bottom:4px}
+.xbody .pull i{font-family:var(--font-mono);font-style:normal;font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-text);display:block;margin-bottom:4px}
 .xbody .body-p{margin-top:10px;font-size:.92rem;line-height:1.55;color:var(--text-muted-readable)}
 .xbody .spec{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
 .xbody .spec div{background:var(--bg-canvas);border:var(--border-hairline);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;transition:transform .35s var(--ease-spring),border-color .25s ease}
 .xbody .spec div:active,.xbody .spec div:hover{transform:translateY(-1px);border-color:var(--bg-accent-primary)}
-.xbody .spec span{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.12em;color:var(--bg-accent-primary);text-transform:uppercase}
+.xbody .spec span{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.12em;color:var(--accent-text);text-transform:uppercase}
 .xbody .spec strong{font-size:1rem;font-weight:500;color:var(--text-primary);letter-spacing:-.015em}
 .xbody .meta-line{margin-top:14px;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted-readable);opacity:.7}
 .xbody .x-body-wrap{background:var(--bg-surface-elevated);border-radius:var(--radius-card);padding:20px;border:var(--border-hairline)}
@@ -588,23 +592,23 @@ html.splash-on{overflow:hidden}
 .ibtn.gold{background:var(--bg-accent-primary);color:var(--text-on-accent);border-color:transparent;font-weight:500}
 input[type=range].scrub{width:100%;accent-color:var(--bg-accent-primary);height:44px}
 .scrub-lab{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.1em;color:var(--text-muted-readable);text-transform:uppercase}
-.scrub-lab b{color:var(--bg-accent-primary)}
+.scrub-lab b{color:var(--accent-text)}
 .ign-ctl .row{display:flex;gap:10px;flex-wrap:wrap}
 .fine-list{font-size:.75rem;color:var(--text-muted-readable);margin-top:2px;line-height:1.6}
 
 /* ---- skip link ---- */
 .skip-link{position:absolute;left:-9999px;top:8px;z-index:200;background:var(--bg-surface-dark);color:var(--text-on-dark);padding:10px 16px;border-radius:var(--radius-pill);font-size:.85rem;font-weight:500}
 .skip-link:focus{left:16px;outline:2px solid var(--bg-accent-primary);outline-offset:2px}
-.stage .lv{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.1em;color:var(--bg-accent-primary);text-transform:uppercase}
-.dcard.dark .stage .lv{color:var(--text-on-dark)}
-.dcard.accent .stage .lv{color:rgba(18,18,18,.85)}
+.stage .lv{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.1em;color:var(--accent-text);text-transform:uppercase}
+.dcard.dark .lv{color:var(--text-on-dark)}
+.dcard.accent .lv{color:#0A0A0A}
 .stage h3{margin:8px 0}
 .stage p{font-size:.92rem}
 
 /* ============ STUDIES / BUILDING ============ */
 .study-label{display:inline-block;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;border:var(--border-hairline);border-radius:var(--radius-pill);padding:5px 10px;margin-bottom:12px;color:var(--text-muted-readable)}
 .dcard.dark .study-label{border-color:var(--hairline-on-dark-color);color:var(--text-on-dark-muted)}
-.dcard.accent .study-label{border-color:rgba(18,18,18,.3);color:rgba(18,18,18,.74)}
+.dcard.accent .study-label{border-color:rgba(10,10,10,.3);color:#0A0A0A}
 .study-media{border-radius:16px;overflow:hidden;margin-bottom:14px;border:var(--border-hairline)}
 .windshield-study{width:100%;height:auto;display:block;border-radius:16px;overflow:hidden;background:#0a0a0f}
 .dcard-media{position:relative;border-radius:14px;overflow:hidden;margin-bottom:16px;border:var(--border-hairline);background:var(--bg-canvas)}
@@ -628,9 +632,23 @@ input[type=range].scrub{width:100%;accent-color:var(--bg-accent-primary);height:
 .file-label{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px dashed var(--dash-outline);border-radius:14px;padding:13px 16px;font-size:.85rem;cursor:pointer;min-height:48px;color:var(--text-primary);transition:border-color .25s ease}
 .file-label:active{transform:scale(.99)}
 .notice{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.01em;color:var(--text-primary);background:var(--bg-canvas);border:1px dashed var(--dash-outline);border-radius:14px;padding:12px 14px;line-height:1.7;margin-top:16px}
-.notice b{color:var(--bg-accent-primary)}
+.notice b{color:var(--accent-text)}
 
 /* ============ FOOTER ============ */
+/* ---- founder profile ---- */
+.founder-card{background:var(--bg-surface-dark);color:var(--text-on-dark);border:1px solid var(--hairline-on-dark-color);border-radius:var(--radius-card);padding:clamp(20px,4vw,30px);box-shadow:var(--shadow-card)}
+.founder-head{display:flex;align-items:center;gap:14px}
+.founder-avatar{flex:0 0 auto;width:56px;height:56px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--hairline-on-dark-color);background:rgba(244,242,238,.06);font-family:var(--font-mono);font-size:.78rem;letter-spacing:.1em;color:var(--text-on-dark)}
+.founder-meta{display:flex;flex-direction:column;gap:3px;min-width:0}
+.founder-name{font-size:1.05rem;font-weight:500;letter-spacing:-.02em;line-height:1.2}
+.founder-role{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-on-dark-muted)}
+.founder-bio{margin:18px 0 0;max-width:68ch;font-size:.92rem;line-height:1.75;color:rgba(244,242,238,.82)}
+.founder-skills{margin-top:20px;padding-top:16px;border-top:1px solid var(--hairline-on-dark-color)}
+.founder-skills .meta{display:block;margin-bottom:10px;color:var(--text-on-dark-muted)}
+.founder-skills .tag{white-space:normal}
+.founder-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+@media (max-width:420px){.founder-avatar{width:48px;height:48px;font-size:.7rem}.founder-name{font-size:.98rem}}
+
 footer{margin-top:56px;border-radius:var(--radius-card);background:var(--bg-surface-dark);color:var(--text-on-dark);padding:26px 22px;box-shadow:var(--shadow-card)}
 footer .fbrand{display:flex;align-items:baseline;gap:8px;font-weight:500;letter-spacing:-0.02em}
 footer .fbrand b{font-size:1.05rem;letter-spacing:.02em}
@@ -720,14 +738,13 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 </head>
 <body>
 <a class="skip-link" href="#why">Skip to content</a>
-<a class="skip" href="#why">Skip to content</a>
 <div id="progress" aria-hidden="true"></div>
 
 <!-- Opening beat: lifted on its own or on first intent -->
 <div class="veil" inert aria-hidden="true"><span class="veil-rule"></span><p>A car's life does not end with its keeper.</p></div>
 
 <!-- Second opening beat: cellular unity. Dormant until a button ignites it (?splash=1 previews it). -->
-<div class="splash" id="splash" aria-hidden="true">
+<div class="splash" id="splash" aria-hidden="true" inert>
   <canvas id="splash-c" aria-hidden="true"></canvas>
   <div class="splash-word" id="splash-word" aria-hidden="true"><b>DATUM</b><span>ATELIER</span></div>
   <div class="splash-count" id="splash-count">31 records &middot; converging</div>
@@ -751,14 +768,14 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
     </nav>
     <div class="topbar-right">
       <span class="status"><i></i>IN DEVELOPMENT</span>
-      <button id="theme-toggle" class="theme-btn" type="button" aria-pressed="false" aria-label="Switch to Obsidian theme (black and gold)" title="Light / Obsidian theme">
+      <button id="theme-toggle" class="theme-btn" type="button" aria-label="Switch to Obsidian theme (black and gold)" title="Light / Obsidian theme">
         <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1a7 7 0 0 0 0 14z" fill="currentColor"/></svg>
       </button>
     </div>
   </div>
 </div>
 
-<nav class="pillnav" id="pillnav" aria-label="Primary">
+<nav class="pillnav" id="pillnav" aria-label="Sections">
   <a class="pill" href="#why"><i class="dot"></i><span>Why</span></a>
   <a class="pill" href="#drivers"><i class="dot"></i><span>Drivers</span></a>
   <a class="pill" href="#business"><i class="dot"></i><span>Business</span></a>
@@ -785,7 +802,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 
 <div id="pathbanner" aria-live="polite"><span id="pathbanner-txt"></span></div>
 <div id="share-toast" class="share-toast" role="status" aria-live="polite" aria-atomic="true"><i aria-hidden="true"></i><span id="share-toast-txt"></span></div>
-<button id="top" aria-label="Back to top">↑</button>
+<button type="button" id="top" aria-label="Back to top">↑</button>
 
 <main class="shell">
 
@@ -855,7 +872,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
     </div>
 
     <div class="dcard accent rv">
-      <blockquote class="pull">“Twelve years of receipts in a shoebox. One rainy viewing. Zero proof.”<cite style="color:var(--text-on-dark-muted)">THE PROBLEM, IN ONE SENTENCE</cite></blockquote>
+      <blockquote class="pull">“Twelve years of receipts in a shoebox. One rainy viewing. Zero proof.”<cite>THE PROBLEM, IN ONE SENTENCE</cite></blockquote>
     </div>
 
     <figure class="figure fig-16x10 rv" style="margin-top:16px">
@@ -865,9 +882,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 
     <!-- Pattern C: split dark/light instrument, always open -->
     <div class="drawer open rv" data-drawer style="margin-top:16px" aria-label="Without Datum versus with Datum, playing">
-      <button class="drawer-sum" aria-expanded="true" aria-controls="tl-body">
+      <button type="button" class="drawer-sum" aria-expanded="true" aria-controls="tl-body">
         <span class="drawer-sum-main">
-          <span class="meta">THE SAME CAR · THE SAME TWENTY YEARS · <b id="tl-live" style="color:var(--bg-accent-primary)">● LIVE</b></span>
+          <span class="meta">THE SAME CAR · THE SAME TWENTY YEARS · <b id="tl-live" style="color:var(--accent-text)">● LIVE</b></span>
           <span class="drawer-sum-title">Watch both pyramids</span>
         </span>
         <span class="chev" aria-hidden="true">＋</span>
@@ -879,7 +896,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
             <div class="tl-verdict" id="tl-count" role="status" aria-live="polite">WATCH BOTH PYRAMIDS</div>
             <input type="range" id="tl-scrub" min="2004" max="2024" step="1" value="2004" aria-label="Scrub through twenty years">
             <div class="tl-actions">
-              <button class="btn ghost" id="tl-play" style="min-height:48px">❚❚ PAUSE THE YEARS</button>
+              <button type="button" class="btn ghost" id="tl-play" style="min-height:48px">❚❚ PAUSE THE YEARS</button>
             </div>
             <div class="tl-duo">
               <div class="tl-col rot">
@@ -901,7 +918,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 
     <!-- Pattern C: expandable ritual tool -->
     <div class="drawer rv" data-drawer>
-      <button class="drawer-sum" aria-expanded="false" aria-controls="plate-body">
+      <button type="button" class="drawer-sum" aria-expanded="false" aria-controls="plate-body">
         <span class="drawer-sum-main">
           <span class="meta">TRY THE RITUAL · PHOTOGRAPH</span>
           <span class="drawer-sum-title">Cover the plate yourself.</span>
@@ -1311,9 +1328,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
         <div class="sublist">
           <span class="meta">Included</span>
           <div class="snap">
-            <span class="tag" style="border-color:var(--hairline-on-dark-color);color:var(--text-on-dark-muted)">Ownership-spanning records</span>
-            <span class="tag" style="border-color:var(--hairline-on-dark-color);color:var(--text-on-dark-muted)">Permission-aware sharing</span>
-            <span class="tag" style="border-color:var(--hairline-on-dark-color);color:var(--text-on-dark-muted)">Preservation-grade storage thinking</span>
+            <span class="tag">Ownership-spanning records</span>
+            <span class="tag">Permission-aware sharing</span>
+            <span class="tag">Preservation-grade storage thinking</span>
           </div>
         </div>
       </article>
@@ -1522,15 +1539,15 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
       </div>
       <div class="ign-ctl rv">
         <div class="row">
-          <button class="ibtn" id="rev">REV</button>
-          <button class="ibtn" id="redline">REDLINE</button>
+          <button type="button" class="ibtn" id="rev">REV</button>
+          <button type="button" class="ibtn" id="redline">REDLINE</button>
         </div>
         <div>
           <input type="range" class="scrub" id="scrub" min="0" max="7200" step="50" value="0" aria-label="Scrub engine speed">
           <div class="scrub-lab"><span>REST</span><b>DRAG TO SCRUB</b><span>7200 RPM</span></div>
         </div>
         <div class="row">
-          <button class="ibtn gold" id="start">START ENGINE →</button>
+          <button type="button" class="ibtn gold" id="start">START ENGINE →</button>
         </div>
         <p class="fine-list">Hold REV or Space to charge, release to score · Enter starts · a game, silent by design.</p>
       </div>
@@ -1831,7 +1848,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 
     <!-- Pattern C: the invitation drawer -->
     <div class="drawer open rv" data-drawer style="margin-top:20px">
-      <button class="drawer-sum" aria-expanded="true" aria-controls="invite-body">
+      <button type="button" class="drawer-sum" aria-expanded="true" aria-controls="invite-body">
         <span class="drawer-sum-main">
           <span class="meta">REQUEST AN INVITATION</span>
           <span class="drawer-sum-title">If this resonates, <em>tell us why.</em></span>
@@ -1851,11 +1868,11 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
               <div class="field">
                 <label for="email">Email address (optional)</label>
                 <input id="email" name="email" type="email" inputmode="email" autocomplete="email" spellcheck="false" placeholder="you@example.com" aria-describedby="email-hint">
+                <span id="email-hint" class="fine" style="margin-top:2px">Optional. Used only to reply. Never sold or shared.</span>
               </div>
               <div class="field">
                 <label for="story">Your story</label>
                 <textarea id="story" name="story" rows="3" maxlength="4000" placeholder="Tell us about a car, a morning, or a moment that meant something."></textarea>
-                <span id="email-hint" class="fine" style="margin-top:2px">Optional. Used only to reply. Never sold or shared.</span>
               </div>
               <label class="file-label">
                 <input type="file" id="images" name="images" accept="image/jpeg,image/webp" multiple hidden>
@@ -2263,10 +2280,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
     function apply(t){
       var obs=(t==='obsidian');
       if(obs)root.setAttribute('data-theme','obsidian');else root.removeAttribute('data-theme');
-      btn.setAttribute('aria-pressed',obs?'true':'false');
       btn.setAttribute('aria-label',obs?'Switch to light theme (stone and vermilion)':'Switch to Obsidian theme (black and gold)');
-      var m=document.querySelector('meta[name="theme-color"]');
-      if(m)m.setAttribute('content',obs?'#0A0A0B':'#E8E6E1');
+      var metas=document.querySelectorAll('meta[name="theme-color"]');
+      for(var i=0;i<metas.length;i++)metas[i].setAttribute('content',obs?'#0A0A0B':'#E8E6E1');
       try{localStorage.setItem('datum_theme',obs?'obsidian':'light')}catch(e){}
     }
     apply(root.getAttribute('data-theme')==='obsidian'?'obsidian':'light');
@@ -2358,6 +2374,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
         var pos=(i-active+total)%total;
         cards[i].setAttribute('data-pos',String(pos));
         cards[i].setAttribute('aria-hidden',pos===0?'false':'true');
+        cards[i].inert = pos!==0;
         cards[i].classList.remove('is-throwing-left','is-throwing-right');
         cards[i].removeAttribute('data-dragging');
         cards[i].style.transform='';

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -18,6 +18,7 @@
 <link rel="mask-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23121212'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23000' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%23000'/%3E%3C/svg%3E" color="%23E63E21">
 <title>Theo · 1991 964 Carrera</title>
 <meta name="description" content="A quieter timeline for cars that matter. Dated entries, long-form text, one image.">
+<meta name="robots" content="noindex,follow">
 <style>
 :root{
   --bg-canvas:#E8E6E1;--bg-surface-elevated:#F4F2EE;--bg-accent-primary:#E63E21;
@@ -58,6 +59,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .brand b{font-size:.95rem;letter-spacing:.02em}
 .brand small{font-size:.68rem;color:var(--text-muted-readable);letter-spacing:.16em}
 .topbar-right{display:flex;align-items:center;gap:8px;flex:0 0 auto}
+.site-back{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted-readable);text-decoration:none;border-bottom:1px dashed var(--dash-outline);padding-bottom:2px;white-space:nowrap}
+.site-back:hover{color:var(--bg-accent-primary);border-color:var(--bg-accent-primary)}
 .now-reading{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.1em;color:var(--text-muted-readable);white-space:nowrap;transition:opacity .25s ease}
 @media (max-width:768px){.now-reading{display:none}}
 .theme-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--pill-outline);background:transparent;color:var(--text-primary);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .35s var(--ease-spring),border-color .25s ease}
@@ -193,8 +196,9 @@ footer .hint{margin-top:6px;font-size:.62rem;opacity:.7}
     <div class="brand"><b>DATUM</b><small>JOURNAL</small></div>
     <div class="topbar-right">
       <span class="now-reading" id="now-reading" aria-live="polite"></span>
+      <a class="site-back" href="/" aria-label="Back to datumatelier.uk">← Datum</a>
       <span class="status"><i></i>LIVE</span>
-      <button id="theme-toggle" class="theme-btn" type="button" aria-pressed="false" aria-label="Switch to Obsidian theme (black and gold)" title="Light / Obsidian theme">
+      <button id="theme-toggle" class="theme-btn" type="button" aria-label="Switch to Obsidian theme (black and gold)" title="Light / Obsidian theme">
         <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 1.5 A6.5 6.5 0 0 1 8 14.5 Z" fill="currentColor"/></svg>
       </button>
     </div>
@@ -203,9 +207,9 @@ footer .hint{margin-top:6px;font-size:.62rem;opacity:.7}
 
 <div class="read-progress" id="read-progress" aria-hidden="true"></div>
 
-<div class="lightbox" id="lightbox" aria-hidden="true">
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image preview" aria-hidden="true">
   <button class="lb-close" id="lb-close" type="button" aria-label="Close image">✕</button>
-  <img id="lb-img" src="" alt="">
+  <img id="lb-img" alt="">
   <div class="lb-cap" id="lb-cap"></div>
 </div>
 
@@ -229,7 +233,7 @@ footer .hint{margin-top:6px;font-size:.62rem;opacity:.7}
     </div>
   </header>
 
-  <div class="filters rv" role="tablist" aria-label="Filter entries">
+  <div class="filters rv" role="group" aria-label="Filter entries">
     <button class="filter on" type="button" data-filter="all" aria-pressed="true">All</button>
     <button class="filter" type="button" data-filter="drive" aria-pressed="false">Drives</button>
     <button class="filter" type="button" data-filter="service" aria-pressed="false">Service</button>
@@ -381,8 +385,8 @@ footer .hint{margin-top:6px;font-size:.62rem;opacity:.7}
   // theme toggle
   (function(){
     var root=document.documentElement,btn=document.getElementById('theme-toggle');
-    function apply(t){if(t==='obsidian'){root.dataset.theme='obsidian';btn.setAttribute('aria-pressed','true');btn.setAttribute('aria-label','Switch to Light theme');}else{root.removeAttribute('data-theme');btn.setAttribute('aria-pressed','false');btn.setAttribute('aria-label','Switch to Obsidian theme (black and gold)');}
-      var m=document.querySelector('meta[name="theme-color"]:not([media])');if(m)m.content=t==='obsidian'?'#0A0A0B':'#E8E6E1';}
+    function apply(t){if(t==='obsidian'){root.dataset.theme='obsidian';btn.setAttribute('aria-label','Switch to light theme (stone and vermilion)');}else{root.removeAttribute('data-theme');btn.setAttribute('aria-label','Switch to Obsidian theme (black and gold)');}
+      var ms=document.querySelectorAll('meta[name="theme-color"]');for(var i=0;i<ms.length;i++)ms[i].setAttribute('content',t==='obsidian'?'#0A0A0B':'#E8E6E1');}
     try{apply(localStorage.getItem('datum_theme')==='obsidian'?'obsidian':'light');}catch(e){apply('light');}
     btn.addEventListener('click',function(){var n=root.getAttribute('data-theme')==='obsidian'?'light':'obsidian';apply(n);try{localStorage.setItem('datum_theme',n);}catch(e){}});
   })();
@@ -491,10 +495,25 @@ footer .hint{margin-top:6px;font-size:.62rem;opacity:.7}
   (function(){
     var lb=document.getElementById('lightbox'),lbImg=document.getElementById('lb-img'),lbCap=document.getElementById('lb-cap'),lbClose=document.getElementById('lb-close');
     if(!lb) return;
-    function open(src,cap){lbImg.src=src;lbCap.textContent=cap||'';lb.classList.add('on');document.body.style.overflow='hidden';}
-    function close(){lb.classList.remove('on');document.body.style.overflow='';}
+    var lastFocus=null;
+    function open(src,cap,trigger){
+      lastFocus=trigger||document.activeElement;
+      lbImg.src=src;lbImg.alt=cap||'Enlarged image';lbCap.textContent=cap||'';
+      lb.removeAttribute('aria-hidden');lb.classList.add('on');document.body.style.overflow='hidden';
+      try{lbClose.focus({preventScroll:true});}catch(e){lbClose.focus();}
+    }
+    function close(){
+      lb.classList.remove('on');document.body.style.overflow='';lb.setAttribute('aria-hidden','true');
+      if(lastFocus&&document.contains(lastFocus)){try{lastFocus.focus({preventScroll:true});}catch(e){}}
+    }
     document.querySelectorAll('.entry-media').forEach(function(m){
-      m.addEventListener('click',function(){open(m.getAttribute('data-lightbox'), (m.getAttribute('data-caption')||'')+'  ·  '+(m.getAttribute('data-credit')||''));});
+      m.setAttribute('role','button');
+      m.tabIndex=0;
+      m.setAttribute('aria-label','Open image: '+(m.getAttribute('data-caption')||'entry image'));
+      m.addEventListener('click',function(){open(m.getAttribute('data-lightbox'), (m.getAttribute('data-caption')||'')+'  ·  '+(m.getAttribute('data-credit')||''), m);});
+      m.addEventListener('keydown',function(e){
+        if(e.key==='Enter'||e.key===' '){e.preventDefault();m.click();}
+      });
     });
     lbClose.addEventListener('click',close);
     lb.addEventListener('click',function(e){if(e.target===lb)close();});

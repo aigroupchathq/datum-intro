@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /feed-prototype.html
+
+Sitemap: https://datumatelier.uk/sitemap.xml
