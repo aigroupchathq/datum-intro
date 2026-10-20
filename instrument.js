@@ -8,6 +8,10 @@
     var d2r = function (d) { return d * Math.PI / 180; };
     var clamp = function (v, a, b) { return v < a ? a : (v > b ? b : v); };
     var lerp = function (a, b, t) { return a + (b - a) * t; };
+    function pad2(n) {
+      n = Math.floor(n) % 100;
+      return (n < 10 ? '0' : '') + n;
+    }
 
     function roundRect(ctx, x, y, w, h, r) {
       var rr = Math.min(r, w / 2, h / 2);
@@ -504,7 +508,7 @@
       }
     };
 
-    Gauge.prototype.drawOdometer = function (ctx, miles, test) {
+    Gauge.prototype.drawOdometer = function (ctx, seconds) {
       var faceR = this.faceR, cx = this.cx, cy = this.cy;
       var th = this.th;
       var w = faceR * 0.70, h = faceR * 0.158;
@@ -530,11 +534,8 @@
 
       var cells = 6;
       var cw = w / cells;
-      var value = test ? 88888.8 : miles;
-      var fixed = Math.max(0, Math.round(value * 10));
-      var digits = String(fixed);
-      while (digits.length < cells) digits = '0' + digits;
-      digits = digits.slice(-cells);
+      var total = Math.max(0, Math.floor(Math.min(seconds || 0, 359999)));
+      var digits = pad2(Math.floor(total / 3600)) + pad2(Math.floor(total / 60) % 60) + pad2(total % 60);
       var fontPx = h * 0.78;
 
       for (var i = 0; i < cells; i++) {
@@ -569,13 +570,6 @@
         }
       }
       ctx.restore();
-
-      // decimal marker (between 5th and 6th cell)
-      var mx = x + cw * (cells - 1);
-      ctx.beginPath();
-      ctx.arc(mx, y + h + pad * 0.1, 1.6, 0, TAU);
-      ctx.fillStyle = 'rgba(0,0,0,.5)';
-      ctx.fill();
     };
 
     /* ---- needle ---- */
@@ -689,7 +683,7 @@
         ctx.drawImage(this.ring, 0, 0, S, S);
         ctx.restore();
       }
-      if (this.cfg.odometer) this.drawOdometer(ctx, odoValue, odoTest);
+      if (this.cfg.odometer) this.drawOdometer(ctx, odoValue);
       this.drawNeedle(ctx);
       ctx.drawImage(this.overlay, 0, 0, S, S);
     };
@@ -710,17 +704,37 @@
     odometer: true, odoK: 0.645, odoCaption: false, odoLabelK: 0.762
   });
 
-  var ODO = 1235.0;
   var REV_TARGET = 7250;
-  var state = { rpm: 0, rev: false };
+  var state = { rpm: 0, rev: false, seconds: 0 };
   var raf = 0;
   var last = 0;
-  var paint = function () { tach.render(ODO, false); };
+  var cardVisible = false;
+  var paint = function () { tach.render(state.seconds, false); };
   tach.onResize = paint;
 
   tach.val = 0;
   tach.target = 0;
   paint();
+
+  var lastTime = performance.now();
+  var timeTimer = 0;
+  function startTimer() {
+    lastTime = performance.now();
+    if (timeTimer) return;
+    timeTimer = setInterval(function () {
+      var now = performance.now();
+      if (!document.hidden) state.seconds += (now - lastTime) / 1000;
+      lastTime = now;
+      if (cardVisible) paint();
+    }, 1000);
+  }
+  function stopTimer() {
+    if (timeTimer) {
+      clearInterval(timeTimer);
+      timeTimer = 0;
+    }
+  }
+  startTimer();
 
   function frame(now) {
     var dt = clamp((now - last) / 1000, 0, 0.05);
@@ -795,19 +809,25 @@
   var topBtn = document.getElementById('top');
   if (card && topBtn && typeof IntersectionObserver !== 'undefined') {
     new IntersectionObserver(function (entries) {
-      topBtn.classList.toggle('instrument-near', entries[0].isIntersecting);
+      var visible = entries[0].isIntersecting;
+      if (visible && !cardVisible) paint();
+      cardVisible = visible;
+      topBtn.classList.toggle('instrument-near', visible);
     }, { threshold: 0.35 }).observe(card);
   }
 
   document.addEventListener('visibilitychange', function () {
     if (document.hidden) {
       release();
+      stopTimer();
       if (raf) {
         if (typeof cancelAnimationFrame === 'function') cancelAnimationFrame(raf);
         raf = 0;
       }
-    } else if (!state.rev && Math.abs(tach.val) > 0.5) {
-      kick();
+    } else {
+      startTimer();
+      if (cardVisible) paint();
+      if (!state.rev && Math.abs(tach.val) > 0.5) kick();
     }
   });
 
