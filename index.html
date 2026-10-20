@@ -167,9 +167,6 @@ section.block{scroll-margin-top:84px}
 #pathbanner span{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;letter-spacing:.02em;background:var(--bg-surface-dark);color:var(--text-on-dark);border-radius:var(--radius-pill);padding:8px 8px 8px 14px;box-shadow:var(--shadow-card);max-width:calc(100vw - 24px)}
 #pathbanner span b{color:var(--text-on-dark)}
 #pathbanner button{color:var(--text-on-dark-muted);cursor:pointer;font-size:.8rem;border:var(--hairline-on-dark);border-radius:var(--radius-pill);padding:3px 9px;white-space:nowrap}
-.share-toast{position:fixed;top:64px;left:50%;transform:translateX(-50%) translateY(-8px);z-index:130;display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;background:var(--bg-surface-dark);color:var(--text-on-dark);border:var(--hairline-on-dark);border-radius:var(--radius-pill);padding:9px 15px;box-shadow:var(--shadow-card);opacity:0;pointer-events:none;transition:opacity .25s ease,transform .35s var(--ease-spring);max-width:calc(100vw - 24px);white-space:nowrap}
-.share-toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
-.share-toast i{width:7px;height:7px;border-radius:50%;background:var(--bg-accent-primary);flex:0 0 auto}
 
 /* Bottom pill nav */
 .pillnav{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:100;width:calc(100% - 24px);max-width:440px;background:var(--glass);backdrop-filter:blur(16px);border-radius:var(--radius-pill);padding:6px;display:flex;gap:6px;border:var(--border-hairline);box-shadow:var(--shadow-card)}
@@ -227,10 +224,6 @@ h2.title em{font-style:italic}
 .btn.ghost{background:transparent;color:var(--text-primary);border:1px solid var(--pill-outline)}
 .btn.on-dark{background:var(--text-on-dark);color:var(--text-on-accent)}
 .btn.ghost.on-dark{background:transparent;color:var(--text-on-dark);border-color:var(--hairline-on-dark-color)}
-.btn.share-btn{padding:11px 16px;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;gap:7px;background:rgba(18,18,18,.38);backdrop-filter:blur(6px)}
-.btn.share-btn svg{flex:0 0 auto;color:var(--bg-accent-primary);transition:transform .35s var(--ease-spring)}
-.btn.share-btn:hover svg{transform:rotate(-10deg) scale(1.06)}
-.btn.share-btn[data-copied="true"]{border-color:var(--bg-accent-primary);background:rgba(18,18,18,.78);color:var(--text-on-dark)}
 .cta-row{display:flex;gap:10px;flex-wrap:wrap}
 .snap{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .snap::-webkit-scrollbar{display:none}
@@ -704,7 +697,7 @@ body[data-path="driver"] #drivers,body[data-path="business"] #business{box-shado
   .pillnav,.sheet,.topbar{forced-color-adjust:none}
 }
 @media print{
-  .topbar,.pillnav,.sheet,.sheet-scrim,#progress,#top,.veil,#share-toast,.share-btn,.folio-tabs,.folio-bar{display:none!important}
+  .topbar,.pillnav,.sheet,.sheet-scrim,#progress,#top,.veil,.folio-tabs,.folio-bar{display:none!important}
   .folio-deck{display:flex!important;flex-direction:column!important;padding-bottom:0!important}
   .folio-deck>.folio-card{transform:none!important;opacity:1!important;pointer-events:auto!important;margin-bottom:16px!important}
   body{background:#fff;color:#000}
@@ -787,7 +780,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 </div>
 
 <div id="pathbanner" aria-live="polite"><span id="pathbanner-txt"></span></div>
-<div id="share-toast" class="share-toast" role="status" aria-live="polite" aria-atomic="true"><i aria-hidden="true"></i><span id="share-toast-txt"></span></div>
 <button type="button" id="top" aria-label="Back to top">↑</button>
 
 <main class="shell">
@@ -803,10 +795,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
       <div class="cta-row">
         <a class="btn on-dark" href="#why">Explore the Vision</a>
         <a class="btn ghost on-dark" href="#business">For Automotive Businesses</a>
-        <button class="btn ghost on-dark share-btn" id="share-btn" type="button" aria-label="Share or copy link to Datum">
-          <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M6.5 9.5 9.5 6.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M8.8 10.7 7.4 12.1a2.5 2.5 0 0 1-3.5-3.5l1.4-1.4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M7.2 5.3 8.6 3.9a2.5 2.5 0 0 1 3.5 3.5l-1.4 1.4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-          <span id="share-label">Copy link</span>
-        </button>
       </div>
     </div>
     <span class="credit">PHOTOGRAPH: THEO · UNSPLASH LICENCE</span>
@@ -2237,61 +2225,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
     }
     apply(root.getAttribute('data-theme')==='obsidian'?'obsidian':'light');
     btn.addEventListener('click',function(){apply(root.getAttribute('data-theme')==='obsidian'?'light':'obsidian');});
-  })();
-
-  /* hero share / copy-link affordance */
-  (function(){
-    var btn=document.getElementById('share-btn'),label=document.getElementById('share-label'),
-        toast=document.getElementById('share-toast'),toastTxt=document.getElementById('share-toast-txt');
-    if(!btn)return;
-    var canon=document.querySelector('link[rel="canonical"]');
-    var tTimer=null;
-    function showToast(msg,btnMsg){
-      if(label)label.textContent=btnMsg||'Copied';
-      btn.setAttribute('data-copied','true');
-      if(toast&&toastTxt){
-        toastTxt.textContent=msg;
-        toast.classList.add('on');
-      }
-      clearTimeout(tTimer);
-      tTimer=setTimeout(function(){
-        if(label)label.textContent='Copy link';
-        btn.removeAttribute('data-copied');
-        if(toast)toast.classList.remove('on');
-      },2400);
-    }
-    function fallbackCopy(url){
-      var ta=document.createElement('textarea');
-      ta.value=url;ta.setAttribute('readonly','');
-      ta.style.position='fixed';ta.style.left='-9999px';ta.style.opacity='0';
-      document.body.appendChild(ta);ta.select();
-      var ok=false;
-      try{ok=document.execCommand('copy');}catch(e){}
-      document.body.removeChild(ta);
-      showToast(ok?'Copied · datumatelier.uk':'Link · datumatelier.uk','Copied');
-    }
-    function copyUrl(url){
-      if(navigator.clipboard&&typeof navigator.clipboard.writeText==='function'){
-        navigator.clipboard.writeText(url).then(function(){
-          showToast('Copied · datumatelier.uk','Copied');
-        }).catch(function(){fallbackCopy(url);});
-      }else{
-        fallbackCopy(url);
-      }
-    }
-    btn.addEventListener('click',function(){
-      var url=(canon&&canon.href)||window.location.href;
-      if(typeof navigator.share==='function'&&!window.__datumForceClipboard){
-        navigator.share({title:document.title,text:'Datum — Custodianship. Record. Trust.',url:url})
-          .then(function(){showToast('Shared · datumatelier.uk','Shared');})
-          .catch(function(err){
-            if(err&&err.name==='AbortError')return;
-            copyUrl(url);
-          });
-      }else{
-        copyUrl(url);
-      }
-    });
   })();
 
   /* drivers provenance folio: 3D stack, pointer drag/swipe physics, stepped tabs & record ledger */
