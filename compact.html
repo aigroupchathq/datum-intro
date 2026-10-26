@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Datum Atelier, a custodianship record for cars</title>
-<meta name="description" content="Datum Atelier is an independent automotive software project in development. A custodianship record for cars: identity, service, evidence and continuity, kept with the vehicle.">
+<meta name="description" content="Datum Atelier is an independent automotive software project in development. A proposed custodianship record connecting a car's history, service and supporting evidence.">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#E8E6E1">
 <meta property="og:title" content="Datum Atelier, a custodianship record for cars">
 <meta property="og:description" content="An independent automotive software project in development. A record of the work, the evidence and the people behind a car, kept with the vehicle.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://datumatelier.uk/assets/hero/og-datum-1200x630.jpg">
+<meta property="og:image" content="https://datumatelier.uk/assets/hero/og-compact-1200x630.jpg">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%23121212'/%3E%3Ccircle cx='90' cy='90' r='52' fill='none' stroke='%23E63E21' stroke-width='6'/%3E%3Ccircle cx='90' cy='90' r='14' fill='%23E63E21'/%3E%3C/svg%3E">
 <link rel="preload" href="fonts/Archivo-Var.woff2" as="font" type="font/woff2" crossorigin>
 <script>try{if(localStorage.getItem('datum_theme')==='obsidian')document.documentElement.dataset.theme='obsidian';}catch(e){}</script>
@@ -79,7 +79,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .skip-link{position:absolute;left:-9999px;top:8px;z-index:200;background:var(--bg-surface-dark);color:var(--text-on-dark);padding:12px 16px;border-radius:var(--radius-pill);font-size:.85rem}
 .skip-link:focus{left:16px}
 h1,h2,h3{font-weight:500;letter-spacing:-.035em;line-height:1.05}
-.shell{max-width:560px;margin:0 auto;padding:76px 16px 150px}
+.shell{max-width:560px;margin:0 auto;padding:94px 16px 150px}
 section.block{scroll-margin-top:84px;margin-top:72px}
 @media (min-width:900px){
   .shell{max-width:960px;padding:92px 32px 160px}
@@ -100,14 +100,16 @@ section.block{scroll-margin-top:84px;margin-top:72px}
   .topnav a[aria-current="true"]{color:var(--text-primary);background:var(--bg-canvas);box-shadow:inset 0 0 0 1px var(--pill-outline)}
 }
 .topbar-right{display:flex;align-items:center;gap:8px;flex:0 0 auto}
-.status{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--pill-outline);border-radius:var(--radius-pill);padding:6px 10px;white-space:nowrap;color:var(--text-muted-readable)}
+.status{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.03em;text-transform:uppercase;border:1px solid var(--pill-outline);border-radius:var(--radius-pill);padding:6px 10px;white-space:nowrap;color:var(--text-muted-readable)}
 .status i{width:6px;height:6px;border-radius:50%;background:var(--bg-accent-primary);animation:pulse 2.4s infinite}
 @keyframes pulse{50%{opacity:.3}}
 .theme-btn{width:44px;height:44px;flex:0 0 auto;border-radius:50%;border:1px solid var(--pill-outline);display:inline-flex;align-items:center;justify-content:center;transition:transform .35s var(--ease-spring),border-color .25s ease}
 .theme-btn:hover{border-color:var(--bg-accent-primary)}
 .theme-btn:active{transform:scale(.92)}
 .theme-btn svg{width:16px;height:16px;display:block}
-@media (max-width:400px){.status{display:none}.brand small{font-size:.64rem;letter-spacing:.12em}}
+@media (max-width:400px){.brand small{font-size:.64rem;letter-spacing:.12em}.status{font-size:.65rem;letter-spacing:0;padding:6px 7px}}
+.topbar .inner{min-height:64px}
+@media (max-width:400px){.topbar .inner{gap:5px}.topbar-right{gap:5px}.brand{gap:4px}}
 .pillnav{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:100;width:calc(100% - 24px);max-width:440px;background:var(--bg-canvas);border-radius:var(--radius-pill);padding:6px;display:flex;gap:6px;border:1px solid var(--hairline-color);box-shadow:var(--shadow-card)}
 .pillnav .pill{flex:1 1 0;min-width:0;display:inline-flex;align-items:center;justify-content:center;min-height:44px;border-radius:var(--radius-pill);font-size:.8rem;color:var(--text-primary);border:1px solid var(--pill-outline);white-space:nowrap;transition:transform .35s var(--ease-spring),background-color .25s ease,color .25s ease,border-color .25s ease}
 .pillnav .pill:active{transform:scale(.97)}
@@ -142,7 +144,7 @@ section.block{scroll-margin-top:84px;margin-top:72px}
 .chap-nav a:last-child{text-align:right}
 .chap-nav a span{color:var(--bg-accent-primary)}
 .chapter h2:focus,.contents h2:focus,main:focus{outline:none}
-.fine{font-family:var(--font-mono);font-size:.64rem;letter-spacing:.06em;color:var(--text-muted-readable);line-height:1.7;margin-top:12px}
+.fine{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.02em;color:var(--text-muted-readable);line-height:1.6;margin-top:12px}
 .subtitle{font-size:clamp(1.25rem,4.2vw,1.75rem);line-height:1.12;letter-spacing:-.03em;margin-top:6px}
 
 /* exposed-border information boxes */
@@ -163,7 +165,7 @@ html[data-theme="obsidian"] .cell.dark{border-right-color:var(--hairline-color);
 @media (min-width:900px){.bento{grid-template-columns:repeat(3,minmax(0,1fr))}.bento.proof,.bento.audience{grid-template-columns:1fr 1fr}.bento.what{grid-template-columns:repeat(3,minmax(0,1fr))}}
 
 /* cards and stacked decks */
-.meta{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted-readable)}
+.meta{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted-readable)}
 .arrow{font-size:.9rem;line-height:1}
 .dcard{position:relative;border-radius:var(--radius-card);padding:22px;background:var(--bg-surface-elevated);border:var(--border-hairline);box-shadow:var(--shadow-card);transition:transform .35s var(--ease-spring),background-color .25s ease,border-color .25s ease}
 .dcard.dark{background:var(--bg-surface-dark);color:var(--text-on-dark);border-color:transparent}
@@ -178,7 +180,7 @@ html[data-theme="obsidian"] .cell.dark{border-right-color:var(--hairline-color);
 .dcard.dark .meta{color:var(--text-on-dark-muted)}
 .dcard.accent .meta{color:rgba(10,10,10,.74)}
 .dcard.dark .arrow{color:var(--text-on-dark-muted)}
-.tech-badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--bg-accent-primary);border-radius:var(--radius-pill);padding:4px 8px;color:var(--accent-text);margin-bottom:4px}
+.tech-badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.04em;text-transform:uppercase;border:1px solid var(--bg-accent-primary);border-radius:var(--radius-pill);padding:4px 8px;color:var(--accent-text);margin-bottom:4px}
 .dcard.dark .tech-badge{color:var(--bg-accent-primary)}
 .sublist{margin-top:14px;padding-top:12px;border-top:1px solid var(--hairline-color)}
 .dcard.dark .sublist{border-top-color:var(--hairline-on-dark-color)}
@@ -217,7 +219,9 @@ html[data-theme="obsidian"] .film-card{border-color:var(--hairline-color)}
 
 /* process strip */
 .process{display:grid;grid-template-columns:1fr 1fr;border-top:var(--border-hairline);border-left:var(--border-hairline);border-radius:20px;overflow:hidden;margin-top:18px;background:var(--bg-surface-elevated)}
-.process-step{border-right:var(--border-hairline);border-bottom:var(--border-hairline);padding:15px;min-height:126px;display:flex;flex-direction:column;gap:5px}
+.process-step{position:relative;border-right:var(--border-hairline);border-bottom:var(--border-hairline);padding:15px;min-height:126px;display:flex;flex-direction:column;gap:5px}
+.process-step-icon{position:absolute;right:13px;top:12px;width:30px;height:30px;color:var(--accent-text)}
+.process-step-icon svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .process-step b{font-family:var(--font-mono);font-size:.58rem;letter-spacing:.12em;color:var(--accent-text);font-weight:500}
 .process-step h3{font-size:1rem;line-height:1.15;margin-top:2px}
 .process-step p{font-size:.76rem;line-height:1.45;color:var(--text-muted-readable)}
@@ -325,27 +329,65 @@ html[data-theme="obsidian"] .film-card{border-color:var(--hairline-color)}
 .rv.on{opacity:1;transform:none}
 
 /* hero */
-.hero{position:relative;isolation:isolate;overflow:hidden;border-radius:var(--radius-card);background:var(--bg-surface-dark);color:var(--text-on-dark);min-height:72vh;min-height:72svh;max-height:720px;display:flex;flex-direction:column;justify-content:flex-end;padding:clamp(18px,4vw,30px);box-shadow:var(--shadow-card)}
-.hero-media{position:absolute;inset:0;z-index:-1}
-.hero-media img{width:100%;height:100%;object-fit:cover;animation:kenburns 20s ease-out both}
-@keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.08)}}
-.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(10,10,11,.66) 0%,rgba(10,10,11,.22) 30%,rgba(10,10,11,.40) 62%,rgba(10,10,11,.88) 100%)}
+.hero{position:relative;isolation:isolate;overflow:hidden;border-radius:var(--radius-card);background:radial-gradient(ellipse at 73% 28%,#383530 0%,#1d1c1a 38%,#111110 74%);color:var(--text-on-dark);min-height:min(72svh,620px);display:flex;flex-direction:column;justify-content:flex-end;padding:clamp(18px,4vw,30px);box-shadow:var(--shadow-card)}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;background:repeating-linear-gradient(100deg,transparent 0 90px,rgba(244,242,238,.025) 91px 92px);pointer-events:none}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,#10100f 0%,transparent 65%);pointer-events:none}
+.hero-art{position:absolute;inset:4% 4% auto auto;width:42%;height:33%;z-index:-1;opacity:.9;transform:rotate(-5deg);border:1px solid rgba(244,242,238,.3);background:linear-gradient(145deg,#dedbd2,#a6a398);box-shadow:0 30px 70px rgba(0,0,0,.55);padding:clamp(14px,3vw,28px);color:#24231f;display:flex;flex-direction:column;gap:12px;overflow:hidden}
+.hero-art-top{display:flex;justify-content:space-between;gap:12px;font-family:var(--font-mono);font-size:clamp(.5rem,1vw,.65rem);letter-spacing:.07em;text-transform:uppercase}
+.hero-art-rule{height:1px;background:rgba(36,35,31,.5)}
+.hero-art-mark{width:100%;align-self:center;opacity:.62;margin:auto 0}
+.hero-art-mark svg{display:block;width:100%;height:auto}
+.hero-art::after{content:"ILLUSTRATIVE SPECIMEN";position:absolute;right:8%;top:44%;transform:rotate(-12deg);border:2px solid #a72f20;color:#a72f20;padding:8px 12px;font-family:var(--font-mono);font-size:clamp(.65rem,1.5vw,1rem);letter-spacing:.08em;font-weight:500}
 .hero-body{position:relative;display:flex;flex-direction:column;gap:12px;max-width:560px}
 .hero h1{font-size:clamp(2.4rem,9vw,4.4rem);line-height:.94;letter-spacing:-.045em}
 .hero .tagline{font-family:var(--font-mono);font-size:.64rem;letter-spacing:.18em;color:rgba(244,242,238,.84);text-transform:uppercase;text-shadow:0 1px 10px rgba(0,0,0,.5)}
 .hero .standfirst{color:rgba(244,242,238,.88);font-size:1rem;max-width:60ch}
 .hero .cta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
-.hero .credit{font-family:var(--font-mono);font-size:.52rem;letter-spacing:.14em;color:rgba(244,242,238,.42);margin-top:2px}
+.hero .credit{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.06em;color:rgba(244,242,238,.82);margin-top:2px}
 .hero .cta-row .btn:not(.ghost){background:var(--text-on-dark);color:#0A0A0A}
 html[data-theme="obsidian"] .hero{border:1px solid var(--hairline-color)}
+@media (max-width:599px){.hero-art{inset:4% 6% auto auto;width:77%;height:29%;padding:12px}.hero-art::after{right:4%;top:48%}.hero-body{background:linear-gradient(0deg,rgba(16,16,15,.94),rgba(16,16,15,.5) 75%,transparent);margin:-18px;padding:18px}}
+@media (max-width:380px){.hero-art{width:62%;height:19%;padding:10px}.hero-art::after{display:none}.hero-art-top{font-size:.48rem}.hero-art-mark{margin:auto 0}}
 
 /* marquee */
-.marquee{margin-top:16px;border-radius:var(--radius-pill);border:1px solid var(--hairline-color);background:var(--bg-surface-elevated);overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
-.marquee-track{display:flex;width:max-content;animation:marquee 34s linear infinite}
-.marquee:hover .marquee-track{animation-play-state:paused}
+.marquee{margin-top:16px;border-radius:var(--radius-pill);border:1px solid var(--hairline-color);background:var(--bg-surface-elevated);overflow-x:auto;scrollbar-width:thin}
+.marquee-track{display:flex;width:max-content}
+.marquee-set[aria-hidden="true"]{display:none}
 .marquee-set{display:flex;align-items:center;gap:32px;padding:12px 18px;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap;color:var(--text-muted-readable)}
 .marquee-set .dia{color:var(--bg-accent-primary);font-size:.5rem}
-@keyframes marquee{to{transform:translateX(-50%)}}
+
+/* one record, visible before the contents */
+.specimen{margin-top:48px;display:grid;gap:20px;align-items:center}
+.specimen .sec-head{margin-bottom:0}
+.specimen-plate{background:var(--bg-surface-elevated);border:1px solid var(--hairline-color);border-radius:var(--radius-card);padding:clamp(18px,4vw,30px);box-shadow:var(--shadow-card)}
+.specimen-plate-head{display:flex;justify-content:space-between;gap:12px;align-items:baseline;padding-bottom:14px;border-bottom:1px solid var(--hairline-color)}
+.specimen-plate .specimen-mark{color:var(--accent-text);font-family:var(--font-mono);font-size:.72rem;letter-spacing:.04em}
+.specimen-art{margin:18px 0 0;border:1px solid var(--hairline-color);border-radius:14px;background:var(--bg-canvas);padding:18px 12px 12px}
+.record-flow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;align-items:stretch}
+.record-flow-step{position:relative;min-width:0;min-height:118px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:8px;padding:13px 5px 10px;background:var(--bg-surface-elevated);border:1px solid var(--hairline-color);border-radius:10px;text-align:center}
+.record-flow-step:last-child{background:var(--bg-surface-dark);color:var(--text-on-dark)}
+.record-flow-step+ .record-flow-step::before{content:'→';position:absolute;left:-12px;top:39px;z-index:1;color:var(--accent-text);font-size:1rem;line-height:1;background:var(--bg-canvas);border-radius:50%}
+.record-flow-step svg{display:block;width:min(100%,64px);height:58px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.record-flow-step .record-flow-label{font-family:var(--font-mono);font-size:.65rem;line-height:1.25;color:inherit}
+.specimen-art figcaption{margin-top:10px;font-family:var(--font-mono);font-size:.68rem;line-height:1.45;color:var(--text-muted-readable)}
+.specimen-plate:has(.specimen-details[open]) .record-flow-step:last-child{outline:2px solid var(--bg-accent-primary);outline-offset:2px}
+.specimen-plate h3{font-size:clamp(1.4rem,4vw,2rem);margin:18px 0 12px}
+.specimen-plate p{font-size:.94rem;color:var(--text-muted-readable);line-height:1.6}
+.specimen-details{margin-top:20px;border-top:1px solid var(--hairline-color)}
+.specimen-details[open]{border-top-color:var(--bg-accent-primary)}
+.specimen-details summary{list-style:none;min-height:48px;display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;font-weight:500;color:var(--text-primary)}
+.specimen-details summary::-webkit-details-marker{display:none}
+.specimen-details summary::after{content:'+';color:var(--accent-text);font-size:1.3rem}
+.specimen-details[open] summary::after{content:'−'}
+.specimen-facts{display:grid;gap:10px;padding:12px 0 6px}
+.specimen-facts div{border:1px solid var(--hairline-color);border-radius:12px;padding:10px 12px}
+.specimen-facts dt{font-family:var(--font-mono);font-size:.68rem;color:var(--accent-text);text-transform:uppercase;letter-spacing:.06em}
+.specimen-facts dd{margin-top:4px;font-size:.86rem}
+@media (min-width:700px){.specimen{grid-template-columns:1fr 1.1fr;gap:36px}.specimen-facts{grid-template-columns:1fr 1fr}}
+
+/* small working drawings, not decorative action arrows */
+.cell-icon{display:block;flex:0 0 auto;width:30px;height:30px;color:currentColor;opacity:.8}
+.cell-icon svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 
 /* statement */
 .statement{font-size:clamp(1.7rem,6.4vw,3.5rem);line-height:1.04;letter-spacing:-.04em;font-weight:500;max-width:17ch}
@@ -435,11 +477,11 @@ html[data-theme="obsidian"] .obj.dark{border:1px solid var(--hairline-color)}
 @media (min-width:900px){.invite-grid{grid-template-columns:1fr 1fr;align-items:start;gap:48px}}
 .invite-form{display:flex;flex-direction:column;gap:14px;padding:20px;border-radius:var(--radius-card);border:1px solid var(--hairline-color);background:var(--bg-surface-elevated);box-shadow:var(--shadow-card)}
 .field{display:flex;flex-direction:column;gap:6px}
-.field label{font-family:var(--font-mono);font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted-readable)}
+.field label{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;color:var(--text-muted-readable)}
 .field input,.field textarea{width:100%;background:var(--bg-canvas);border:1px solid var(--pill-outline);border-radius:14px;padding:13px 14px;font:inherit;font-size:.95rem;color:var(--text-primary);min-height:48px;transition:border-color .2s ease}
 .field textarea{min-height:112px;resize:vertical}
 .field input:focus,.field textarea:focus{outline:2px solid var(--bg-accent-primary);outline-offset:2px;border-color:transparent}
-.form-note{font-size:.74rem;line-height:1.6;color:var(--text-muted-readable)}
+.form-note{font-size:.86rem;line-height:1.6;color:var(--text-muted-readable)}
 .form-note.strong{color:var(--text-primary)}
 
 /* footer */
@@ -448,7 +490,7 @@ footer .fbrand{display:flex;align-items:baseline;gap:8px;font-weight:500;letter-
 footer .fbrand b{font-size:1.05rem;letter-spacing:.02em}
 footer .fbrand small{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.18em;color:var(--text-on-dark-muted)}
 footer .fmeta{margin-top:8px;font-size:.82rem;color:var(--text-on-dark-muted)}
-footer .disclaim{margin-top:18px;padding-top:16px;border-top:1px solid var(--hairline-on-dark-color);font-size:.72rem;line-height:1.8;color:var(--text-on-dark-muted)}
+footer .disclaim{margin-top:18px;padding-top:16px;border-top:1px solid var(--hairline-on-dark-color);font-size:.82rem;line-height:1.7;color:var(--text-on-dark-muted)}
 footer .fcopy{margin-top:16px;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-on-dark-muted)}
 .world-link{margin-top:14px;display:inline-flex;align-items:center;gap:8px;background:none;border:0;border-bottom:1px dashed rgba(244,242,238,.3);color:var(--text-on-dark-muted);font-family:var(--font-mono);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;padding:10px 0;min-height:44px;transition:color .25s ease,border-color .25s ease}
 .world-link:hover{color:var(--bg-accent-primary);border-color:var(--bg-accent-primary)}
@@ -468,7 +510,7 @@ html.splash-on{overflow:hidden}
 .splash-count{position:absolute;left:22px;bottom:18px;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.22em;color:rgba(255,255,255,.5);opacity:0;transition:opacity .5s ease .45s,color .3s ease;text-transform:uppercase;white-space:nowrap}
 .splash.on .splash-count{opacity:1}
 .splash-count.locked{color:#fff}
-.splash-skip{position:absolute;right:18px;bottom:14px;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.65);font-family:var(--font-mono);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;padding:8px 13px;border-radius:var(--radius-pill);opacity:0;transition:opacity .4s ease .55s,color .25s ease,border-color .25s ease,background-color .25s ease}
+.splash-skip{position:absolute;right:18px;bottom:14px;min-height:44px;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.4);color:#fff;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;padding:8px 13px;border-radius:var(--radius-pill);opacity:0;transition:opacity .4s ease .55s,color .25s ease,border-color .25s ease}
 .splash.on .splash-skip{opacity:1}
 .splash-skip:hover{color:#fff;border-color:rgba(255,255,255,.6)}
 .splash-skip:focus-visible{outline:2px solid #fff;outline-offset:2px}
@@ -481,11 +523,8 @@ html.splash-on{overflow:hidden}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .rv{opacity:1!important;transform:none!important}
-  .hero-media img{animation:none}
   .statement .w{opacity:1!important;transition:none}
   .rv{transition:none}
-  .marquee-track{animation:none}
-  .marquee-set[aria-hidden="true"]{display:none}
   .status i{animation:none}
   .btn,.obj,.film-btn,.theme-btn,.pillnav .pill{transition:none}
 }
@@ -519,7 +558,7 @@ html.splash-on{overflow:hidden}
 
 <header class="topbar">
   <div class="inner">
-    <a class="brand" href="#contents" aria-label="Datum Atelier, contents"><b>DATUM</b><small>ATELIER</small></a>
+    <a class="brand" href="#contents"><b>DATUM</b><small>ATELIER</small></a>
     <nav class="topnav" aria-label="Primary">
       <a href="#contents">Contents</a>
       <a href="#what">What</a>
@@ -542,22 +581,25 @@ html.splash-on{overflow:hidden}
 
   <div id="home-view">
   <header class="hero" id="top-hero">
-    <div class="hero-media">
-      <img src="assets/hero/hero_1600.webp" srcset="assets/hero/hero_960.webp 960w, assets/hero/hero_1600.webp 1600w, assets/hero/hero_2560.webp 2560w" sizes="(max-width:600px) 100vw, (max-width:900px) 560px, 960px" alt="A car parked in the garage of a house." fetchpriority="high" width="2560" height="1440">
+    <div class="hero-art" aria-hidden="true">
+      <div class="hero-art-top"><span>Datum Atelier</span><span>Vehicle record</span></div>
+      <div class="hero-art-rule"></div>
+      <span class="hero-art-mark"><svg viewBox="0 0 600 220" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" aria-hidden="true"><path d="M34 153 Q55 142 115 135 L174 72 Q190 54 229 52 H353 Q391 53 420 81 L472 129 Q535 136 561 146 L574 157 V179 H539 M466 179 H169 M95 179 H30 V159 Z"/><path d="M131 132 L187 78 Q201 64 233 63 H302 V129 Z M314 63 H350 Q379 64 405 88 L451 131 H314 Z M44 151 H116 M474 137 L549 149"/><circle cx="132" cy="179" r="37"/><circle cx="502" cy="179" r="37"/><circle cx="132" cy="179" r="16"/><circle cx="502" cy="179" r="16"/></svg></span>
+      <div class="hero-art-rule"></div>
     </div>
     <div class="hero-body">
       <h1>OWNERSHIP FADES.<br>CUSTODIANSHIP HOLDS.</h1>
       <p class="tagline">Built for those who keep cars alive</p>
-      <p class="standfirst">Datum is a custodianship record for cars. It keeps the work, the evidence and the people behind a car together, so its history survives the handover.</p>
+      <p class="standfirst">Datum is a custodianship record for cars in development. It is designed to keep the work, the evidence and the people behind a car together through each handover.</p>
       <div class="cta-row">
         <a class="btn" href="#contents">Read the chapters</a>
-        <button class="btn ghost js-film" type="button">Play the film ◆</button>
+        <button class="btn ghost js-film" type="button" aria-label="Play the film">Play the film</button>
       </div>
-      <span class="credit">PHOTOGRAPH: THEO, UNSPLASH LICENCE</span>
+      <span class="credit">Illustrative record, not a customer vehicle</span>
     </div>
   </header>
 
-  <div class="marquee" aria-hidden="true">
+  <div class="marquee" role="region" aria-label="Datum principles, scroll sideways to read" tabindex="0">
     <div class="marquee-track">
       <div class="marquee-set">
         <span>Ownership fades</span><span class="dia">◆</span>
@@ -578,28 +620,45 @@ html.splash-on{overflow:hidden}
     </div>
   </div>
 
+  <section class="specimen" aria-labelledby="specimen-title">
+    <div class="sec-head">
+      <div class="eyebrow">One car, one record</div>
+      <h2 class="title" id="specimen-title">The work stays <em>with the car.</em></h2>
+      <p class="lede">A receipt tells you what was paid. The record should also explain what was done, who noted it, and what supports the entry.</p>
+      <p class="fine">Illustrative specimen. Not a real customer, vehicle or transaction.</p>
+      <a class="card-link" href="#record">See the four plates <span class="arrow" aria-hidden="true">→</span></a>
+    </div>
+    <article class="specimen-plate">
+      <div class="specimen-plate-head"><span class="meta">Specimen record 02 / 04</span><span class="specimen-mark">Illustrative</span></div>
+      <figure class="specimen-art">
+        <div class="record-flow" aria-hidden="true">
+          <div class="record-flow-step"><svg viewBox="0 0 64 58"><path d="M11 3 H42 L52 13 V54 H11 Z M42 3 V13 H52 M19 24 H44 M19 31 H44 M19 38 H35 M19 45 H30"/></svg><span class="record-flow-label">Work noted</span></div>
+          <div class="record-flow-step"><svg viewBox="0 0 64 58"><path d="M5 15 H59 V50 H5 Z M10 15 L16 7 H48 L54 15 M14 41 L25 29 L32 35 L40 26 L51 41 Z"/><circle cx="20" cy="23" r="3"/></svg><span class="record-flow-label">Material kept</span></div>
+          <div class="record-flow-step"><svg viewBox="0 0 64 58"><path d="M4 37 L9 27 L22 24 L28 15 H43 L49 24 L58 28 L61 37 V45 H4 Z M23 24 H48 M10 45 H55"/><circle cx="16" cy="45" r="4"/><circle cx="49" cy="45" r="4"/></svg><span class="record-flow-label">Car's history</span></div>
+        </div>
+        <figcaption>Work, supporting material and car, shown as a concept. No real service is pictured.</figcaption>
+      </figure>
+      <h3>Valve clearance and inspection</h3>
+      <p>In this imagined service, a specialist notes the work at the ramp. An example measurement sheet and photographs would stay beside it.</p>
+      <details class="specimen-details">
+        <summary>Inspect the illustrative evidence</summary>
+        <dl class="specimen-facts">
+          <div><dt>Source</dt><dd>Imagined independent specialist</dd></div>
+          <div><dt>Support</dt><dd>Example clearance sheet and four ramp photographs</dd></div>
+          <div><dt>Record state</dt><dd>Illustrative, not independently corroborated</dd></div>
+          <div><dt>Continuity</dt><dd>Designed to stay with the vehicle</dd></div>
+        </dl>
+      </details>
+    </article>
+  </section>
+
   <section class="block contents" id="contents">
     <div class="sec-head rv">
       <div class="eyebrow">What Datum is</div>
       <h2 class="title">A custodianship record <em>for cars.</em></h2>
-      <p class="lede">Datum connects the car, its custodian and its real operating history. Ownership, service, evidence and memory live together, attached to the vehicle instead of scattered across receipts and messages.</p>
+      <p class="lede">The aim is to connect a car, its custodian and its history. Service, evidence and memory would stay with the vehicle instead of getting lost among receipts and messages.</p>
     </div>
-    <div class="bento what rv">
-      <div class="cell accent">
-        <span class="cell-top"><span class="meta">01, Record</span><span class="arrow" aria-hidden="true">↗</span></span>
-        <span class="cell-bot"><span class="cell-title">One dated history</span><span class="cell-desc">Identity, ownership, mileage and service, kept in order.</span></span>
-      </div>
-      <div class="cell">
-        <span class="cell-top"><span class="meta">02, Evidence</span><span class="arrow" aria-hidden="true">↗</span></span>
-        <span class="cell-bot"><span class="cell-title">Evidence, not claims</span><span class="cell-desc">Invoices, photographs and measurements attached at source.</span></span>
-      </div>
-      <div class="cell dark">
-        <span class="cell-top"><span class="meta">03, Continuity</span><span class="arrow" aria-hidden="true">↗</span></span>
-        <span class="cell-bot"><span class="cell-title">Private by default</span><span class="cell-desc">Nothing shares until the custodian decides.</span></span>
-      </div>
-    </div>
-
-    <div class="sec-head rv" style="margin-top:36px">
+    <div class="sec-head rv" style="margin-top:24px">
       <div class="eyebrow">Contents</div>
       <h2 class="title">Eight chapters, <em>one at a time.</em></h2>
       <p class="lede">No long scroll. Choose a chapter, or follow the next link at the end of each one.</p>
@@ -621,18 +680,23 @@ html.splash-on{overflow:hidden}
     <div class="sec-head rv">
       <div class="eyebrow">01, What Datum is</div>
       <h2 class="statement" id="statement">Without Datum, history rots. With Datum, it holds.</h2>
-      <p class="lede">The same car, the same twenty years, two fates watched side by side.</p>
+      <p class="lede">A car can be cared for over decades and still arrive with a story full of gaps.</p>
     </div>
     <div class="dcard accent rv" style="margin-top:18px">
-      <blockquote class="pull">“Twelve years of receipts in a shoebox. One rainy viewing. Zero proof.”<cite>The problem, in one sentence</cite></blockquote>
+      <blockquote class="pull">“The receipt survived. The reason for the repair did not.”<cite>An illustrative problem, not a customer quote</cite></blockquote>
     </div>
     <figure class="figure rv">
       <img src="assets/automotive/two_fates.webp" alt="Two classic Jaguars: one decaying, one kept. Photograph: Dietmar Becker. Demonstration imagery." loading="lazy" decoding="async" width="1280" height="640">
       <figcaption>Same marque, two fates. Photo: Dietmar Becker. Demonstration imagery.</figcaption>
     </figure>
     <div class="story-copy rv">
-      <p>Datum is a custodianship record for cars. It keeps identity, ownership, service, evidence and memory attached to the vehicle, in one dated history that survives the handover.</p>
+      <p>Datum is a custodianship record for cars in development. The aim is to keep identity, service, evidence and memory attached to the vehicle, in one dated history that survives a handover.</p>
       <p>It is not a marketplace, a social feed or a government registry. It is the layer underneath: a private record of what happened, who did the work, and what supports the claim.</p>
+    </div>
+    <div class="bento what rv" style="margin-top:24px">
+      <div class="cell accent"><span class="cell-top"><span class="meta">01, Record</span><span class="cell-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="11"/><path d="M16 8 V16 L21 19 M5 16 H3 M29 16 H27"/></svg></span></span><span class="cell-bot"><span class="cell-title">One dated history</span><span class="cell-desc">Identity, ownership, mileage and service, kept in order.</span></span></div>
+      <div class="cell"><span class="cell-top"><span class="meta">02, Evidence</span><span class="cell-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M7 4 H20 L25 9 V28 H7 Z M20 4 V10 H25 M11 16 H21 M11 20 H21 M11 24 H17"/></svg></span></span><span class="cell-bot"><span class="cell-title">Evidence beside the entry</span><span class="cell-desc">Invoices, photographs and measurements kept beside what they support.</span></span></div>
+      <div class="cell dark"><span class="cell-top"><span class="meta">03, Continuity</span><span class="cell-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M7 13 H25 V27 H7 Z M11 13 V9 A5 5 0 0 1 21 9 V13 M16 18 V22"/></svg></span></span><span class="cell-bot"><span class="cell-title">Private by design</span><span class="cell-desc">Sharing should always be the custodian's decision.</span></span></div>
     </div>
     <div class="bento proof rv">
       <div class="cell accent">
@@ -645,7 +709,7 @@ html.splash-on{overflow:hidden}
       </div>
       <div class="cell">
         <span class="cell-top"><span class="meta">03</span><span class="arrow" aria-hidden="true">↗</span></span>
-        <span class="cell-bot"><span class="cell-title">Survives signal loss</span><span class="cell-desc">Offline work waits, verifies, then confirms.</span></span>
+        <span class="cell-bot"><span class="cell-title">Offline work, planned</span><span class="cell-desc">The design calls for work to wait for a connection before confirmation.</span></span>
       </div>
       <div class="cell dark">
         <span class="cell-top"><span class="meta">04</span><span class="arrow" aria-hidden="true">↗</span></span>
@@ -677,14 +741,14 @@ html.splash-on{overflow:hidden}
     <div class="sec-head rv">
       <div class="eyebrow">02, The record</div>
       <h2 class="title">Four plates <em>from one car's life.</em></h2>
-      <p class="lede">An illustrative specimen, not a customer. Swipe the deck, use the tabs, or open a ledger to see what a record entry holds.</p>
+      <p class="lede">An illustrative specimen, not a customer. Use the tabs or swipe the deck. Open a ledger to see what could sit beside an entry.</p>
     </div>
     <div class="dcard dark folio-quote rv" style="margin-top:18px">
       <div class="folio-quote-head">
         <span>Custodian dossier, specimen 1991 coupé</span>
         <span class="fq-badge"><i aria-hidden="true"></i><span id="folio-quote-badge">PLATE 01 / 04,  ACQUISITION</span></span>
       </div>
-      <blockquote class="pull">“The car finally had papers that couldn't get lost, wet, or doubted.”<cite>Illustrative custodian</cite></blockquote>
+       <p class="pull">Four moments from an imagined car's life. An entry has a source; supporting material belongs beside the claim.</p>
     </div>
 
     <div class="folio-wrap rv" id="drivers-folio">
@@ -837,28 +901,28 @@ html.splash-on{overflow:hidden}
     <div class="sec-head rv">
       <div class="eyebrow">03, How it works</div>
       <h2 class="title">From garage to workshop, <em>one record.</em></h2>
-      <p class="lede">Datum connects the car, its custodian and its real operating history. Three ideas and one journey.</p>
+      <p class="lede">The proposed record connects the car, its custodian and its operating history. Three ideas and one journey.</p>
     </div>
     <div class="bento rv">
       <div class="cell accent">
         <span class="cell-top"><span class="meta">01, Provenance</span><span class="arrow" aria-hidden="true">↗</span></span>
-        <span class="cell-bot"><span class="cell-title">Complete provenance</span><span class="cell-desc">Ownership, verified events and service records connected into one dated timeline. The real operating history, not a folder of receipts.</span></span>
+        <span class="cell-bot"><span class="cell-title">A history with its sources</span><span class="cell-desc">Ownership, service entries and supporting material belong on one dated timeline, with each claim kept distinct from its evidence.</span></span>
       </div>
       <div class="cell">
         <span class="cell-top"><span class="meta">02, Workshop</span><span class="arrow" aria-hidden="true">↗</span></span>
-        <span class="cell-bot"><span class="cell-title">Workshop integration</span><span class="cell-desc">An authenticated QR passport links the car to its profile. Work is recorded at the ramp by the technician or owner, against the vehicle.</span></span>
+        <span class="cell-bot"><span class="cell-title">Workshop integration</span><span class="cell-desc">A proposed QR passport would link the car to its profile. Work could be recorded at the ramp by the technician or owner, against the vehicle.</span></span>
       </div>
       <div class="cell dark">
         <span class="cell-top"><span class="meta">03, Ecosystem</span><span class="arrow" aria-hidden="true">↗</span></span>
-        <span class="cell-bot"><span class="cell-title">A wider ecosystem</span><span class="cell-desc">The workshop record is one part of the whole: living biography, private memories and lifelong preservation, anchored to the same car.</span></span>
+        <span class="cell-bot"><span class="cell-title">More than a service book</span><span class="cell-desc">Workshop entries, private memories and the next handover belong in the same car's story, with permission deciding what travels.</span></span>
       </div>
     </div>
 
     <div class="process rv" aria-label="From garage to workshop in four steps">
-      <div class="process-step"><b>01</b><h3>The car</h3><p>Kept in the garage, used on the road.</p></div>
-      <div class="process-step"><b>02</b><h3>QR passport</h3><p>An authenticated link between car and record.</p></div>
-      <div class="process-step"><b>03</b><h3>The work</h3><p>Service documented at the ramp, attributed at source.</p></div>
-      <div class="process-step"><b>04</b><h3>The record</h3><p>Evidence attached. Continuity preserved.</p></div>
+      <div class="process-step"><b>01</b><span class="process-step-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M4 20 L7 15 H24 L28 20 V25 H4 Z M10 15 L13 11 H21 L24 15"/><circle cx="10" cy="25" r="2"/><circle cx="23" cy="25" r="2"/></svg></span><h3>The car</h3><p>Kept in the garage, used on the road.</p></div>
+      <div class="process-step"><b>02</b><span class="process-step-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M4 11 V4 H11 M21 4 H28 V11 M28 21 V28 H21 M11 28 H4 V21 M9 9 H13 V13 H9 Z M19 9 H23 V13 H19 Z M9 19 H13 V23 H9 Z M19 19 V23 H23"/></svg></span><h3>QR passport</h3><p>A proposed link between car and record.</p></div>
+      <div class="process-step"><b>03</b><span class="process-step-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M21 5 A7 7 0 0 0 14 14 L5 23 A3 3 0 0 0 9 27 L18 18 A7 7 0 0 0 27 11 L23 15 L18 14 L17 9 Z"/></svg></span><h3>The work</h3><p>Service documented at the ramp, attributed at source.</p></div>
+      <div class="process-step"><b>04</b><span class="process-step-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M7 4 H21 L26 9 V28 H7 Z M21 4 V9 H26 M11 15 H22 M11 20 H22 M11 25 H18"/></svg></span><h3>The record</h3><p>Evidence beside the entry. A history designed to last.</p></div>
     </div>
     <p class="fine rv">Demonstration flow. QR passports are a design direction, not a live capability.</p>
 
@@ -945,14 +1009,14 @@ html.splash-on{overflow:hidden}
     <div class="sec-head rv" style="margin-top:32px">
       <div class="eyebrow">Datum capabilities</div>
       <h2 class="subtitle">Advanced systems, <em>still in development.</em></h2>
-      <p class="lede">Datum is not only a record. Two connected systems are in active development. Both are early directions, not customer deployments.</p>
+      <p class="lede">The record is the starting point. These connected systems are engineering directions under exploration, not customer deployments.</p>
     </div>
     <div class="duo">
       <article class="dcard dark rv">
         <span class="dcard-top"><span class="meta">ADAS</span><span class="arrow" aria-hidden="true">→</span></span>
         <span class="tech-badge">Early technology preview, SAE Level 0</span>
         <h3>Datum ADAS</h3>
-        <p>An early preview of driver assistance that projects the car's own information into the windshield, with no subscription fees and no data harvesting. Navigation, diagnostics and custodianship data rendered inside the vehicle.</p>
+         <p>An early direction for presenting the car's own information in the windshield. The design aims to avoid subscription fees and data harvesting. Navigation, diagnostics and custodianship information are the intended focus.</p>
         <div class="sublist">
           <span class="meta">Direction</span>
           <div class="taglist">
@@ -967,7 +1031,7 @@ html.splash-on{overflow:hidden}
         <span class="dcard-top"><span class="meta">Vision intelligence</span><span class="arrow" aria-hidden="true">→</span></span>
         <span class="tech-badge">In development</span>
         <h3>Vision intelligence</h3>
-        <p>Computer vision on the device that sees what the car sees. Object detection and scene understanding processed locally, never streamed to a cloud. The car's eyes become part of its record.</p>
+         <p>Exploring computer vision that processes object detection and scene understanding on the device rather than streaming footage to a cloud. This remains an engineering direction, not a deployed feature.</p>
         <div class="sublist">
           <span class="meta">Direction</span>
           <div class="taglist">
@@ -1024,7 +1088,7 @@ html.splash-on{overflow:hidden}
         <span class="meta">Short film</span>
         <h3>Motor World</h3>
         <p>A short film about the car as a place where people gather, and the reason a record is worth keeping.</p>
-        <button class="film-btn js-film" type="button">Play the film ◆</button>
+        <button class="film-btn js-film" type="button" aria-label="Play the film">Play the film</button>
       </div>
     </div>
     <div class="chap-nav">
@@ -1139,7 +1203,7 @@ html.splash-on{overflow:hidden}
       <div class="sec-head rv" style="margin-bottom:0">
         <div class="eyebrow">Request an invitation</div>
         <h3 class="subtitle">If this resonates, <em>tell us why.</em></h3>
-        <p class="lede">The form is a preview. It shows the interaction without collecting anything.</p>
+        <p class="lede">This is a form preview. It does not send an invitation request or collect your details.</p>
       </div>
       <form class="invite-form rv" id="invite-form" novalidate>
         <div class="field">
@@ -1154,7 +1218,7 @@ html.splash-on{overflow:hidden}
           <label for="if-note">The car, or the workshop</label>
           <textarea id="if-note" name="note" placeholder="A sentence is enough."></textarea>
         </div>
-        <button class="btn" type="submit">Send</button>
+        <button class="btn" type="submit">Preview response</button>
         <p class="form-note" id="form-note" role="status" aria-live="polite">Preview only. Nothing leaves your device yet.</p>
       </form>
     </div>
@@ -1166,7 +1230,7 @@ html.splash-on{overflow:hidden}
 
   <footer>
     <div class="fbrand"><b>DATUM</b><small>ATELIER</small></div>
-    <button class="world-link js-film" type="button" id="replay-world" aria-label="Replay the Datum world">One more time ◆</button>
+    <button class="world-link js-film" type="button" id="replay-world">Replay the film</button>
     <p class="fmeta">An independent project in development. Seeking thoughtful feedback and future collaborators.</p>
     <p class="disclaim">Datum is not a vehicle ownership registry, government database, inspection authority or certified verification network. Illustrative studies are not customer deployments. Nothing you type on this page leaves your device.</p>
     <p class="fcopy">Copyright &copy; 2026 Datum Atelier</p>
@@ -1181,9 +1245,6 @@ html.splash-on{overflow:hidden}
   <a class="pill" href="#invite">Talk</a>
 </nav>
 
-<script src="instrument.js?v=1"></script>
-<script src="network.js?v=1"></script>
-<script src="folio.js?v=1"></script>
 <script src="splash-unity.js?v=5"></script>
 <script>
 (function(){
@@ -1251,6 +1312,16 @@ html.splash-on{overflow:hidden}
   var chapterNames={what:'What Datum is',record:'The record',method:'How it works',workshops:'For workshops',studies:'Studies',network:'Network',ignition:'Instrument',invite:'Invitation'};
   var navLinks=[].slice.call(document.querySelectorAll('.topnav a, .pillnav a'));
   var stmtTimers=[];
+  var chapterScripts={record:'folio.js?v=1',network:'network.js?v=1',ignition:'instrument.js?v=1'};
+  var loadedScripts={};
+  function loadChapterScript(id){
+    if(!chapterScripts[id]||loadedScripts[id])return;
+    loadedScripts[id]=true;
+    var script=document.createElement('script');
+    script.src=chapterScripts[id];
+    script.onerror=function(){loadedScripts[id]=false;};
+    document.body.appendChild(script);
+  }
 
   function setCurrent(id){
     navLinks.forEach(function(a){
@@ -1292,6 +1363,7 @@ html.splash-on{overflow:hidden}
     }else{
       setCurrent(id);
       document.title=(chapterNames[id]||'Chapter')+', Datum Atelier';
+      loadChapterScript(id);
     }
     window.scrollTo(0,0);
     if(homeView&&id==='contents'&&contents){
@@ -1322,7 +1394,7 @@ html.splash-on{overflow:hidden}
     form.addEventListener('submit',function(e){
       e.preventDefault();
       if(note){
-        note.textContent='Preview only. Nothing has left this device. Connect a private backend to receive notes.';
+        note.textContent='This is only a preview. Nothing was sent and no invitation request was made.';
         note.classList.add('strong');
       }
     });
