@@ -6,66 +6,80 @@
 <title>Datum Atelier, a custodianship record for cars</title>
 <meta name="description" content="Datum Atelier is an independent automotive software project in development. A proposed custodianship record connecting a car's history, service and supporting evidence.">
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#E8E6E1">
+<meta name="theme-color" content="#08090A">
 <meta property="og:title" content="Datum Atelier, a custodianship record for cars">
 <meta property="og:description" content="An independent automotive software project in development. A record of the work, the evidence and the people behind a car, kept with the vehicle.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://datumatelier.uk/assets/hero/og-compact-1200x630.jpg">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%23121212'/%3E%3Ccircle cx='90' cy='90' r='52' fill='none' stroke='%23E63E21' stroke-width='6'/%3E%3Ccircle cx='90' cy='90' r='14' fill='%23E63E21'/%3E%3C/svg%3E">
 <link rel="preload" href="fonts/Archivo-Var.woff2" as="font" type="font/woff2" crossorigin>
-<script>try{if(localStorage.getItem('datum_theme')==='obsidian')document.documentElement.dataset.theme='obsidian';}catch(e){}</script>
+<script>(function(){var t='obsidian';try{if(localStorage.getItem('datum_theme')==='light')t='light';}catch(e){}if(t==='obsidian')document.documentElement.dataset.theme='obsidian';})();</script>
 <style>
 @font-face{font-family:"Archivo";font-weight:100 900;font-style:normal;font-display:swap;src:url(fonts/Archivo-Var.woff2) format("woff2")}
 @font-face{font-family:"Archivo";font-weight:100 900;font-style:italic;font-display:swap;src:url(fonts/Archivo-Ital-Var.woff2) format("woff2")}
+@font-face{font-family:"Inter";font-weight:100 900;font-style:normal;font-display:swap;src:url(fonts/Inter-Var.woff2) format("woff2")}
 @font-face{font-family:"IBM Plex Mono";font-weight:400;font-style:normal;font-display:swap;src:url(fonts/IBMPlexMono-400.woff2) format("woff2")}
 @font-face{font-family:"IBM Plex Mono";font-weight:500;font-style:normal;font-display:swap;src:url(fonts/IBMPlexMono-500.woff2) format("woff2")}
 
+/* Mileage Spine tokens. Porcelain Gallery (light) under :root, The Atelier (dark) under data-theme="obsidian".
+   Values follow the Mileage Spine theme report (11 Nov 2026), including the muted-label fix (#8A8A93 dark, #6B6B6B light). */
 :root{
-  --bg-canvas:#E8E6E1;
-  --bg-surface-elevated:#F4F2EE;
-  --bg-accent-primary:#E63E21;
-  --bg-surface-dark:#121212;
-  --text-primary:#121212;
-  --text-muted:rgba(18,18,18,.55);
-  --text-muted-readable:rgba(18,18,18,.72);
-  --text-on-dark:#F4F2EE;
-  --text-on-dark-muted:rgba(244,242,238,.62);
-  --text-on-accent:#0A0A0A;
-  --accent-text:#B32A12;
-  --hairline-color:rgba(18,18,18,.12);
-  --hairline-on-dark-color:rgba(244,242,238,.14);
+  --bg-canvas:#F6F6F6;
+  --bg-surface-elevated:#FFFFFF;
+  --bg-raised:#F0F0F0;
+  --bg-accent-primary:#855E0B;
+  --bg-surface-dark:#F0F0F0;
+  --text-primary:#0A0A0A;
+  --text-muted:#6B6B6B;
+  --text-muted-readable:#525252;
+  --text-on-dark:#0A0A0A;
+  --text-on-dark-muted:#525252;
+  --text-on-accent:#FFFFFF;
+  --accent-text:#855E0B;
+  --spine:#A8323C;
+  --btn-bg:#0A0A0A;
+  --btn-text:#FFFFFF;
+  --error:#DC2626;
+  --hairline-color:#E2E2E2;
+  --hairline-on-dark-color:#E2E2E2;
   --border-hairline:1px solid var(--hairline-color);
-  --dash-outline:rgba(18,18,18,.24);
-  --pill-outline:rgba(18,18,18,.2);
-  --glass:rgba(232,230,225,.85);
-  --radius-card:24px;
-  --radius-pill:9999px;
+  --dash-outline:#D4D4D4;
+  --pill-outline:#D4D4D4;
+  --control-outline:#8C8C8C;
+  --glass:#F6F6F6;
+  --radius-card:6px;
+  --radius-pill:6px;
   --ease-spring:cubic-bezier(0.22,1,0.36,1);
-  --font-sans:'Archivo','Inter',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --font-display:'Archivo',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --font-sans:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
   --font-mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-  --shadow-card:0 24px 60px -34px rgba(18,18,18,.55);
+  --shadow-card:none;
 }
 html[data-theme="obsidian"]{
-  --bg-canvas:#0A0A0B;
-  --bg-surface-elevated:#17171A;
-  --bg-accent-primary:#C5A059;
-  --bg-surface-dark:#000000;
-  --text-primary:#F5F5F7;
-  --text-muted:rgba(245,245,247,.55);
-  --text-muted-readable:rgba(245,245,247,.74);
-  --text-on-dark:#F5F5F7;
-  --text-on-dark-muted:rgba(245,245,247,.62);
-  --text-on-accent:#141414;
-  --accent-text:#C5A059;
-  --hairline-color:rgba(245,245,247,.14);
-  --hairline-on-dark-color:rgba(245,245,247,.16);
+  --bg-canvas:#08090A;
+  --bg-surface-elevated:#121316;
+  --bg-raised:#181A1F;
+  --bg-accent-primary:#D4AF37;
+  --bg-surface-dark:#121316;
+  --text-primary:#FFFFFF;
+  --text-muted:#8A8A93;
+  --text-muted-readable:#A1A1AA;
+  --text-on-dark:#FFFFFF;
+  --text-on-dark-muted:#A1A1AA;
+  --text-on-accent:#08090A;
+  --accent-text:#D4AF37;
+  --spine:#E06C75;
+  --btn-bg:#FFFFFF;
+  --btn-text:#08090A;
+  --error:#F87171;
+  --hairline-color:#24262E;
+  --hairline-on-dark-color:#24262E;
   --border-hairline:1px solid var(--hairline-color);
-  --dash-outline:rgba(245,245,247,.22);
-  --pill-outline:rgba(245,245,247,.24);
-  --glass:rgba(10,10,11,.82);
-  --shadow-card:0 24px 60px -34px rgba(0,0,0,.9);
-  --radius-card:24px;
-  --radius-pill:9999px;
+  --dash-outline:#2E3039;
+  --pill-outline:#2E3039;
+  --control-outline:#6E707A;
+  --glass:#08090A;
+  --shadow-card:none;
 }
 
 *{margin:0;padding:0;box-sizing:border-box}
@@ -520,6 +534,108 @@ html.splash-on{overflow:hidden}
 .splash-still b{display:block;font-family:var(--font-mono);font-weight:500;font-size:clamp(1rem,3vw,1.3rem);letter-spacing:.28em;color:#fff}
 .splash-still span{margin-top:16px;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.2em;color:rgba(244,242,238,.5);text-transform:uppercase}
 
+/* ===== Mileage Spine layer =====
+   Quiet instrument: flat surfaces, 1px hairlines, one 6px radius, no gradients, glows or shadows.
+   Gold = focus, status and sample marks. Crimson (--spine) = the car's life line through the record plates only.
+   White/black = the main action. Labels never below 12px, body never below 14px. */
+body{font-family:var(--font-sans);letter-spacing:0}
+h1,h2,h3,.title,.subtitle,.statement,.pull,.brand,.btn,.cell-title,.toc-t,.dcard h3,.obj h3,.step h3,.study-card h3,.specimen-plate h3,footer .fbrand{font-family:var(--font-display)}
+h1,h2,h3,.title,.statement{font-weight:600}
+.hero h1{font-weight:800;text-transform:uppercase;letter-spacing:-.03em}
+:focus-visible{outline:2px solid var(--accent-text);border-radius:6px}
+::selection{background:var(--accent-text);color:var(--text-on-accent)}
+
+/* one radius */
+.theme-btn,.circle-btn,.folio-tab,.dcard-media,.folio-ledger-cell,.folio-bar,.study-card img,.process,.step,.instrument,.network-card,.instrument-rev,.field input,.field textarea,.specimen-art,.specimen-facts div,.record-flow-step,.figure figcaption,.skip-link{border-radius:6px}
+.folio-tab{border-radius:6px 6px 0 0}
+.folio-dots i.on{border-radius:2px}
+
+/* flat surfaces: no shadows, no gradients, no blur */
+.topbar{background:var(--bg-canvas);backdrop-filter:none}
+.pillnav,.bento,.dcard,.figure,.film-card,.study-card,.specimen-plate,.obj,.invite-form,footer,.folio-bar,.hero{box-shadow:none}
+.folio-deck>.folio-card[data-pos="0"],.folio-tab[aria-selected="true"],.dcard-media .circle-btn{box-shadow:none}
+.figure figcaption,.dcard-media .folio-seal{backdrop-filter:none;background:#08090A}
+
+/* hero: a flat panel; the specimen card sits above the words, never under them */
+.hero{background:var(--bg-surface-dark);border:1px solid var(--hairline-on-dark-color)}
+.hero::before,.hero::after{display:none}
+.hero-art{background:#F0F0F0;color:#0A0A0A;border:1px solid #D4D4D4;box-shadow:none;opacity:1}
+.hero-art-rule{background:#BDBDBD}
+.hero-art::after{border-color:#855E0B;color:#855E0B}
+.hero .tagline{text-shadow:none;color:var(--text-on-dark-muted);font-size:.75rem}
+.hero .standfirst{color:var(--text-on-dark)}
+.hero .credit{color:var(--text-on-dark-muted)}
+:root:not([data-theme="obsidian"]) .hero-art{background:#FFFFFF}
+.film-btn{border-color:var(--control-outline)}
+.world-link{border-bottom-color:var(--control-outline)}
+/* text that sits on photographs stays white in both themes */
+.obj.photo,.obj.photo h3{color:#FFFFFF}
+.figure figcaption,.dcard-media .folio-seal{color:#FFFFFF}
+@media (max-width:599px){
+  .hero{justify-content:flex-start}
+  .hero-art{position:relative;inset:auto;width:100%;height:auto;min-height:150px;transform:rotate(-2deg);margin:4px 0 22px;padding:14px}
+  .hero-art::after{right:6%;top:46%}
+  .hero-body{background:none;margin:0;padding:0}
+}
+@media (max-width:380px){.hero-art{width:100%;height:auto}.hero-art::after{display:block;font-size:.75rem;padding:6px 8px}}
+
+/* buttons: solid white on dark, solid black on light */
+.btn{background:var(--btn-bg);color:var(--btn-text);border:1px solid transparent}
+.btn.ghost{background:transparent;color:var(--text-on-dark);border:1px solid var(--control-outline)}
+.btn.ghost:hover{border-color:var(--accent-text)}
+.hero .cta-row .btn:not(.ghost){background:var(--btn-bg);color:var(--btn-text)}
+.hero .btn.ghost{color:var(--text-primary);border-color:var(--control-outline)}
+.folio-ctl-btn.primary{background:var(--btn-bg);color:var(--btn-text)}
+.folio-ctl-btn.primary:hover{background:var(--btn-bg);color:var(--btn-text);border-color:var(--accent-text)}
+
+/* gold is rationed: accent-filled cards become raised tiles with a gold hairline */
+.cell.accent,.dcard.accent,.study-card.accent{background:var(--bg-raised);color:var(--text-primary);border:1px solid var(--accent-text)}
+.cell.accent .cell-desc,.cell.accent .meta,.dcard.accent p,.dcard.accent .meta,.dcard.accent .tag,.dcard.accent .pull cite,.study-card.accent p,.study-card.accent .meta,.study-card.accent .study-label{color:var(--text-muted-readable)}
+.dcard.accent h3,.dcard.accent .card-link{color:var(--text-primary)}
+.dcard.accent .tag,.study-card.accent .study-label{border-color:var(--pill-outline)}
+.dcard.accent .sublist{border-top-color:var(--hairline-color)}
+.dcard.accent .card-link:hover{color:var(--accent-text)}
+.dcard.dark,.cell.dark,.obj.dark,.study-card.dark,.film-card,footer,.folio-quote{border:1px solid var(--hairline-on-dark-color)}
+
+/* crimson: the car's life line through the four plates */
+.folio-tab[aria-selected="true"]{border-top-color:var(--spine)}
+.folio-dots i.on{background:var(--spine)}
+
+/* photo cards: a solid caption band instead of a gradient wash */
+.obj.photo::after{display:none}
+.obj-photo-body{background:rgba(8,9,10,.86)}
+
+/* instrument and network: flat obsidian panels */
+.instrument,.network-card{background:#121316;border:1px solid #24262E;box-shadow:none}
+.instrument::before,.instrument::after,.network-card::before{display:none}
+.instrument-dial{filter:none}
+.instrument-rev{background:#181A1F;border:1px solid #D4AF37;box-shadow:none;color:#D4AF37;font:600 .875rem/1 var(--font-mono);letter-spacing:.32em;text-shadow:none;border-radius:6px}
+.instrument-rev:hover{filter:none;background:#24262E}
+.instrument-rev.down{background:#D4AF37;color:#08090A;box-shadow:none}
+.instrument-rev:focus-visible{outline-color:#D4AF37}
+.network-graph .network-node circle{fill:#181A1F;stroke:#2E3039}
+.network-graph .network-node.is-active circle{fill:#D4AF37;stroke:#D4AF37}
+.network-graph .network-node.is-active text,.network-graph .car text{fill:#D4AF37}
+.network-graph .network-link{stroke:#2E3039}
+.network-graph .network-link.is-active{stroke:#D4AF37}
+.network-graph .car circle{fill:#08090A;stroke:#D4AF37}
+.network-zone{background:#181A1F;color:#FFFFFF;border-color:#2E3039}
+.network-zone.on{background:#D4AF37;color:#08090A}
+.network-status,.network-caption{color:#A1A1AA}
+
+/* form controls need a visible edge (3:1) */
+.field input,.field textarea{border-color:var(--control-outline)}
+.field input:focus,.field textarea:focus{outline-color:var(--accent-text)}
+
+/* sizes: labels at least 12px, body at least 14px */
+.eyebrow,.meta,.toc-i,.chap-nav a,.tech-badge,.card-link,.pull cite,.figure figcaption,.process-step b,.folio-quote-head,.folio-tab .ft-num,.folio-tab .ft-lbl,.folio-inspect-btn,.dcard-media .folio-seal,.folio-ledger-head,.folio-ledger-cell span,.folio-plate-foot,.folio-ctl-btn,.folio-count,.study-hint,.study-label,.marquee-set,.specimen-facts dt,.record-flow-step .record-flow-label,.specimen-art figcaption,.obj-num,.obj-label,.obj-go,.film-btn,.step-num,.step .state,.network-zone,.network-status,.field label,footer .fcopy,footer .fbrand small,.world-link,.status,.brand small,.fine,.splash-count,.splash-skip{font-size:.75rem}
+.cell-desc,.process-step p,.study-card p,.toc-d,.folio-ledger-cell b,.tag,footer .fmeta,footer .disclaim,.network-caption{font-size:.875rem}
+.folio-tab .ft-lbl{letter-spacing:.02em}
+.hero .credit,.specimen-plate .specimen-mark,.splash-word span,.splash-still span{font-size:.75rem}
+.hero .tagline{letter-spacing:.1em}
+@media (max-width:599px){.hero-art{min-height:0;gap:8px}.hero-art-mark svg{max-height:96px;width:auto;margin:0 auto}}
+@media (max-width:400px){.status{font-size:.75rem;padding:6px 7px}.brand small{font-size:.75rem;letter-spacing:.08em}.folio-tab .ft-lbl{font-size:.75rem;letter-spacing:0}.folio-ctl-btn{font-size:.75rem}}
+
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .rv{opacity:1!important;transform:none!important}
@@ -529,8 +645,8 @@ html.splash-on{overflow:hidden}
   .btn,.obj,.film-btn,.theme-btn,.pillnav .pill{transition:none}
 }
 @media (prefers-contrast:more){
-  :root{--text-muted-readable:rgba(18,18,18,.9);--hairline-color:rgba(18,18,18,.4)}
-  html[data-theme="obsidian"]{--text-muted-readable:rgba(245,245,247,.92);--hairline-color:rgba(245,245,247,.5)}
+  :root{--text-muted-readable:#262626;--hairline-color:#8C8C8C}
+  html[data-theme="obsidian"]{--text-muted-readable:#D4D4D8;--hairline-color:#6E707A}
 }
 </style>
 <noscript><style>
@@ -570,7 +686,7 @@ html.splash-on{overflow:hidden}
     </nav>
     <div class="topbar-right">
       <span class="status"><i></i>IN DEVELOPMENT</span>
-      <button id="theme-toggle" class="theme-btn" type="button" aria-label="Switch to Obsidian theme (black and gold)" title="Light / Obsidian theme">
+      <button id="theme-toggle" class="theme-btn" type="button" aria-label="Switch to Porcelain Gallery (light theme)" title="The Atelier / Porcelain Gallery">
         <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1a7 7 0 0 0 0 14z" fill="currentColor"/></svg>
       </button>
     </div>
@@ -1255,9 +1371,9 @@ html.splash-on{overflow:hidden}
   function applyTheme(t){
     var obs=(t==='obsidian');
     if(obs)root.setAttribute('data-theme','obsidian');else root.removeAttribute('data-theme');
-    if(themeBtn)themeBtn.setAttribute('aria-label',obs?'Switch to light theme (stone and vermilion)':'Switch to Obsidian theme (black and gold)');
+    if(themeBtn)themeBtn.setAttribute('aria-label',obs?'Switch to Porcelain Gallery (light theme)':'Switch to The Atelier (dark theme)');
     var metas=document.querySelectorAll('meta[name="theme-color"]');
-    for(var i=0;i<metas.length;i++)metas[i].setAttribute('content',obs?'#0A0A0B':'#E8E6E1');
+    for(var i=0;i<metas.length;i++)metas[i].setAttribute('content',obs?'#08090A':'#F6F6F6');
     try{localStorage.setItem('datum_theme',obs?'obsidian':'light')}catch(e){}
   }
   applyTheme(root.getAttribute('data-theme')==='obsidian'?'obsidian':'light');
