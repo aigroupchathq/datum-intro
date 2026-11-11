@@ -1,0 +1,22 @@
+name = "datum-invite"
+main = "src/index.js"
+compatibility_date = "2025-09-01"
+
+# Only this one path on the site goes to the Worker; everything else stays on GitHub Pages.
+routes = [
+  { pattern = "datumatelier.uk/api/invite", zone_name = "datumatelier.uk" },
+]
+
+[vars]
+ALLOWED_ORIGINS = "https://datumatelier.uk,https://www.datumatelier.uk"
+ALLOWED_HOSTNAMES = "datumatelier.uk,www.datumatelier.uk"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "datum-invites"
+database_id = "PASTE_DATABASE_ID_HERE"
+migrations_dir = "migrations"
+
+# Daily clean-up: delete requests not updated for 24 months.
+[triggers]
+crons = ["17 3 * * *"]

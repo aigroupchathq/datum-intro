@@ -677,6 +677,19 @@ h1,h2,h3,.title,.statement{font-weight:600}
 footer .flinks{margin-top:14px;display:flex;flex-wrap:wrap;gap:6px 18px}
 footer .flinks a{display:inline-flex;align-items:center;min-height:44px;font-size:.875rem;color:var(--text-on-dark);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--control-outline)}
 footer .flinks a:hover{text-decoration-color:var(--accent-text)}
+
+/* invitation form */
+.choices{border:0;padding:0;margin:0;display:flex;flex-direction:column;gap:0}
+.choices legend{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.04em;text-transform:uppercase;color:var(--text-muted-readable);margin-bottom:6px}
+.choice,.field .choice{display:flex;align-items:center;gap:12px;min-height:44px;padding:0;font-family:var(--font-sans);font-size:.95rem;letter-spacing:0;text-transform:none;line-height:1.4;color:var(--text-primary);cursor:pointer}
+.choice input{flex:0 0 auto;width:20px;height:20px;margin-top:0;accent-color:var(--accent-text)}
+.consent{align-items:flex-start;font-size:.875rem;color:var(--text-muted-readable);border-top:1px solid var(--hairline-color);padding-top:14px}
+.field .opt{text-transform:none;letter-spacing:0}
+.field-err{font-size:.875rem;color:var(--error)}
+.field input[aria-invalid="true"]{border-color:var(--error)}
+.hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
+.turnstile-slot:empty{display:none}
+.invite-form .btn[disabled]{opacity:.6;cursor:progress}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .rv{opacity:1!important;transform:none!important}
@@ -1339,22 +1352,31 @@ footer .flinks a:hover{text-decoration-color:var(--accent-text)}
     </div>
     <div class="invite-grid" style="margin-top:26px">
       <div class="sec-head rv" style="margin-bottom:0">
-                <h3 class="subtitle">Request an invitation</h3>
-        <p class="lede">This is a form preview. It does not send an invitation request or collect your details.</p>
+        <h3 class="subtitle">Request an invitation</h3>
+        <p class="lede" id="invite-lede" data-live="We use your email only to arrange an invitation to try Datum. Nothing is published, and nothing is shared. Read the privacy notice for the details.">This is a form preview. It does not send an invitation request or collect your details.</p>
+        <p class="fine"><a href="privacy.html">Privacy and site information</a></p>
       </div>
-      <form class="invite-form rv" id="invite-form" novalidate>
-        <div class="field">
-          <label for="if-name">Your name</label>
-          <input id="if-name" name="name" type="text" autocomplete="name" placeholder="Name">
-        </div>
+      <form class="invite-form rv" id="invite-form" novalidate data-endpoint="/api/invite" data-sitekey="">
         <div class="field">
           <label for="if-email">Email</label>
-          <input id="if-email" name="email" type="email" autocomplete="email" placeholder="you@example.com">
+          <input id="if-email" name="email" type="email" autocomplete="email" inputmode="email" required maxlength="254" placeholder="you@example.com" aria-describedby="if-email-err">
+          <p class="field-err" id="if-email-err" hidden></p>
         </div>
+        <fieldset class="field choices" aria-describedby="if-role-err">
+          <legend>Which describes you best?</legend>
+          <label class="choice"><input type="radio" name="role" value="owner"> I keep a car</label>
+          <label class="choice"><input type="radio" name="role" value="collector"> I keep several cars</label>
+          <label class="choice"><input type="radio" name="role" value="workshop"> I run or work in a workshop</label>
+          <label class="choice"><input type="radio" name="role" value="other"> Something else</label>
+          <p class="field-err" id="if-role-err" hidden></p>
+        </fieldset>
         <div class="field">
-          <label for="if-note">The car, or the workshop</label>
-          <textarea id="if-note" name="note" placeholder="A sentence is enough."></textarea>
+          <label for="if-note">Your car, or your workshop <span class="opt">(optional)</span></label>
+          <textarea id="if-note" name="note" maxlength="500" placeholder="A sentence is enough."></textarea>
         </div>
+        <label class="choice consent"><input type="checkbox" name="updates" id="if-updates"> Email me occasional news about Datum. Optional, and you can stop at any time.</label>
+        <div class="hp" aria-hidden="true"><label for="if-company">Company</label><input id="if-company" name="company" type="text" tabindex="-1" autocomplete="off"></div>
+        <div id="if-turnstile" class="turnstile-slot"></div>
         <button class="btn" type="submit">Preview response</button>
         <p class="form-note" id="form-note" role="status" aria-live="polite">Preview only. Nothing leaves your device yet.</p>
       </form>
@@ -1450,7 +1472,7 @@ footer .flinks a:hover{text-decoration-color:var(--accent-text)}
   var chapterNames={what:'What Datum is',record:'The record',method:'How it works',workshops:'For workshops',studies:'Studies',network:'Network',ignition:'Instrument',invite:'Invitation'};
   var navLinks=[].slice.call(document.querySelectorAll('.topnav a, .pillnav a'));
   var stmtTimers=[];
-  var chapterScripts={record:'folio.js?v=1',network:'network.js?v=1',ignition:'instrument.js?v=1'};
+  var chapterScripts={record:'folio.js?v=1',network:'network.js?v=1',ignition:'instrument.js?v=1',invite:'invite.js?v=1'};
   var loadedScripts={};
   function loadChapterScript(id){
     if(!chapterScripts[id]||loadedScripts[id])return;
@@ -1525,12 +1547,13 @@ footer .flinks a:hover{text-decoration-color:var(--accent-text)}
   });
   route(false);
 
-  /* invite: honest local preview */
+  /* invite: preview until a Turnstile site key is set; invite.js sends when live */
   var form=document.getElementById('invite-form');
   var note=document.getElementById('form-note');
   if(form){
     form.addEventListener('submit',function(e){
       e.preventDefault();
+      if(window.datumInvite&&window.datumInvite.live){window.datumInvite.submit();return;}
       if(note){
         note.textContent='This is only a preview. Nothing was sent and no invitation request was made.';
         note.classList.add('strong');
