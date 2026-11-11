@@ -663,6 +663,18 @@ h1,h2,h3,.title,.statement{font-weight:600}
   .hero .tagline{display:none}
 }
 @media (max-width:599px) and (max-height:600px){.hero-art{display:none}}
+
+/* if Datum stops */
+.if-stops{margin-top:40px;padding-top:24px;border-top:1px solid var(--hairline-color);display:flex;flex-direction:column;gap:12px}
+.if-stops-list{list-style:none;counter-reset:s;display:grid;gap:0;margin-top:4px;border-top:1px solid var(--hairline-color)}
+.if-stops-list li{counter-increment:s;display:grid;grid-template-columns:32px minmax(0,1fr);gap:2px 10px;padding:14px 0;border-bottom:1px solid var(--hairline-color)}
+.if-stops-list li::before{content:counter(s,decimal-leading-zero);grid-row:span 2;font-family:var(--font-mono);font-size:.75rem;color:var(--accent-text);padding-top:3px}
+.if-stops-list b{font-family:var(--font-display);font-weight:600;font-size:1.05rem}
+.if-stops-list span{font-size:.92rem;color:var(--text-muted-readable)}
+@media (min-width:900px){.if-stops-list{grid-template-columns:repeat(3,minmax(0,1fr));gap:0 28px}}
+footer .flinks{margin-top:14px;display:flex;flex-wrap:wrap;gap:6px 18px}
+footer .flinks a{display:inline-flex;align-items:center;min-height:44px;font-size:.875rem;color:var(--text-on-dark);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--control-outline)}
+footer .flinks a:hover{text-decoration-color:var(--accent-text)}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .rv{opacity:1!important;transform:none!important}
@@ -834,6 +846,17 @@ h1,h2,h3,.title,.statement{font-weight:600}
         <span class="cell-bot"><span class="cell-title">No adverts</span><span class="cell-desc">No algorithmic feed, and your data is not sold.</span></span>
       </div>
     </div>
+    <section class="if-stops" aria-labelledby="if-stops-title">
+      <div class="eyebrow">If Datum stops</div>
+      <h3 class="subtitle" id="if-stops-title">Your record should outlive us.</h3>
+      <p class="lede">A history that only lives inside one company is not a history you own. Owner apps and connected-car services have closed before and taken their records with them. Datum is designed so that cannot happen to yours.</p>
+      <ol class="if-stops-list">
+        <li><b>Export everything, any time.</b><span>A readable PDF and an open data file holding every entry, document and photograph.</span></li>
+        <li><b>A copy on your own device.</b><span>The record opens without our servers, so it keeps working if we do not.</span></li>
+        <li><b>Fair notice.</b><span>If the service ever closes, you would be told well in advance and given time to take your record with you.</span></li>
+      </ol>
+      <p class="fine">Design commitments for a product still in development, not features you can use today.</p>
+    </section>
     <div class="duo">
       <article class="dcard rv">
         <span class="dcard-top"><span class="meta">For owners</span></span>
@@ -1345,6 +1368,7 @@ h1,h2,h3,.title,.statement{font-weight:600}
     <button class="world-link js-film" type="button" id="replay-world">Replay the film</button>
     <p class="fmeta">An independent project in development. Seeking thoughtful feedback and future collaborators.</p>
     <p class="disclaim">Datum is not a vehicle ownership registry, government database, inspection authority or certified verification network. Illustrative studies are not customer deployments. Nothing you type on this page leaves your device.</p>
+    <nav class="flinks" aria-label="Site information"><a href="privacy.html">Privacy and site information</a></nav>
     <p class="fcopy">Copyright &copy; 2026 Datum Atelier</p>
   </footer>
 
