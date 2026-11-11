@@ -638,6 +638,33 @@ h1,h2,h3,.title,.statement{font-weight:600}
 @media (max-width:599px){.hero-art{min-height:0;gap:8px}.hero-art-mark svg{max-height:96px;width:auto;margin:0 auto}}
 @media (max-width:400px){.status{font-size:.75rem;padding:6px 7px}.brand small{font-size:.75rem;letter-spacing:.08em}.folio-tab .ft-lbl{font-size:.75rem;letter-spacing:0}.folio-ctl-btn{font-size:.75rem}}
 
+
+/* ===== Restraint pass: remove generated-looking tics ===== */
+.rv,.rv.on{opacity:1;transform:none;transition:none}
+.statement .w{opacity:1;transition:none}
+.status i{display:none}
+.eyebrow::after{display:none}
+/* icon-card grids become ruled editorial columns */
+.bento{background:none;border:0;border-top:1px solid var(--hairline-color);border-radius:0;overflow:visible;gap:0 28px}
+.cell,.cell.accent,.cell.dark{background:none;color:var(--text-primary);border:0;border-bottom:1px solid var(--hairline-color);min-height:0;padding:18px 0;gap:8px;justify-content:flex-start}
+.cell:hover{background:none}
+.cell:active{transform:none}
+.cell.accent .cell-desc,.cell.dark .cell-desc,.cell.accent .meta,.cell.dark .meta{color:var(--text-muted-readable)}
+.cell-icon{display:none}
+.cell-top{justify-content:flex-start}
+.bento.audience{grid-template-columns:1fr}
+@media (min-width:900px){.bento.audience{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.obj:hover{transform:none}
+
+@media (max-width:599px){
+  .hero{min-height:0;padding:18px}
+  .hero h1{font-size:clamp(1.9rem,8.6vw,2.4rem)}
+  .hero-art{width:86%;margin:0 0 18px;padding:10px 12px}
+  .hero-art-mark svg{max-height:64px}
+  .hero-art::after{font-size:.75rem;padding:5px 8px;top:42%}
+  .hero .tagline{display:none}
+}
+@media (max-width:599px) and (max-height:600px){.hero-art{display:none}}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .rv{opacity:1!important;transform:none!important}
@@ -708,7 +735,7 @@ h1,h2,h3,.title,.statement{font-weight:600}
     <div class="hero-body">
       <h1>OWNERSHIP FADES.<br>CUSTODIANSHIP HOLDS.</h1>
       <p class="tagline">Built for those who keep cars alive</p>
-      <p class="standfirst">Datum is a custodianship record for cars in development. It is designed to keep the work, the evidence and the people behind a car together through each handover.</p>
+      <p class="standfirst">Datum, now in development, is a custodianship record for cars. It keeps the work, the evidence and the people behind a car together through each change of keeper.</p>
       <div class="cta-row">
         <a class="btn" href="#contents">Read the chapters</a>
         <button class="btn ghost js-film" type="button" aria-label="Play the film">Play the film</button>
@@ -717,31 +744,11 @@ h1,h2,h3,.title,.statement{font-weight:600}
     </div>
   </header>
 
-  <div class="marquee" role="region" aria-label="Datum principles, scroll sideways to read" tabindex="0">
-    <div class="marquee-track">
-      <div class="marquee-set">
-        <span>Ownership fades</span><span class="dia">◆</span>
-        <span>Custodianship holds</span><span class="dia">◆</span>
-        <span>Recorded</span><span class="dia">◆</span>
-        <span>Supported by evidence</span><span class="dia">◆</span>
-        <span>Independently corroborated</span><span class="dia">◆</span>
-        <span>Datum Atelier</span><span class="dia">◆</span>
-      </div>
-      <div class="marquee-set" aria-hidden="true">
-        <span>Ownership fades</span><span class="dia">◆</span>
-        <span>Custodianship holds</span><span class="dia">◆</span>
-        <span>Recorded</span><span class="dia">◆</span>
-        <span>Supported by evidence</span><span class="dia">◆</span>
-        <span>Independently corroborated</span><span class="dia">◆</span>
-        <span>Datum Atelier</span><span class="dia">◆</span>
-      </div>
-    </div>
-  </div>
 
   <section class="specimen" aria-labelledby="specimen-title">
     <div class="sec-head">
       <div class="eyebrow">One car, one record</div>
-      <h2 class="title" id="specimen-title">The work stays <em>with the car.</em></h2>
+      <h2 class="title" id="specimen-title">The work stays with the car.</h2>
       <p class="lede">A receipt tells you what was paid. The record should also explain what was done, who noted it, and what supports the entry.</p>
       <p class="fine">Illustrative specimen. Not a real customer, vehicle or transaction.</p>
       <a class="card-link" href="#record">See the four plates <span class="arrow" aria-hidden="true">→</span></a>
@@ -772,14 +779,9 @@ h1,h2,h3,.title,.statement{font-weight:600}
 
   <section class="block contents" id="contents">
     <div class="sec-head rv">
-      <div class="eyebrow">What Datum is</div>
-      <h2 class="title">A custodianship record <em>for cars.</em></h2>
-      <p class="lede">The aim is to connect a car, its custodian and its history. Service, evidence and memory would stay with the vehicle instead of getting lost among receipts and messages.</p>
-    </div>
-    <div class="sec-head rv" style="margin-top:24px">
       <div class="eyebrow">Contents</div>
-      <h2 class="title">Eight chapters, <em>one at a time.</em></h2>
-      <p class="lede">No long scroll. Choose a chapter, or follow the next link at the end of each one.</p>
+      <h2 class="title">Eight short chapters</h2>
+      <p class="lede">Read them in order, or go straight to the one you need.</p>
     </div>
     <nav class="toc rv" aria-label="Chapters">
       <a class="toc-row" href="#what"><span class="toc-i">01</span><span class="toc-t">What Datum is</span><span class="toc-d">The problem, the premise, and what the record is for.</span><span class="toc-a" aria-hidden="true">→</span></a>
@@ -808,7 +810,7 @@ h1,h2,h3,.title,.statement{font-weight:600}
       <figcaption>Same marque, two fates. Photo: Dietmar Becker. Demonstration imagery.</figcaption>
     </figure>
     <div class="story-copy rv">
-      <p>Datum is a custodianship record for cars in development. The aim is to keep identity, service, evidence and memory attached to the vehicle, in one dated history that survives a handover.</p>
+      <p>Datum keeps identity, service, evidence and memory attached to the vehicle, in one dated history that survives a change of keeper.</p>
       <p>It is not a marketplace, a social feed or a government registry. It is the layer underneath: a private record of what happened, who did the work, and what supports the claim.</p>
     </div>
     <div class="bento what rv" style="margin-top:24px">
@@ -818,31 +820,31 @@ h1,h2,h3,.title,.statement{font-weight:600}
     </div>
     <div class="bento proof rv">
       <div class="cell accent">
-        <span class="cell-top"><span class="meta">01</span><span class="arrow" aria-hidden="true">↗</span></span>
+        <span class="cell-top"><span class="meta">01</span></span>
         <span class="cell-bot"><span class="cell-title">Yours alone</span><span class="cell-desc">Your garage opens for you and no one else.</span></span>
       </div>
       <div class="cell">
-        <span class="cell-top"><span class="meta">02</span><span class="arrow" aria-hidden="true">↗</span></span>
+        <span class="cell-top"><span class="meta">02</span></span>
         <span class="cell-bot"><span class="cell-title">Nothing publishes by accident</span><span class="cell-desc">Every share is an explicit decision.</span></span>
       </div>
       <div class="cell">
-        <span class="cell-top"><span class="meta">03</span><span class="arrow" aria-hidden="true">↗</span></span>
-        <span class="cell-bot"><span class="cell-title">Offline work, planned</span><span class="cell-desc">The design calls for work to wait for a connection before confirmation.</span></span>
+        <span class="cell-top"><span class="meta">03</span></span>
+        <span class="cell-bot"><span class="cell-title">Works without signal, planned</span><span class="cell-desc">Entries made in a garage with no signal would be kept and confirmed once you are back online.</span></span>
       </div>
       <div class="cell dark">
-        <span class="cell-top"><span class="meta">04</span><span class="arrow" aria-hidden="true">↗</span></span>
-        <span class="cell-bot"><span class="cell-title">No audience farming</span><span class="cell-desc">Zero adverts, zero algorithms, zero harvesting.</span></span>
+        <span class="cell-top"><span class="meta">04</span></span>
+        <span class="cell-bot"><span class="cell-title">No adverts</span><span class="cell-desc">No algorithmic feed, and your data is not sold.</span></span>
       </div>
     </div>
     <div class="duo">
       <article class="dcard rv">
-        <span class="dcard-top"><span class="meta">For owners</span><span class="arrow" aria-hidden="true">↗</span></span>
+        <span class="dcard-top"><span class="meta">For owners</span></span>
         <h3>Keep what the receipts cannot</h3>
         <p>The reason a part was changed. The morning it was driven. The person who did the work. A record that stays with the car.</p>
         <a class="card-link" href="#record">See the record <span class="arrow" aria-hidden="true">→</span></a>
       </article>
       <article class="dcard dark rv">
-        <span class="dcard-top"><span class="meta">For workshops</span><span class="arrow" aria-hidden="true">↗</span></span>
+        <span class="dcard-top"><span class="meta">For workshops</span></span>
         <h3>Credit where the work happens</h3>
         <p>Record the service at the ramp, attribute it to the person who did it, and let good work stay visible on every car it touched.</p>
         <a class="card-link" href="#workshops">For workshops <span class="arrow" aria-hidden="true">→</span></a>
@@ -858,7 +860,7 @@ h1,h2,h3,.title,.statement{font-weight:600}
   <section class="block chapter" id="record" hidden>
     <div class="sec-head rv">
       <div class="eyebrow">02, The record</div>
-      <h2 class="title">Four plates <em>from one car's life.</em></h2>
+      <h2 class="title">Four plates from one car's life.</h2>
       <p class="lede">An illustrative specimen, not a customer. Use the tabs or swipe the deck. Open a ledger to see what could sit beside an entry.</p>
     </div>
     <div class="dcard dark folio-quote rv" style="margin-top:18px">
@@ -889,7 +891,7 @@ h1,h2,h3,.title,.statement{font-weight:600}
         <article class="dcard folio-card" id="folio-card-0" role="tabpanel" aria-labelledby="folio-tab-0" data-folio-card="0" data-pos="0" style="--i:0">
           <span class="dcard-top">
             <span class="meta">Chapter 01: Acquisition</span>
-            <button type="button" class="folio-inspect-btn" aria-label="Inspect record" data-folio-inspect="0" aria-expanded="false" aria-controls="folio-ledger-0"><span class="fib-txt">Inspect record</span><span class="arrow" aria-hidden="true">↗</span></button>
+            <button type="button" class="folio-inspect-btn" aria-label="Inspect record" data-folio-inspect="0" aria-expanded="false" aria-controls="folio-ledger-0"><span class="fib-txt">Inspect record</span></button>
           </span>
           <h3>The day it becomes yours</h3>
           <p>A 1991 coupé changes hands. Its first record opens: identity, configuration, starting mileage, a biography with page one.</p>
@@ -917,7 +919,7 @@ h1,h2,h3,.title,.statement{font-weight:600}
         <article class="dcard folio-card" id="folio-card-1" role="tabpanel" aria-labelledby="folio-tab-1" data-folio-card="1" data-pos="1" style="--i:1">
           <span class="dcard-top">
             <span class="meta">Chapter 02: Routine care</span>
-            <button type="button" class="folio-inspect-btn" aria-label="Inspect record" data-folio-inspect="1" aria-expanded="false" aria-controls="folio-ledger-1"><span class="fib-txt">Inspect record</span><span class="arrow" aria-hidden="true">↗</span></button>
+            <button type="button" class="folio-inspect-btn" aria-label="Inspect record" data-folio-inspect="1" aria-expanded="false" aria-controls="folio-ledger-1"><span class="fib-txt">Inspect record</span></button>
           </span>
           <h3>Kept where the work happens</h3>
           <p>Each service documented at the ramp, attributed to the workshop that did it, and kept with the car, not in a drawer.</p>
@@ -945,7 +947,7 @@ h1,h2,h3,.title,.statement{font-weight:600}
         <article class="dcard folio-card" id="folio-card-2" role="tabpanel" aria-labelledby="folio-tab-2" data-folio-card="2" data-pos="2" style="--i:2">
           <span class="dcard-top">
             <span class="meta">Chapter 03: A meaningful drive</span>
-            <button type="button" class="folio-inspect-btn" aria-label="Inspect record" data-folio-inspect="2" aria-expanded="false" aria-controls="folio-ledger-2"><span class="fib-txt">Inspect record</span><span class="arrow" aria-hidden="true">↗</span></button>
+            <button type="button" class="folio-inspect-btn" aria-label="Inspect record" data-folio-inspect="2" aria-expanded="false" aria-controls="folio-ledger-2"><span class="fib-txt">Inspect record</span></button>
           </span>
           <h3>A dawn pass, deliberately recorded</h3>
           <p>The route is remembered; the exact home address never leaves the driveway. What mattered is kept. What should not travel, does not.</p>
@@ -973,7 +975,7 @@ h1,h2,h3,.title,.statement{font-weight:600}
         <article class="dcard folio-card" id="folio-card-3" role="tabpanel" aria-labelledby="folio-tab-3" data-folio-card="3" data-pos="3" style="--i:3">
           <span class="dcard-top">
             <span class="meta">Chapter 04: Reflection</span>
-            <button type="button" class="folio-inspect-btn" aria-label="Inspect record" data-folio-inspect="3" aria-expanded="false" aria-controls="folio-ledger-3"><span class="fib-txt">Inspect record</span><span class="arrow" aria-hidden="true">↗</span></button>
+            <button type="button" class="folio-inspect-btn" aria-label="Inspect record" data-folio-inspect="3" aria-expanded="false" aria-controls="folio-ledger-3"><span class="fib-txt">Inspect record</span></button>
           </span>
           <h3>Years later, it reads whole</h3>
           <p>Engineering, evidence, people and memory in one place, ready for the next custodian, or simply for yourself.</p>
@@ -1018,20 +1020,20 @@ h1,h2,h3,.title,.statement{font-weight:600}
   <section class="block chapter" id="method" hidden>
     <div class="sec-head rv">
       <div class="eyebrow">03, How it works</div>
-      <h2 class="title">From garage to workshop, <em>one record.</em></h2>
+      <h2 class="title">From garage to workshop, one record.</h2>
       <p class="lede">The proposed record connects the car, its custodian and its operating history. Three ideas and one journey.</p>
     </div>
     <div class="bento rv">
       <div class="cell accent">
-        <span class="cell-top"><span class="meta">01, Provenance</span><span class="arrow" aria-hidden="true">↗</span></span>
+        <span class="cell-top"><span class="meta">01, Provenance</span></span>
         <span class="cell-bot"><span class="cell-title">A history with its sources</span><span class="cell-desc">Ownership, service entries and supporting material belong on one dated timeline, with each claim kept distinct from its evidence.</span></span>
       </div>
       <div class="cell">
-        <span class="cell-top"><span class="meta">02, Workshop</span><span class="arrow" aria-hidden="true">↗</span></span>
+        <span class="cell-top"><span class="meta">02, Workshop</span></span>
         <span class="cell-bot"><span class="cell-title">Workshop integration</span><span class="cell-desc">A proposed QR passport would link the car to its profile. Work could be recorded at the ramp by the technician or owner, against the vehicle.</span></span>
       </div>
       <div class="cell dark">
-        <span class="cell-top"><span class="meta">03, Ecosystem</span><span class="arrow" aria-hidden="true">↗</span></span>
+        <span class="cell-top"><span class="meta">03, Ecosystem</span></span>
         <span class="cell-bot"><span class="cell-title">More than a service book</span><span class="cell-desc">Workshop entries, private memories and the next handover belong in the same car's story, with permission deciding what travels.</span></span>
       </div>
     </div>
@@ -1046,7 +1048,7 @@ h1,h2,h3,.title,.statement{font-weight:600}
 
     <div class="sec-head rv" style="margin-top:30px">
       <div class="eyebrow">The evidence ladder</div>
-      <h2 class="subtitle">Recorded, supported, <em>corroborated.</em></h2>
+      <h2 class="subtitle">Recorded, supported, corroborated.</h2>
       <p class="lede">Each stage is kept apart on purpose. The record does not claim more than it can support.</p>
     </div>
     <div class="steps">
@@ -1079,12 +1081,12 @@ h1,h2,h3,.title,.statement{font-weight:600}
   <section class="block chapter" id="workshops" hidden>
     <div class="sec-head rv">
       <div class="eyebrow">04, For automotive businesses</div>
-      <h2 class="title">The work behind the machine <em>deserves continuity.</em></h2>
+      <h2 class="title">The work behind the machine deserves continuity.</h2>
       <p class="lede">Potential directions for the trade. Opportunities under exploration, not live products. The principle is already proven in the craft: work attributed at source, credit that compounds, histories that survive handover.</p>
     </div>
     <div class="deck stack">
       <article class="dcard rv" style="--i:0">
-        <span class="dcard-top"><span class="meta">Workflow</span><span class="arrow" aria-hidden="true">↗</span></span>
+        <span class="dcard-top"><span class="meta">Workflow</span></span>
         <h3>Document where the work happens</h3>
         <p>A service creates its own record at the ramp: what was done, what supports it, who stands behind it.</p>
         <div class="sublist">
@@ -1097,7 +1099,7 @@ h1,h2,h3,.title,.statement{font-weight:600}
         </div>
       </article>
       <article class="dcard dark rv" style="--i:1">
-        <span class="dcard-top"><span class="meta">Attribution</span><span class="arrow" aria-hidden="true">↗</span></span>
+        <span class="dcard-top"><span class="meta">Attribution</span></span>
         <h3>Credit that compounds</h3>
         <p>Each record carries its source. Good work stays visible on every vehicle it touched, a reputation that travels with the machine.</p>
         <div class="sublist">
@@ -1110,7 +1112,7 @@ h1,h2,h3,.title,.statement{font-weight:600}
         </div>
       </article>
       <article class="dcard accent rv" style="--i:2">
-        <span class="dcard-top"><span class="meta">Continuity</span><span class="arrow" aria-hidden="true">↗</span></span>
+        <span class="dcard-top"><span class="meta">Continuity</span></span>
         <h3>Histories that survive handover</h3>
         <p>Custodians change; the record persists. Permissioned history keeps maintenance meaningful across owners and decades.</p>
         <div class="sublist">
@@ -1124,44 +1126,6 @@ h1,h2,h3,.title,.statement{font-weight:600}
       </article>
     </div>
 
-    <div class="sec-head rv" style="margin-top:32px">
-      <div class="eyebrow">Datum capabilities</div>
-      <h2 class="subtitle">Advanced systems, <em>still in development.</em></h2>
-      <p class="lede">The record is the starting point. These connected systems are engineering directions under exploration, not customer deployments.</p>
-    </div>
-    <div class="duo">
-      <article class="dcard dark rv">
-        <span class="dcard-top"><span class="meta">ADAS</span><span class="arrow" aria-hidden="true">→</span></span>
-        <span class="tech-badge">Early technology preview, SAE Level 0</span>
-        <h3>Datum ADAS</h3>
-         <p>An early direction for presenting the car's own information in the windshield. The design aims to avoid subscription fees and data harvesting. Navigation, diagnostics and custodianship information are the intended focus.</p>
-        <div class="sublist">
-          <span class="meta">Direction</span>
-          <div class="taglist">
-            <span class="tag">Windshield projection HUD</span>
-            <span class="tag">Zero subscription fees</span>
-            <span class="tag">Zero data harvesting</span>
-            <span class="tag">Under development</span>
-          </div>
-        </div>
-      </article>
-      <article class="dcard rv">
-        <span class="dcard-top"><span class="meta">Vision intelligence</span><span class="arrow" aria-hidden="true">→</span></span>
-        <span class="tech-badge">In development</span>
-        <h3>Vision intelligence</h3>
-         <p>Exploring computer vision that processes object detection and scene understanding on the device rather than streaming footage to a cloud. This remains an engineering direction, not a deployed feature.</p>
-        <div class="sublist">
-          <span class="meta">Direction</span>
-          <div class="taglist">
-            <span class="tag">Inference on the device</span>
-            <span class="tag">No cloud dependency</span>
-            <span class="tag">Scene understanding</span>
-            <span class="tag">Privacy by design</span>
-          </div>
-        </div>
-      </article>
-    </div>
-    <p class="fine rv">No performance claims, launch dates or customer deployments. These are engineering directions under exploration.</p>
     <div class="chap-nav">
       <a href="#contents">All chapters</a>
       <a href="#studies">Next: Studies <span aria-hidden="true">→</span></a>
@@ -1171,7 +1135,7 @@ h1,h2,h3,.title,.statement{font-weight:600}
   <section class="block chapter" id="studies" hidden>
     <div class="sec-head rv">
       <div class="eyebrow">05, Concept studies</div>
-      <h2 class="title">Three illustrations <em>of what could be.</em></h2>
+      <h2 class="title">Three illustrations of what could be.</h2>
       <p class="lede">Illustrations of product use. No customers, no measured outcomes, no testimonials.</p>
     </div>
     <div class="study-grid rv">
@@ -1218,7 +1182,7 @@ h1,h2,h3,.title,.statement{font-weight:600}
   <section class="block chapter" id="network" hidden>
     <div class="sec-head rv">
       <div class="eyebrow">06, Datum Network, design direction</div>
-      <h2 class="title">A car is <em>never alone.</em></h2>
+      <h2 class="title">A car is never alone.</h2>
       <p class="lede">The people and places that keep a car alive. Choose a zone and the map follows.</p>
     </div>
     <div class="network-card rv" id="network-card">
@@ -1275,7 +1239,7 @@ h1,h2,h3,.title,.statement{font-weight:600}
   <section class="block chapter" id="ignition" hidden>
     <div class="sec-head rv">
       <div class="eyebrow">07, The instrument</div>
-      <h2 class="title">Turn the key <em>yourself.</em></h2>
+      <h2 class="title">Turn the key yourself.</h2>
       <p class="lede">Hold REV. Release. The needle answers and settles on its own. The odometer counts your time on this page, on this device only.</p>
     </div>
     <div class="instrument rv" id="instrument">
@@ -1295,32 +1259,26 @@ h1,h2,h3,.title,.statement{font-weight:600}
   <section class="block chapter" id="invite" hidden>
     <div class="sec-head rv">
       <div class="eyebrow">08, An invitation</div>
-      <h2 class="title">An invitation is earned <em>the old way.</em></h2>
-      <p class="lede">Tell us what you keep, or what your workshop keeps alive. Datum is independent and in development. The work speaks first.</p>
-      <p class="fine">If you want in, do not tell us net worth or following. Tell us about a morning, a machine, and what your hands know. Collections counted, not driven, do not impress us.</p>
+      <h2 class="title">Tell us about your car, or your workshop.</h2>
+      <p class="lede">Datum is independent and in development. We are looking for owners and independent specialists who will try early versions and tell us plainly what works and what does not.</p>
     </div>
     <div class="bento audience rv">
       <div class="cell">
-        <span class="cell-top"><span class="meta">Drivers and enthusiasts</span><span class="arrow" aria-hidden="true">↗</span></span>
+        <span class="cell-top"><span class="meta">Drivers and enthusiasts</span></span>
         <span class="cell-bot"><span class="cell-title">Future private testing</span><span class="cell-desc">For those who keep cars and would test thoughtfully. No dates promised.</span></span>
       </div>
       <div class="cell">
-        <span class="cell-top"><span class="meta">Independent specialists</span><span class="arrow" aria-hidden="true">↗</span></span>
+        <span class="cell-top"><span class="meta">Independent specialists</span></span>
         <span class="cell-bot"><span class="cell-title">Workflow research</span><span class="cell-desc">For workshops interested in documentation pilots and honest feedback.</span></span>
       </div>
       <div class="cell">
-        <span class="cell-top"><span class="meta">Industry and research</span><span class="arrow" aria-hidden="true">↗</span></span>
+        <span class="cell-top"><span class="meta">Industry and research</span></span>
         <span class="cell-bot"><span class="cell-title">Technical dialogue</span><span class="cell-desc">For partners who want to discuss the engineering and its limits.</span></span>
-      </div>
-      <div class="cell dark">
-        <span class="cell-top"><span class="meta">Strategic enquiries</span><span class="arrow" aria-hidden="true">↗</span></span>
-        <span class="cell-bot"><span class="cell-title">Direction and opportunity</span><span class="cell-desc">For those following Datum's direction and possible commercial paths.</span></span>
       </div>
     </div>
     <div class="invite-grid" style="margin-top:26px">
       <div class="sec-head rv" style="margin-bottom:0">
-        <div class="eyebrow">Request an invitation</div>
-        <h3 class="subtitle">If this resonates, <em>tell us why.</em></h3>
+                <h3 class="subtitle">Request an invitation</h3>
         <p class="lede">This is a form preview. It does not send an invitation request or collect your details.</p>
       </div>
       <form class="invite-form rv" id="invite-form" novalidate>
