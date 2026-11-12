@@ -243,3 +243,4 @@ html.splash-on{overflow:hidden}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 @media (prefers-contrast:more){:root{--sec:#D4D4D8;--muted:#B4B4BC;--hair:#6E707A;--ctl:#B4B4BC}}
 .todo{background:var(--raised);border:1px dashed var(--c-line);border-radius:4px;padding:0 6px;font-family:var(--mono);font-size:var(--fs-14);color:var(--c-text)}
+.h3{font-family:var(--display);font-weight:600;font-size:var(--fs-20);line-height:1.2;letter-spacing:-.01em;max-width:none}

@@ -10,7 +10,7 @@ from html import escape
 
 ROOT = Path(__file__).resolve().parent.parent
 SITE = "https://datumatelier.uk"
-OG_IMAGE = f"{SITE}/assets/hero/og-compact-1200x630.jpg"
+OG_IMAGE = f"{SITE}/assets/hero/og-datum-1200x630.jpg"
 
 NAV = [
     ("record", "/record.html", "The record"),
@@ -130,7 +130,7 @@ STILL = """<div>
         </div>
         <span class="stamp">ILLUSTRATIVE SPECIMEN</span>
       </div>
-      <div class="print" aria-hidden="true"><img src="/assets/hero/acquire_1280.webp" alt="" width="1280" height="853" fetchpriority="high"></div>
+      <div class="print" aria-hidden="true"><img src="/assets/hero/acquire_480.webp" alt="" width="480" height="321" fetchpriority="high"></div>
     </div>
     <div class="entry" aria-hidden="true">
       <div class="eh"><span>Entry 14</span><span>Signed at the ramp</span></div>
@@ -161,9 +161,16 @@ FILM_JS = """<script src="/splash-unity.js?v=5"></script>
 """
 
 # ---------------------------------------------------------------- home
+JSONLD = """<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+ {"@type":"WebSite","@id":"https://datumatelier.uk/#website","url":"https://datumatelier.uk/","name":"Datum Atelier","inLanguage":"en-GB","publisher":{"@id":"https://datumatelier.uk/#org"}},
+ {"@type":"Organization","@id":"https://datumatelier.uk/#org","name":"Datum Atelier","url":"https://datumatelier.uk/","description":"An independent project in development: a custodianship record for cars.","founder":{"@type":"Person","name":"Vaishnav Deshmukh"}}
+]}
+</script>
+"""
 home = head("Datum Atelier, a custodianship record for cars",
             "Datum Atelier, now in development, keeps a car's work, evidence and people together through every change of keeper.",
-            "/")
+            "/", extra=JSONLD)
 home += header("home") + SPLASH.replace("<div class=\"splash\"", "<div class=\"splash\"", 1)
 home += sec(f"""<div class="hero-grid">
   <div>
@@ -239,7 +246,7 @@ for i, (mk, h, p, facts, img, alt) in enumerate(MOMENTS):
     dl = "".join(f"<dt>{a}</dt><dd>{b}</dd>" for a, b in facts)
     moments += f"""<article class="moment">
   <span class="mark{(" " + mk) if mk else ""}" aria-hidden="true"></span>
-  <div><h3>{h}</h3><p class="muted" style="margin-top:8px">{p}</p><dl class="facts">{dl}</dl></div>
+  <div><h2 class="h3">{h}</h2><p class="muted" style="margin-top:8px">{p}</p><dl class="facts">{dl}</dl></div>
   <figure class="photo"><img src="/assets/hero/{img}_1280.webp" alt="{alt}" width="1280" height="853" loading="{"eager" if i == 0 else "lazy"}"><figcaption>{alt.split(". ", 1)[1]}</figcaption></figure>
 </article>
 """
