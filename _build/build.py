@@ -7,10 +7,17 @@ Every page is written to the repository root. Edit content here, not in the HTML
 """
 from pathlib import Path
 from html import escape
+import hashlib
 
 ROOT = Path(__file__).resolve().parent.parent
 SITE = "https://datumatelier.uk"
 OG_IMAGE = f"{SITE}/assets/hero/og-datum-1200x630.jpg"
+
+
+def v(path):
+    """Asset address that changes whenever the file changes, so no browser mixes old and new files."""
+    digest = hashlib.sha256((ROOT / path).read_bytes()).hexdigest()[:10]
+    return f"/{path}?v={digest}"
 
 NAV = [
     ("record", "/record.html", "The record"),
@@ -48,7 +55,7 @@ def head(title, description, path, robots="index, follow", extra=""):
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="/fonts/Archivo-Var.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/Inter-Var.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/site.css?v=1">
+<link rel="stylesheet" href="{v('site.css')}">
 {extra}</head>
 """
 
@@ -151,7 +158,7 @@ SPLASH = """<div class="film" id="film" hidden aria-hidden="true" role="dialog" 
 </div>
 """
 
-FILM_JS = """<script src="/film.js?v=1" defer></script>
+FILM_JS = f"""<script src="{v('film.js')}" defer></script>
 """
 
 # ---------------------------------------------------------------- home
@@ -175,7 +182,7 @@ home += sec(f"""<div class="hero-grid">
     <p class="value">A record that tells you what's there, and what isn't.</p>
     <p class="lede">Datum, now in development, keeps a car's work, evidence and people together through every change of keeper.</p>
     {cta("/invite.html", "Request an invitation", "/record.html", "See a specimen record")}
-    <button class="js-film film-link" type="button">Watch the 12-second film</button>
+    <button class="js-film film-play" type="button"><span class="play" aria-hidden="true"><svg viewBox="0 0 16 16" width="12" height="12"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg></span><span>Watch the film</span><span class="dur">0:13</span></button>
   </div>
   {STILL}
 </div>""", cls="hero")
@@ -222,7 +229,7 @@ home += sec(f"""<span class="label">Invitations</span>
 <h2>We invite keepers and workshops in small groups, so we can talk to every one.</h2>
 {cta("/invite.html", "Request an invitation")}
 <p class="note">Emails only if you ask for them.</p>""", cls="last")
-home += footer(film=True) + SPLASH + end(FILM_JS + '<script src="/instrument.js?v=2" defer></script>\n')
+home += footer(film=True) + SPLASH + end(FILM_JS + f'<script src="{v("instrument.js")}" defer></script>\n')
 
 # ---------------------------------------------------------------- the record
 MOMENTS = [
@@ -424,7 +431,7 @@ invite += sec("""<span class="label">Invitation</span>
     <p class="form-note" id="form-note" role="status" aria-live="polite">Preview only. Nothing leaves your device yet.</p>
   </form>
 </div>""", cls="last")
-invite += footer() + end('<script src="/invite.js?v=2" defer></script>\n')
+invite += footer() + end(f'<script src="{v("invite.js")}" defer></script>\n')
 
 # ---------------------------------------------------------------- privacy
 privacy = head("Privacy and site information, Datum Atelier",
