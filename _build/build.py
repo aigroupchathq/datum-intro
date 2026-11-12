@@ -145,19 +145,13 @@ STILL = """<div>
   <p class="still-cap">The ink fades. The record holds. Illustrative specimen: the car, people and entries are imagined. Photograph: Egor Vikhrev, Unsplash.</p>
 </div>"""
 
-SPLASH = """<div class="splash" id="splash" aria-hidden="true" inert>
-  <canvas id="splash-c" aria-hidden="true"></canvas>
-  <div class="splash-word" id="splash-word" aria-hidden="true"><b>DATUM</b><span>ATELIER</span></div>
-  <div class="splash-count" id="splash-count">31 records, converging</div>
-  <button class="splash-skip" id="splash-skip" type="button">Esc, skip</button>
-  <div class="splash-still" id="splash-still"><b>31 records.</b><b>One history.</b><span>Reduced motion: the picture arrives whole</span></div>
+SPLASH = """<div class="film" id="film" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="A twelve second film. A car's service history fades on paper as its keepers change, then holds on one Datum record. Illustrative.">
+  <div class="film-stage" id="film-stage"></div>
+  <button class="film-skip" id="film-skip" type="button">Skip film <span aria-hidden="true">Esc</span></button>
 </div>
 """
 
-FILM_JS = """<script src="/splash-unity.js?v=5"></script>
-<script>
-[].forEach.call(document.querySelectorAll('.js-film'),function(b){b.addEventListener('click',function(){if(window.DATUM_WORLD)window.DATUM_WORLD.ignite({after:null,source:b});});});
-</script>
+FILM_JS = """<script src="/film.js?v=1" defer></script>
 """
 
 # ---------------------------------------------------------------- home
@@ -174,13 +168,14 @@ OLD_LINKS = """<script>(function(){var m={record:'/record.html',method:'/record.
 home = head("Datum Atelier, a custodianship record for cars",
             "Datum Atelier, now in development, keeps a car's work, evidence and people together through every change of keeper.",
             "/", extra=OLD_LINKS + JSONLD)
-home += header("home") + SPLASH.replace("<div class=\"splash\"", "<div class=\"splash\"", 1)
+home += header("home")
 home += sec(f"""<div class="hero-grid">
   <div>
     <h1>Ownership fades.<br><span class="c">Custodianship holds.</span></h1>
     <p class="value">A record that tells you what's there, and what isn't.</p>
     <p class="lede">Datum, now in development, keeps a car's work, evidence and people together through every change of keeper.</p>
     {cta("/invite.html", "Request an invitation", "/record.html", "See a specimen record")}
+    <button class="js-film film-link" type="button">Watch the 12-second film</button>
   </div>
   {STILL}
 </div>""", cls="hero")
@@ -227,7 +222,7 @@ home += sec(f"""<span class="label">Invitations</span>
 <h2>We invite keepers and workshops in small groups, so we can talk to every one.</h2>
 {cta("/invite.html", "Request an invitation")}
 <p class="note">Emails only if you ask for them.</p>""", cls="last")
-home += footer(film=True) + end(FILM_JS + '<script src="/instrument.js?v=2" defer></script>\n')
+home += footer(film=True) + SPLASH + end(FILM_JS + '<script src="/instrument.js?v=2" defer></script>\n')
 
 # ---------------------------------------------------------------- the record
 MOMENTS = [
