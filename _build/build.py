@@ -23,7 +23,7 @@ NAV = [
 # Operator details: fill these before the redesign goes live.
 OPERATOR = '<span class="todo">[Operator name]</span>'
 ADDRESS = '<span class="todo">[Service address]</span>'
-EMAIL = '<span class="todo">[Contact email]</span>'
+EMAIL = '<a href="mailto:www.vaishnavdeshmukh@gmail.com">www.vaishnavdeshmukh@gmail.com</a>'
 
 
 def head(title, description, path, robots="index, follow", extra=""):
