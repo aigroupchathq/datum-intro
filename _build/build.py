@@ -219,12 +219,14 @@ home += sec("""<span class="label">An interlude</span>
   </div>
 </div>""")
 home += sec(f"""<span class="label">Who is behind Datum</span>
-<h2>An independent project, built by one person who keeps cars.</h2>
+<h2>Built with passion, by car people, for car people.</h2>
+<p class="lede sm">For everyone who sees a car as more than a machine: the early mornings, the long drives, the hands that kept it going, and the stories it carries from one keeper to the next.</p>
 <div class="cols c3">
-  <div><h3>Who</h3><p>Datum Atelier is run by {OPERATOR}. It is a trading name, not a limited company.</p></div>
+  <div><h3>Who</h3><p>Datum Atelier is an independent project run by {OPERATOR}. It is a trading name, not a limited company.</p></div>
   <div><h3>How Datum will earn</h3><p>Free while in development. Pricing will be published before anyone pays.</p></div>
   <div><h3>What we will not do</h3><p>No adverts, no insurance upsell, and your data is not sold.</p></div>
-</div>""")
+</div>
+<p class="signoff">Every car has a story worth keeping.<br>Thank you for keeping yours.<span>Vaishnav</span></p>""")
 home += sec(f"""<span class="label">Invitations</span>
 <h2>We invite keepers and workshops in small groups, so we can talk to every one.</h2>
 {cta("/invite.html", "Request an invitation")}
