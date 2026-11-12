@@ -441,7 +441,8 @@ privacy += sec(f"""<span class="label">Site information</span>
 
 <h2 style="margin-top:40px">What this site collects today</h2>
 <p style="margin-top:10px"><b>Form status: preview.</b> The invitation form does not send anything yet, and nothing you enter leaves your device. When it is switched on, this line will say so and give the date.</p>
-<p style="margin-top:10px">There are no analytics, advertising or tracking cookies on this site, and your browser stores nothing for it.</p>
+<p style="margin-top:10px">There are no advertising or tracking cookies on this site, and the site stores nothing in your browser.</p>
+<p style="margin-top:10px"><b>Visit counts.</b> We use Cloudflare Web Analytics to see how many people visit and which pages they read. It does not use cookies or store anything in your browser, and it does not identify you. It records the page visited, the page you came from, your browser and device type, and your approximate country. See the <a href="https://www.cloudflare.com/web-analytics/">Cloudflare Web Analytics page</a> and the <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare privacy policy</a>.</p>
 
 <h2 style="margin-top:40px">If you request an invitation</h2>
 <p style="margin-top:10px">Once the form is switched on, this is exactly what happens to what you send.</p>
