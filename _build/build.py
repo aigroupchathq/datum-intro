@@ -432,7 +432,7 @@ privacy += sec(f"""<span class="label">Site information</span>
 <div class="prose">
 <h2 style="margin-top:40px">Who runs this site</h2>
 <p style="margin-top:10px">Datum Atelier is an independent automotive software project in development. It is a trading name, not a limited company.</p>
-<dl class="facts"><dt>Operated by</dt><dd>{OPERATOR}</dd><dt>Address</dt><dd>{ADDRESS}</dd><dt>Email</dt><dd>{EMAIL}</dd></dl>
+<dl class="facts"><dt>Operated by</dt><dd>{OPERATOR}</dd><dt>Email</dt><dd>{EMAIL}</dd></dl>
 
 <h2 style="margin-top:40px">What this site collects today</h2>
 <p style="margin-top:10px"><b>Form status: preview.</b> The invitation form does not send anything yet, and nothing you enter leaves your device. When it is switched on, this line will say so and give the date.</p>
