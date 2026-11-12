@@ -21,7 +21,7 @@ NAV = [
 ]
 
 # Operator details: fill these before the redesign goes live.
-OPERATOR = '<span class="todo">[Operator name]</span>'
+OPERATOR = 'Vaishnav Deshmukh'
 ADDRESS = '<span class="todo">[Service address]</span>'
 EMAIL = '<a href="mailto:www.vaishnavdeshmukh@gmail.com">www.vaishnavdeshmukh@gmail.com</a>'
 
