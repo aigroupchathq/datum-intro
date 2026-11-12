@@ -1,4 +1,4 @@
-/* Invitation form. Loaded when the Invitation chapter opens.
+/* Invitation form on /invite.html.
    Stays in preview mode until the form carries a Turnstile site key (data-sitekey).
    Live mode posts JSON to data-endpoint (the Cloudflare Worker at /api/invite). */
 (function () {
@@ -10,10 +10,26 @@
   var sitekey = form.getAttribute('data-sitekey') || '';
   var endpoint = form.getAttribute('data-endpoint') || '/api/invite';
   var live = !!sitekey;
+  var note = document.getElementById('form-note');
+
+  // Arriving from a stakeholder page (?role=workshop) ticks the matching answer. Only the role is read.
+  var wanted = new URLSearchParams(location.search).get('role');
+  if (wanted && /^(owner|collector|workshop|other)$/.test(wanted)) {
+    var pre = form.querySelector('input[name="role"][value="' + wanted + '"]');
+    if (pre) pre.checked = true;
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (live) { submit(); return; }
+    if (note) {
+      note.textContent = 'This is only a preview. Nothing was sent and no invitation request was made.';
+      note.classList.add('strong');
+    }
+  });
   window.datumInvite = { live: live, submit: submit };
   if (!live) return;
 
-  var note = document.getElementById('form-note');
   var lede = document.getElementById('invite-lede');
   var btn = form.querySelector('button[type="submit"]');
   var email = form.querySelector('#if-email');
@@ -34,10 +50,9 @@
 
   window.datumTurnstileReady = function () {
     if (!window.turnstile) return;
-    var dark = document.documentElement.getAttribute('data-theme') === 'obsidian';
     widget = window.turnstile.render('#if-turnstile', {
       sitekey: sitekey,
-      theme: dark ? 'dark' : 'light',
+      theme: 'dark',
       size: 'flexible',
       callback: function (t) { token = t; },
       'expired-callback': function () { token = ''; },

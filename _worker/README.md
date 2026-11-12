@@ -85,17 +85,16 @@ npx.cmd wrangler@4 deploy
 Send Claude the Turnstile **site key** (it is public) and the date, or do it
 yourself:
 
-1. In `index.html` and `compact.html`, set `data-sitekey=""` on the
-   `invite-form` to the site key.
-2. In `privacy.html`, replace the "Form status: preview" paragraph with
+1. In `_build/build.py`, set `data-sitekey=""` on the `invite-form` to the site key.
+2. In the same file, replace the "Form status: preview" paragraph in the privacy page with
    "Form status: live since [date]."
-3. Make sure the operator name, address and contact email placeholders in
-   `privacy.html` are filled in.
+3. Make sure the operator name, address and contact email (`OPERATOR`, `ADDRESS`, `EMAIL`
+   at the top of `_build/build.py`) are filled in, then run `python3 _build/build.py`.
 4. Commit, and merge to `main`.
 
 ### 8. Test it on the live site
 
-Open https://datumatelier.uk/#invite, send a request with your own email, then
+Open https://datumatelier.uk/invite.html, send a request with your own email, then
 check it arrived:
 
 ```powershell

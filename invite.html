@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Request an invitation, Datum Atelier</title>
+<meta name="description" content="Request an invitation to try Datum. We invite keepers and workshops in small groups, so we can talk to every one.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://datumatelier.uk/invite.html">
+<meta name="theme-color" content="#050505">
+<meta property="og:site_name" content="Datum Atelier">
+<meta property="og:title" content="Request an invitation, Datum Atelier">
+<meta property="og:description" content="Request an invitation to try Datum. We invite keepers and workshops in small groups, so we can talk to every one.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://datumatelier.uk/invite.html">
+<meta property="og:image" content="https://datumatelier.uk/assets/hero/og-compact-1200x630.jpg">
+<meta property="og:locale" content="en_GB">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="/fonts/Archivo-Var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/Inter-Var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/site.css?v=1">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap top-row">
+    <a class="brand" href="/">DATUM <small>ATELIER</small></a>
+    <nav class="nav nav-desk" aria-label="Primary"><a href="/record.html">The record</a><a href="/keepers.html">Keepers</a><a href="/workshops.html">Workshops</a><a href="/buyers.html">Buyers</a><a href="/partners.html">Partners</a></nav>
+    <div class="top-right">
+      <span class="status">In development</span>
+      <a class="btn primary sm" href="/invite.html">Request an invitation</a>
+    </div>
+  </div>
+  <div class="nav-row"><nav class="nav" aria-label="Primary, small screens"><a href="/record.html">The record</a><a href="/keepers.html">Keepers</a><a href="/workshops.html">Workshops</a><a href="/buyers.html">Buyers</a><a href="/partners.html">Partners</a><a href="/invite.html" aria-current="page">Invitation</a></nav></div>
+</header>
+<main id="main" tabindex="-1" class="wrap"><div class="spine">
+<section class="sec last">
+<span class="mark" aria-hidden="true"></span>
+<span class="label">Invitation</span>
+<h1>Request an invitation.</h1>
+<div class="invite-grid">
+  <div>
+    <p class="lede" id="invite-lede" data-live="We invite keepers and workshops in small groups, so we can talk to every one. We use your email only to arrange that.">This form is a preview. It does not send an invitation request or collect your details yet.</p>
+    <p class="note">Free while in development. Pricing will be published before anyone pays.</p>
+    <p class="note prose"><a href="/privacy.html">Privacy and site information</a></p>
+  </div>
+  <form class="invite-form" id="invite-form" novalidate data-endpoint="/api/invite" data-sitekey="">
+    <div class="field">
+      <label for="if-email">Email</label>
+      <input id="if-email" name="email" type="email" autocomplete="email" inputmode="email" required maxlength="254" placeholder="you@example.com" aria-describedby="if-email-err">
+      <p class="field-err" id="if-email-err" hidden></p>
+    </div>
+    <fieldset class="field" aria-describedby="if-role-err">
+      <legend>Which describes you best?</legend>
+      <label class="choice"><input type="radio" name="role" value="owner"> I keep a car</label>
+      <label class="choice"><input type="radio" name="role" value="collector"> I keep several cars</label>
+      <label class="choice"><input type="radio" name="role" value="workshop"> I run or work in a workshop</label>
+      <label class="choice"><input type="radio" name="role" value="other"> Something else</label>
+      <p class="field-err" id="if-role-err" hidden></p>
+    </fieldset>
+    <div class="field">
+      <label for="if-note">Your car, or your workshop <span class="opt">(optional)</span></label>
+      <textarea id="if-note" name="note" maxlength="500" placeholder="A sentence is enough."></textarea>
+    </div>
+    <label class="choice consent"><input type="checkbox" name="updates" id="if-updates"> Email me occasional news about Datum. Optional, and you can stop at any time.</label>
+    <div class="hp" aria-hidden="true"><label for="if-company">Company</label><input id="if-company" name="company" type="text" tabindex="-1" autocomplete="off"></div>
+    <div id="if-turnstile" class="turnstile-slot"></div>
+    <button class="btn primary" type="submit">Preview response</button>
+    <p class="form-note" id="form-note" role="status" aria-live="polite">Preview only. Nothing leaves your device yet.</p>
+  </form>
+</div>
+</section>
+</div></main>
+<footer><div class="wrap foot">
+  <div>
+    <a class="brand" href="/">DATUM <small>ATELIER</small></a>
+    <p style="margin-top:10px">An independent project in development. Free while in development; pricing will be published before anyone pays.</p>
+    <p class="note">Datum is not a vehicle ownership registry, a government database or an inspection authority. Examples on this site are illustrative.</p>
+  </div>
+  <div>
+    <nav class="foot-links" aria-label="Site information"><a href="/invite.html">Request an invitation</a><a href="/privacy.html">Privacy and site information</a></nav>
+    <p class="copy" style="margin-top:12px">Copyright &copy; 2026 Datum Atelier</p>
+  </div>
+</div></footer>
+<script src="/invite.js?v=2" defer></script>
+</body>
+</html>

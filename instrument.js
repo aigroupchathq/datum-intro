@@ -210,7 +210,7 @@
     var SP = {
       rim: '#121316', face: '#08090A', hair: '#24262E', hair2: '#2E3039',
       white: '#FFFFFF', secondary: '#A1A1AA', muted: '#8A8A93',
-      gold: '#D4AF37', crimson: '#E06C75', tile: '#181A1F', ink: '#08090A'
+      gold: '#FFFFFF', crimson: '#E06C75', tile: '#181A1F', ink: '#08090A'
     };
     var DISPLAY = '"Archivo", system-ui, sans-serif';
     var FIGURES = '"IBM Plex Mono", ui-monospace, monospace';
