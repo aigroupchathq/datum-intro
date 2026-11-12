@@ -226,7 +226,7 @@ home += sec(f"""<span class="label">Who is behind Datum</span>
   <div><h3>How Datum will earn</h3><p>Free while in development. Pricing will be published before anyone pays.</p></div>
   <div><h3>What we will not do</h3><p>No adverts, no insurance upsell, and your data is not sold.</p></div>
 </div>
-<p class="signoff">Every car has a story worth keeping.<br>Thank you for keeping yours.<span>Vaishnav</span></p>""")
+<p class="signoff">Every car has a story worth keeping.<br>Thank you for keeping yours.<span>VD</span></p>""")
 home += sec(f"""<span class="label">Invitations</span>
 <h2>We invite keepers and workshops in small groups, so we can talk to every one.</h2>
 {cta("/invite.html", "Request an invitation")}
