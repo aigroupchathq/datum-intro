@@ -1,0 +1,30 @@
+# GitHub Pages publishing rules for datumatelier.uk.
+# Files listed here stay in the repository but are not published on the website.
+# Internal notes, prototypes and assets no page uses are kept off the public site.
+exclude:
+  - docs
+  - feed-prototype.html
+  - icons
+  - assets/automotive
+  - assets/engineering
+  - assets/roads
+  - assets/workshops
+  - assets/hero/acquire_1600.webp
+  - assets/hero/care_1600.webp
+  - assets/hero/drive_1600.webp
+  - assets/hero/reflect_1600.webp
+  - assets/hero/hero_960.webp
+  - assets/hero/hero_1600.webp
+  - assets/hero/hero_2560.webp
+  - assets/hero/plate_720.webp
+  - assets/hero/plate_1280.webp
+  - assets/hero/plate_1600.webp
+  - assets/hero/rainy_911.webp
+  - assets/hero/og-compact-1200x630.jpg
+  - fonts/Archivo-Ital-Var.woff2
+  - fonts/InstrumentSerif-400.woff2
+  - fonts/InstrumentSerif-400i.woff2
+  - fonts/Manrope-400.woff2
+  - fonts/Manrope-600.woff2
+  - fonts/Manrope-700.woff2
+  - README.md

@@ -35,7 +35,7 @@ EMAIL = '<a href="mailto:www.vaishnavdeshmukh@gmail.com">www.vaishnavdeshmukh@gm
 
 def head(title, description, path, robots="index, follow", extra=""):
     canonical = f'<link rel="canonical" href="{SITE}{path}">' if robots.startswith("index") else ""
-    return f"""<!doctype html>
+    return f"""<!DOCTYPE html>
 <html lang="en-GB">
 <head>
 <meta charset="utf-8">
@@ -45,6 +45,9 @@ def head(title, description, path, robots="index, follow", extra=""):
 <meta name="robots" content="{robots}">
 {canonical}
 <meta name="theme-color" content="#050505">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta property="og:site_name" content="Datum Atelier">
 <meta property="og:title" content="{escape(title)}">
 <meta property="og:description" content="{escape(description)}">
@@ -479,7 +482,7 @@ privacy += sec(f"""<span class="label">Site information</span>
 privacy += footer() + end()
 
 # ---------------------------------------------------------------- 404
-notfound = head("No record at this address, Datum Atelier", "This page does not exist.", "/404.html", robots="noindex")
+notfound = head("No record at this address, Datum Atelier", "This page does not exist. It may have moved when the Datum Atelier site was reorganised.", "/404.html", robots="noindex")
 notfound += header("")
 notfound += sec(f"""<span class="label">404</span>
 <h1>No record found at this address.</h1>
