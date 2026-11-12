@@ -168,9 +168,12 @@ JSONLD = """<script type="application/ld+json">
 ]}
 </script>
 """
+# Old chapter links (/#record, /#invite ...) from the previous one-page site go to the new pages.
+OLD_LINKS = """<script>(function(){var m={record:'/record.html',method:'/record.html',workshops:'/workshops.html',studies:'/keepers.html',network:'/partners.html',invite:'/invite.html',ignition:'/#instrument'};function go(){var h=location.hash.slice(1);if(m[h])location.replace(m[h]);}go();window.addEventListener('hashchange',go);})();</script>
+"""
 home = head("Datum Atelier, a custodianship record for cars",
             "Datum Atelier, now in development, keeps a car's work, evidence and people together through every change of keeper.",
-            "/", extra=JSONLD)
+            "/", extra=OLD_LINKS + JSONLD)
 home += header("home") + SPLASH.replace("<div class=\"splash\"", "<div class=\"splash\"", 1)
 home += sec(f"""<div class="hero-grid">
   <div>
