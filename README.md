@@ -43,7 +43,10 @@ src/drive.js            scroll -> car -> camera, cards, route map, REV hook
 src/scene/path.js       the road curve, terrain height, flat areas
 src/scene/land.js       road ribbon, ink edges, life line, terrain, trees
 src/scene/props.js      everything built at each stop
-src/scene/car.js        the stylised coupé (swap for a GLB later; same API)
+src/scene/car.js        the stylised coupé; can swap in a modelled GLB (same API)
+src/scene/car-model.js  loads and ink-dresses a GLB car (only fetched when one is set)
+src/sound.js            the optional engine-sound toggle beside REV
+src/engine-sound.js     the WebAudio engine synth (only fetched when sound is turned on)
 src/scene/ink.js        the look: shaders, ink lines, hand-lettered labels
 src/styles/road.css     cards, route map, fallbacks (on top of the original site.css)
 public/                 the existing site, untouched: subpages, fonts, images, film.js, instrument.js
@@ -57,3 +60,32 @@ road (0 to 1) the car parks; `data-side` is which side the card sits on. Edit co
 - Reduced motion or no WebGL: the same content as a clean stacked page; Three.js is never downloaded.
 - "Skip the drive" and the route map on the right are real links; Tab moves the car to the focused stop.
 - The old `/#instrument` deep link goes straight to Hold REV.
+
+## Phones
+
+Below 760px the card sits under the car. A card taller than that space is not boxed in:
+it arrives at the usual line while the car parks, then lifts as you scroll, and its stop is
+lengthened by the same amount so the car stays parked while you read. See `fitPhoneCards()`
+and `phoneHold()` in `src/drive.js`.
+
+## Engine sound
+
+A speaker button beside REV turns on a synthesised engine note. It is off by default and
+remembered on that device (`localStorage` key `datum-sound`). Nothing audio-related is
+downloaded until it is pressed. It idles only while the REV instrument is on screen.
+On iPhone it follows the ring/silent switch.
+
+## Swapping in a modelled car
+
+1. Export the car as `.glb`. Keep it under 1 MB: compress with meshopt, e.g.
+   `npx gltfpack -i car-source.glb -o car.glb -cc` (this also converts a Draco file;
+   Draco itself is not supported, as it needs extra decoder files hosted beside the site).
+2. Name the wheel nodes with "wheel" (`Wheel_FL`...) so they turn. Optional: "glass" or
+   "window" for glass, "light" or "lamp" for lamps, "noink" to skip the ink outline on a part.
+3. Size and position don't matter: it is scaled to 4.4 m long, centred, and set on the road.
+   The nose should point to +Z; if it doesn't, set a yaw in degrees.
+4. Put it in `public/` and switch it on in `index.html`:
+   `<canvas id="world" data-car="/car.glb" data-car-yaw="0"></canvas>`
+
+To try a model first without editing anything: `http://localhost:5173/?car=/car.glb&yaw=-90`
+(same-site `.glb` paths only). If the model is missing or fails, the coded coupé stays.

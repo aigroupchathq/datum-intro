@@ -65,7 +65,13 @@ export async function start() {
     const a = props.anchors[s.id];
     s.focus = a ? at.clone().lerp(a, 0.5) : at;
   });
-  const car = buildCar();
+  // Optional modelled car: <canvas id="world" data-car="/car.glb" data-car-yaw="0">.
+  // ?car=/candidate.glb&yaw=-90 previews another model; only same-site .glb paths are accepted.
+  const q = new URLSearchParams(location.search);
+  const tryCar = q.get('car');
+  const preview = tryCar && /^\/[\w\-/.]+\.glb$/.test(tryCar) && !tryCar.includes('..');
+  const model = preview ? tryCar : canvas.dataset.car || null;
+  const car = buildCar({ model, modelYaw: parseFloat(preview ? q.get('yaw') : canvas.dataset.carYaw) || 0 });
   scene.add(car.group);
 
   /* ---------- smooth scroll ---------- */

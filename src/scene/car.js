@@ -2,8 +2,12 @@ import * as THREE from 'three';
 import { solid, fill, inkLines, CRIMSON } from './ink.js';
 
 /* A stylised early-90s coupé, made from a single side profile.
-   Forward is +Z. Roughly 4.4 m long, 1.8 m wide. Fully code-built, so it can be
-   swapped for a modelled GLB later without touching anything else. */
+   Forward is +Z. Roughly 4.4 m long, 1.8 m wide. Fully code-built.
+
+   buildCar({ model, modelYaw }) can swap in a modelled GLB (see car-model.js): the coded
+   coupé shows at once, the model loads in the background and replaces its body and wheels.
+   Lights, glow, exhaust puffs and shadow stay, and the API is unchanged. If the model is
+   missing or fails to load, the coded coupé simply stays. */
 
 function extrudeProfile(points, depth, bevel = 0.06) {
   const shape = new THREE.Shape(points.map(([x, y]) => new THREE.Vector2(x, y)));
@@ -15,28 +19,30 @@ function extrudeProfile(points, depth, bevel = 0.06) {
   return g;
 }
 
-export function buildCar() {
+export function buildCar({ model = null, modelYaw = 0 } = {}) {
   const car = new THREE.Group();
   const body = new THREE.Group();
   car.add(body);
+  const coded = new THREE.Group();   // the coded coupé's bodywork, replaced if a model loads
+  body.add(coded);
 
   // Body: long bonnet, short deck, wedge nose.
   const bodyGeo = extrudeProfile([
     [-2.15, 0.34], [2.12, 0.34], [2.22, 0.56], [2.14, 0.72], [0.62, 0.86],
     [-1.55, 0.9], [-2.12, 0.86], [-2.22, 0.6],
   ], 1.7);
-  body.add(solid(bodyGeo, null, { material: fill(CRIMSON.clone().multiplyScalar(0.82)), angle: 20 }));
+  coded.add(solid(bodyGeo, null, { material: fill(CRIMSON.clone().multiplyScalar(0.82)), angle: 20 }));
 
   // Glasshouse
   const cabinGeo = extrudeProfile([
     [0.62, 0.86], [-0.05, 1.32], [-1.0, 1.36], [-1.62, 0.9],
   ], 1.42, 0.04);
-  body.add(solid(cabinGeo, null, { material: fill('#0b0c10'), angle: 20 }));
+  coded.add(solid(cabinGeo, null, { material: fill('#0b0c10'), angle: 20 }));
 
   // Pillar stripe and a thin crimson waist line, inked
   const stripe = new THREE.Mesh(new THREE.BoxGeometry(1.74, 0.03, 3.9), new THREE.MeshBasicMaterial({ color: '#E9E3D3' }));
   stripe.position.set(0, 0.62, 0.02);
-  body.add(stripe);
+  coded.add(stripe);
 
   // Pop-up headlights (closed) and lamps
   const lampMat = new THREE.MeshBasicMaterial({ color: '#fff4dc' });
@@ -44,25 +50,25 @@ export function buildCar() {
   for (const s of [-1, 1]) {
     const hl = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.1, 0.06), lampMat);
     hl.position.set(s * 0.58, 0.55, 2.27);
-    body.add(hl);
+    coded.add(hl);
     const tl = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.12, 0.06), tailMat);
     tl.position.set(s * 0.56, 0.68, -2.27);
-    body.add(tl);
+    coded.add(tl);
   }
   // Rear wing
   const wing = solid(new THREE.BoxGeometry(1.6, 0.05, 0.34), null, { material: fill('#1a1a1e') });
   wing.position.set(0, 1.04, -1.95);
-  body.add(wing);
+  coded.add(wing);
 
   // Wheels: 8-sided, low-poly, with an inked rim
   const wheelGeo = new THREE.CylinderGeometry(0.36, 0.36, 0.28, 8);
   wheelGeo.rotateZ(Math.PI / 2);
-  const wheels = [];
+  let wheels = [];
   for (const [x, z] of [[-0.86, 1.36], [0.86, 1.36], [-0.86, -1.32], [0.86, -1.32]]) {
     const w = solid(wheelGeo, null, { material: fill('#0a0a0b'), angle: 1 });
     w.position.set(x, 0.36, z);
     car.add(w);
-    wheels.push(w);
+    wheels.push({ node: w, r: 0.36 });
   }
 
   // Headlight beams: real lights for props and the car's own surroundings
@@ -111,12 +117,35 @@ export function buildCar() {
   shadow.renderOrder = 1;
   car.add(shadow);
 
+  if (model) {
+    import('./car-model.js')
+      .then((m) => m.loadCarModel(model, { yaw: modelYaw }))
+      .then(({ root, wheelNodes }) => {
+        body.remove(coded);
+        wheels.forEach((w) => car.remove(w.node));
+        body.add(root);
+        car.updateMatrixWorld(true);
+        // each wheel turns about its own centre, and (like the coupé's) does not lean with the body
+        wheels = wheelNodes.map((w) => {
+          const box = new THREE.Box3().setFromObject(w);
+          const pivot = new THREE.Group();
+          car.worldToLocal(box.getCenter(pivot.position));
+          car.add(pivot);
+          pivot.updateMatrixWorld(true);
+          pivot.attach(w);
+          return { node: pivot, r: Math.max(0.2, (box.max.y - box.min.y) / 2) };
+        });
+        car.userData.model = model;
+      })
+      .catch((err) => console.warn(`Car model ${model} not used, keeping the coded coupé:`, err));
+  }
+
   let puffClock = 0, puffIdx = 0;
   const api = {
     group: car,
     /** speed: m/s along the road; lean: radians; beam 0..1; rpm 0..1 */
     update(dt, { distance, lean, beam, rpm, time }) {
-      for (const w of wheels) w.rotation.x = distance / 0.36;
+      for (const w of wheels) w.node.rotation.x = distance / w.r;
       body.rotation.z = THREE.MathUtils.lerp(body.rotation.z, lean, Math.min(1, dt * 6));
       // idle shiver, stronger when revving
       body.position.y = Math.sin(time * 38) * (0.006 + rpm * 0.02);
