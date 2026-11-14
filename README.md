@@ -110,9 +110,14 @@ The home page's copy follows `home` in `build.py` word for word: change both tog
 
 What keeps the drive smooth (see `src/drive.js` and `src/styles/road.css`):
 
-- **Resolution adapts.** It starts at 1.5x (desktop) or 1.25x (phones). About once a second
-  of drawing, a governor lowers it a step if frames average over ~22 ms, and raises it after
-  three quick seconds, up to the screen's density (2x desktop, 1.5x phones). Never below 1x.
+- **Full quality first, adapting only when needed.** It starts at 2x (desktop) or 1.5x (phones),
+  with anti-aliased edges everywhere (the ink lines are one pixel wide; on phones' GPUs
+  anti-aliasing is nearly free). A governor learns the display's own pace (60 Hz, 120 Hz, or a
+  30 fps power-saving cap such as iPhone Low Power Mode or Chrome's Energy Saver) and steps the
+  resolution down only after about three seconds of genuinely slow frames. Steady half-pace
+  frames trigger a test: one step down; if that is no faster it was a cap, and full quality
+  returns. It steps back up after four quick seconds, to the screen's density (up to 2x). The
+  floor is 1.25x on desktop and 1x on phones.
 - **Draws only when something moves.** Parked, with nothing moving, the GPU is idle; this
   also keeps phones from heating up and slowing themselves down. Nothing draws behind the film.
 - **No first-visit stutter.** Every texture, buffer and shader is loaded behind the

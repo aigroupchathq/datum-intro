@@ -40,16 +40,17 @@ export async function start({ startAt = null } = {}) {
   let mode = 'drive';
 
   /* ---------- renderer, scene, camera ---------- */
-  // Resolution is the main cost (the ground shader runs on nearly every pixel). It starts modest;
-  // the governor in the loop raises it while frames are quick and lowers it if they are not.
-  // Multisampling only on standard-density screens, where pixels are cheap and jaggies show most.
-  const maxPR = Math.min(devicePixelRatio, mobile ? 1.5 : 2);
-  const minPR = Math.min(maxPR, 1);
-  let pr = Math.min(maxPR, mobile ? 1.25 : 1.5);
+  // Quality first: start at full quality (2x desktop, 1.5x phones, as the drive was designed) with
+  // multisampled edges everywhere; the ink lines are one pixel wide and look ragged without it.
+  // (On phones' tile-based GPUs multisampling is nearly free.) The governor in the loop lowers the
+  // resolution only when the GPU genuinely cannot keep up, and raises it again when it can.
+  const maxPR = Math.min(devicePixelRatio, 2);
+  const minPR = Math.min(maxPR, mobile ? 1 : 1.25);
+  let pr = Math.min(maxPR, mobile ? 1.5 : 2);
   // ?pr=1.5 pins the resolution (testing and comparisons); the governor then stays out of it
   const pinPR = parseFloat(new URLSearchParams(location.search).get('pr'));
   if (pinPR > 0) pr = Math.min(3, pinPR);
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: devicePixelRatio < 1.5, powerPreference: 'high-performance' });
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
   renderer.setPixelRatio(pr);
   renderer.setClearColor(BG);
   const scene = new THREE.Scene();
@@ -236,6 +237,9 @@ export async function start({ startAt = null } = {}) {
   // Upload every texture and buffer and compile every shader now, behind the ignition screen,
   // so the first drive past each stop does not stutter.
   {
+    // sharper painted text at grazing angles: the GPU's best anisotropic filtering on every texture
+    const aniso = renderer.capabilities.getMaxAnisotropy();
+    scene.traverse((o) => { const m = o.material; if (m && m.map) { m.map.anisotropy = aniso; m.map.needsUpdate = true; } });
     const culled = [];
     scene.traverse((o) => { if (o.frustumCulled) { culled.push(o); o.frustumCulled = false; } });
     renderer.compile(scene, cam);
@@ -243,26 +247,46 @@ export async function start({ startAt = null } = {}) {
     culled.forEach((o) => { o.frustumCulled = true; });
   }
 
-  // Quality governor: about once a second of continuous drawing, compare the average frame time.
-  // Too slow (under ~45 fps): one step lower, and never back above that. Quick for three seconds
-  // running: one step higher, up to the screen's own density.
-  const gov = { sum: 0, n: 0, good: 0, ceiling: maxPR, since: performance.now() + 2000 };
+  // Quality governor. It judges frames against the display's own pace, learned as it goes (60 Hz,
+  // 120 Hz, or a 30 fps power-saving cap such as iPhone Low Power Mode or Chrome's Energy Saver).
+  // Windows are about a second of continuous drawing; brief bursts (a card arriving, a page loading)
+  // never decide anything on their own.
+  // - Three slow windows in a row (median frame well behind that pace, under ~50 fps): one step down.
+  // - Frames arriving steadily at exactly half pace (twice running) look the same whether the GPU is
+  //   struggling or the browser has capped the frame rate, so it tests: one step down for two windows. If that
+  //   restores full pace, the GPU was the limit and the lower step stays; if not, it was a cap, so
+  //   full quality comes back and the cap becomes the pace to judge against.
+  // - Four quick windows in a row (and not just after a step down): one step up, to the screen's density.
+  const gov = { d: [], pace: 1000 / 60, slow: 0, half: 0, quick: 0, upAfter: 0, probe: null, since: 0 };
+  const setPR = (v) => { if (v === pr) return; pr = v; renderer.setPixelRatio(pr); renderer.setSize(lastW, lastH, false); needRender = true; };
   function govern(delta, now) {
-    if (pinPR > 0 || now < gov.since || delta > 100) return;  // pinned; settling; tab switches
-    gov.sum += delta; gov.n++;
-    if (gov.sum < 1000 || gov.n < 20) return;
-    const avg = gov.sum / gov.n;
-    gov.sum = 0; gov.n = 0;
-    let next = pr;
-    if (avg > 22 && pr > minPR) { next = Math.max(minPR, pr - 0.25); gov.ceiling = next; gov.good = 0; }
-    else if (avg < 17.5 && pr < gov.ceiling) { if (++gov.good >= 3) { next = Math.min(gov.ceiling, pr + 0.25); gov.good = 0; } }
-    else gov.good = 0;
-    if (next !== pr) {
-      pr = next;
-      renderer.setPixelRatio(pr);
-      renderer.setSize(lastW, lastH, false);
-      needRender = true;
+    if (!gov.since) gov.since = now + 4000;                    // let the start settle first
+    if (pinPR > 0 || now < gov.since || delta > 600) return;    // pinned; settling; real pauses (tab switch)
+    gov.d.push(delta);
+    if (gov.d.length < 60 && !(gov.d.length >= 20 && gov.d.reduce((a, x) => a + x, 0) > 1500)) return;
+    const d = gov.d.sort((x, y) => x - y); gov.d = [];
+    const at = (q) => d[Math.min(d.length - 1, Math.floor(d.length * q))];
+    const med = at(0.5), steady = at(0.75) - at(0.25) < 3;
+    if (steady && med < gov.pace * 0.9) gov.pace = med;         // a faster screen than assumed (120 Hz)
+    const quick = med <= gov.pace * 1.12;
+    const half = steady && Math.abs(med - 2 * gov.pace) < 2.5;
+    if (gov.probe) {                                            // testing: GPU limit or frame-rate cap?
+      if (++gov.probe.n < 2) return;
+      if (!quick) { setPR(gov.probe.from); gov.pace = med; }     // no faster at lower quality: a cap
+      else gov.upAfter = now + 12000;                           // faster: the GPU was the limit
+      gov.probe = null; gov.slow = gov.quick = 0;
+      return;
     }
+    if (med > Math.max(gov.pace * 1.35, 20) && pr > minPR) {
+      gov.quick = 0;
+      if (half) { if (++gov.half >= 2) { gov.probe = { from: pr, n: 0 }; gov.half = gov.slow = 0; setPR(Math.max(minPR, pr - 0.25)); } return; }
+      gov.half = 0;
+      if (++gov.slow >= 3) { setPR(Math.max(minPR, pr - 0.25)); gov.slow = 0; gov.upAfter = now + 12000; }
+      return;
+    }
+    gov.slow = gov.half = 0;
+    if (quick && pr < maxPR && now > gov.upAfter) { if (++gov.quick >= 4) { setPR(Math.min(maxPR, pr + 0.25)); gov.quick = 0; } }
+    else if (!quick) gov.quick = 0;
   }
   const film = document.getElementById('film');
   let lastS = -1, lastFrame = 0, drewLast = false, revAt = -1e9, lastModel = null, currentStop = 0, signRun = -1, signTucked = false;
