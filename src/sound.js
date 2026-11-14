@@ -2,16 +2,13 @@
 
    A small speaker button sits beside REV. Nothing audio-related loads until someone presses
    it: the synth (engine-sound.js) is fetched then, and the AudioContext is created inside that
-   click, as iOS Safari requires. The choice is remembered on this device only.
+   click, as iOS Safari requires. The choice lasts only while the page is open: the privacy page
+   promises that the site stores nothing in your browser, so nothing is saved.
    instrument.js is untouched: like drive.js, this listens to the same REV button from outside. */
 
-const KEY = 'datum-sound';
 const rev = document.getElementById('instrument-rev');
 
 if (rev) {
-  const read = () => { try { return localStorage.getItem(KEY) === 'on'; } catch (e) { return false; } };
-  const save = (on) => { try { localStorage.setItem(KEY, on ? 'on' : 'off'); } catch (e) { /* private mode */ } };
-
   const btn = document.createElement('button');
   btn.type = 'button';
   btn.className = 'instrument-sound';
@@ -41,7 +38,6 @@ if (rev) {
   async function set(on) {
     btn.setAttribute('aria-pressed', String(on));
     btn.classList.toggle('is-on', on);
-    save(on);
     if (on) {
       if (!unlock()) return;
       await load();
@@ -52,13 +48,4 @@ if (rev) {
   }
 
   btn.addEventListener('click', () => set(btn.getAttribute('aria-pressed') !== 'true'));
-
-  // Remembered "on": audio may only start after a gesture, so arm it on the first REV press.
-  if (read()) {
-    btn.setAttribute('aria-pressed', 'true');
-    btn.classList.add('is-on');
-    const arm = () => set(true);
-    rev.addEventListener('pointerdown', arm, { once: true });
-    rev.addEventListener('keydown', arm, { once: true });
-  }
 }

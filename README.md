@@ -71,7 +71,7 @@ and `phoneHold()` in `src/drive.js`.
 ## Engine sound
 
 A speaker button beside REV turns on a synthesised engine note. It is off by default and
-remembered on that device (`localStorage` key `datum-sound`). Nothing audio-related is
+lasts only while the page is open: nothing is saved in the browser, as the privacy page promises. Nothing audio-related is
 downloaded until it is pressed. It idles only while the REV instrument is on screen.
 On iPhone it follows the ring/silent switch.
 
