@@ -118,6 +118,8 @@ export async function start({ startAt = null } = {}) {
         const pad = `${Math.max(0, Math.round(stick - docTop(s.el)))}px`;
         if (s.el.style.paddingTop !== pad) s.el.style.paddingTop = pad;
       }
+      // where the card sits in the page before sticking (for the skip sign to step aside)
+      s.cardTop = docTop(s.el) + (parseFloat(s.el.style.paddingTop) || 0);
       if (s.extra === extra && s.svh === svh) return;
       s.extra = extra; s.svh = svh;
       s.card.style.top = `${Math.round(stick - extra)}px`;
@@ -127,7 +129,7 @@ export async function start({ startAt = null } = {}) {
   // A tall card is never moved by script (that lags a frame behind native scrolling and
   // wobbles): it rises with the page, the car parks as its top passes the usual line, and it
   // carries on rising until its sticky top holds it fully on screen.
-  let lastW = 0, lastH = 0, needRender = true;
+  let lastW = 0, lastH = 0, needRender = true, signBottom = 0;
   const topBar = document.querySelector('.top');
   function measure() {
     document.documentElement.style.setProperty('--top-h', `${topBar?.offsetHeight || 0}px`);
@@ -135,6 +137,7 @@ export async function start({ startAt = null } = {}) {
     // phones: the small viewport, so the address bar showing or hiding moves nothing
     vh = mobile ? (svhProbe.offsetHeight || innerHeight) : innerHeight;
     if (mobile) fitPhoneCards();
+    if (mobile && skipLink) signBottom = skipLink.getBoundingClientRect().bottom;
     const maxS = document.documentElement.scrollHeight - vh;
     knots = stops.map((s, i) => {
       const top = s.el.offsetTop, h = s.el.offsetHeight;
@@ -262,7 +265,7 @@ export async function start({ startAt = null } = {}) {
     }
   }
   const film = document.getElementById('film');
-  let lastS = -1, lastFrame = 0, drewLast = false, revAt = -1e9, lastModel = null, currentStop = 0;
+  let lastS = -1, lastFrame = 0, drewLast = false, revAt = -1e9, lastModel = null, currentStop = 0, signRun = -1, signTucked = false;
 
   // Coming from the whole-page view: open the road at the section that was being read.
   if (startAt != null && knots[startAt]) {
@@ -283,6 +286,7 @@ export async function start({ startAt = null } = {}) {
   const run = { t: 0, from: 0, span: 1, lift: 0, tween: null, at: 0 };
 
   function skip() {
+    if (mode === 'skip' && run.tween) { run.tween.progress(1); return; }   // pressed again: to the finish
     if (mode !== 'drive') return;
     mode = 'skip';
     run.at = currentStop;
@@ -421,7 +425,19 @@ export async function start({ startAt = null } = {}) {
     });
     if (skipping) here = stops.reduce((h, st, i) => (st.t <= carT + 0.002 ? i : h), 0);  // the stop just passed
     else currentStop = here;
-    skipLink?.classList.toggle('at-end', skipping || here === stops.length - 1);
+    if (skipLink) {
+      // the sign's little road shows the distance driven, and fills to the gate during the run
+      skipLink.classList.toggle('running', skipping);
+      skipLink.classList.toggle('at-end', !skipping && here === stops.length - 1);
+      if (Math.abs(carT - signRun) > 0.002) { signRun = carT; skipLink.style.setProperty('--run', carT.toFixed(3)); }
+      // phones: step aside while a risen card is under the sign, so it never covers what is being read
+      if (mobile) {
+        const st = stops[here];
+        const y = Math.max(st.stick - (st.extra || 0), (st.cardTop ?? Infinity) - scrollY) + (1 - Math.max(0, st.vis)) * 28;
+        const tuck = !skipping && st.vis > 0.05 && y < signBottom + 6;
+        if (tuck !== signTucked) { signTucked = tuck; skipLink.classList.toggle('tucked', tuck); }
+      }
+    }
     routeLinks.forEach((a, i) => {
       a.classList.toggle('here', i === here);
       a.classList.toggle('done', i !== here && stops[i].t <= carT + 0.002);
