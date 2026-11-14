@@ -100,7 +100,27 @@
 
 .skip-drive{position:fixed !important;left:16px;bottom:16px;z-index:40 !important;font-size:var(--fs-12);font-family:var(--mono);color:var(--sec);background:rgba(5,5,5,.7);border:1px solid var(--hair2);border-radius:6px;padding:6px 10px;text-decoration:none}
 .skip-drive:hover,.skip-drive:focus-visible{color:var(--text);border-color:var(--ink)}
-@media (max-width:759px){.skip-drive{display:none}}
+/* phones: just under the header, over the road, clear of the cards below */
+@media (max-width:759px){.skip-drive{left:12px;bottom:auto;top:calc(var(--top-h,108px) + 10px)}}
+.skip-drive.at-end{opacity:0;pointer-events:none}
+.skip-drive{transition:opacity .3s}
+
+/* ---------- the whole site on one page (/overview.html, or after "Skip the drive") ---------- */
+.still-mode .stop{scroll-margin-top:calc(var(--top-h,64px) + 16px)}
+/* after the run, the road stays parked behind the page, dimmed */
+.still-mode.after-drive .world{display:block;opacity:.3}
+.still-mode.after-drive main,.still-mode.after-drive footer{position:relative;z-index:2}
+.still-mode.after-drive footer{background:#050505}
+.take-drive{position:fixed;left:16px;bottom:16px;z-index:40;display:inline-flex;align-items:center;gap:8px;
+  font:500 var(--fs-12)/1 var(--mono);letter-spacing:.04em;color:var(--text);background:rgba(5,5,5,.88);
+  border:1px solid var(--c-line);border-radius:6px;padding:9px 12px;cursor:pointer}
+.take-drive::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--c-line)}
+.take-drive:hover,.take-drive:focus-visible{border-color:var(--ink)}
+.take-drive[hidden],.drive .take-drive{display:none}
+@media (max-width:759px){.take-drive{left:12px;bottom:12px}}
+/* the fade between the road and the page */
+.veil{position:fixed;inset:0;z-index:90;background:#050505;opacity:0;pointer-events:none;transition:opacity .36s ease}
+.veil.on{opacity:1;pointer-events:auto}
 
 .scroll-hint{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:8px;font:500 var(--fs-12)/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--ink);opacity:.8;transition:opacity .4s;pointer-events:none}
 .scroll-hint i{width:1px;height:36px;background:linear-gradient(var(--ink),transparent);animation:hint 1.6s ease-in-out infinite}

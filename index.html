@@ -32,12 +32,15 @@
 <script>
   /* Old deep links keep working, as on the current site. */
   (function(){var m={record:'/record.html',method:'/record.html',workshops:'/workshops.html',studies:'/keepers.html',network:'/partners.html',invite:'/invite.html',ignition:'/#instrument'};function go(){var h=location.hash.slice(1);if(m[h]&&m[h].charAt(1)!=='#')location.replace(m[h]);}go();window.addEventListener('hashchange',go);})();
-  /* Decide the mode before first paint: the drive, or the still page. */
+  /* Decide the mode before first paint: the drive, or the still page.
+     /overview.html is the whole site on one calm page: this same page, in the still view. */
   (function(){var d=document.documentElement,ok=false;try{var c=document.createElement('canvas');ok=!!(c.getContext('webgl2')||c.getContext('webgl'));}catch(e){}
+    if(ok)d.setAttribute('data-webgl','');
     var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
     var q=new URLSearchParams(location.search);
-    if(q.get('drive')==='1')rm=false; if(q.get('drive')==='0')ok=false;
-    d.classList.add(ok&&!rm?'drive':'still-mode');})();
+    var all=/\/overview\.html$/.test(location.pathname);
+    if(q.get('drive')==='1'){rm=false;all=false;} if(q.get('drive')==='0')ok=false;
+    d.classList.add(ok&&!rm&&!all?'drive':'still-mode');})();
 </script>
 </head>
 <body>
@@ -74,7 +77,10 @@
   <a href="#stop-atelier" data-i="6"><i></i><span>Who is behind it</span></a>
   <a href="#stop-gate" data-i="7"><i></i><span>Invitations</span></a>
 </nav>
-<a class="skip-drive" href="#stop-gate">Skip the drive</a>
+<!-- Skip: the car drives on to the gate, then the whole site opens on one page (/overview.html).
+     Take the drive: back to the road, at the section being read. -->
+<a class="skip-drive" href="/overview.html">Skip the drive</a>
+<button class="take-drive" type="button" hidden>Take the drive</button>
 <p class="scroll-hint" aria-hidden="true"><span>Scroll to drive</span><i></i></p>
 
 <main id="main" tabindex="-1">

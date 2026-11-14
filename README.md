@@ -125,3 +125,17 @@ What keeps the drive smooth (see `src/drive.js` and `src/styles/road.css`):
 
 Add `?perf=1` to see frame rate, frames drawn, slow frames, draw calls and resolution, and
 `?pr=1.5` to pin the resolution (the governor then stays out of it).
+
+## Skip the drive, and the whole site on one page
+
+"Skip the drive" (bottom left; on phones just under the header) does not jump: the car
+drives on to the gate in one run of up to about 4 s, the camera rising to show the road,
+the route filling in and the life line painted all the way. After a beat at the finish the
+page fades to the whole site on one page, at the section that was being read, with the road
+parked dimly behind it. Esc during the run goes straight to the finish.
+
+The whole-page view has its own address, `/overview.html` (same page; kept out of search,
+canonical to the home page), so it can be bookmarked, shared and counted. Opened directly it
+shows the calm page and does not download the 3D. "Take the drive" (bottom left) brings the
+road back at the section being read. Back and Forward move between the two. Visitors with
+reduced motion also see "Take the drive", as an opt-in.

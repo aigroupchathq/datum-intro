@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite';
-import { rmSync, existsSync } from 'node:fs';
+import { rmSync, existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 /* Files kept in public/ but never published.
@@ -49,8 +49,33 @@ const publishingRules = () => {
   };
 };
 
+/* /overview.html: the whole site on one calm page, with an address of its own (to bookmark,
+   share and count). It is index.html itself, which opens in the still view at that address;
+   kept out of search (noindex) with its canonical pointing at the home page. */
+const overviewPage = () => {
+  let out = 'dist';
+  return {
+    name: 'datum-overview-page',
+    configResolved(c) { out = resolve(c.root, c.build.outDir); },
+    configureServer(server) {
+      server.middlewares.use((req, _res, next) => {
+        if (req.url && /^\/overview\.html(?=$|[?#])/.test(req.url)) req.url = req.url.replace('/overview.html', '/index.html');
+        next();
+      });
+    },
+    closeBundle() {
+      const index = resolve(out, 'index.html');
+      if (!existsSync(index)) return;
+      const src = readFileSync(index, 'utf8');
+      const html = src.replace('<meta name="robots" content="index, follow">', '<meta name="robots" content="noindex, follow">');
+      if (html === src) throw new Error('overview.html: robots meta tag not found in index.html');
+      writeFileSync(resolve(out, 'overview.html'), html);
+    },
+  };
+};
+
 export default defineConfig({
-  plugins: [publishingRules()],
+  plugins: [publishingRules(), overviewPage()],
   build: {
     // the homepage's own scripts and styles get a folder of their own, so publishing can
     // replace assets/drive/ wholesale without touching the site's photographs in assets/

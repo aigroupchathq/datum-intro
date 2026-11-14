@@ -16,9 +16,13 @@ const fail = (m) => { bad++; console.log('  FAIL ' + m); };
 
 if (!existsSync(DIST)) { console.log('No dist/. Run npm run build first.'); process.exit(1); }
 
-const pages = ['index.html', 'record.html', 'keepers.html', 'workshops.html', 'buyers.html', 'partners.html', 'invite.html', 'privacy.html', '404.html'];
+const pages = ['index.html', 'overview.html', 'record.html', 'keepers.html', 'workshops.html', 'buyers.html', 'partners.html', 'invite.html', 'privacy.html', '404.html'];
 for (const f of ['.htaccess', 'CNAME', 'robots.txt', 'sitemap.xml', 'favicon.ico', 'site.css', 'pages.css', 'pages.js', 'invite.js', 'instrument.js', 'film.js', ...pages]) {
   existsSync(join(DIST, f)) ? ok(f) : fail(`${f} is missing`);
+}
+if (existsSync(join(DIST, 'overview.html'))) {
+  const ov = readFileSync(join(DIST, 'overview.html'), 'utf8');
+  (ov.includes('content="noindex, follow"') && ov.includes('<link rel="canonical" href="https://datumatelier.uk/">') ? ok : fail)('overview.html is kept out of search, canonical to the home page');
 }
 for (const p of NOT_PUBLISHED) if (existsSync(join(DIST, p))) fail(`${p} should not be published`);
 ok(`none of the ${NOT_PUBLISHED.length} unpublished paths are in dist/`);
