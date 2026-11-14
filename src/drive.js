@@ -76,16 +76,50 @@ export async function start() {
      you read. Between stops the car eases off, drives, and eases in. */
   let knots = [];
   let vh = innerHeight;
+  // Phones: a card taller than the space under the car is lifted and its stop lengthened by
+  // its overflow, so the page scrolls through it. svh (the small viewport) keeps this steady
+  // while iOS Safari's toolbar grows and shrinks.
+  const svhProbe = mobile ? document.body.appendChild(Object.assign(document.createElement('div'), { ariaHidden: 'true' })) : null;
+  if (svhProbe) svhProbe.style.cssText = 'position:fixed;top:0;left:0;width:0;height:100svh;visibility:hidden;pointer-events:none';
+  function fitPhoneCards() {
+    const svh = svhProbe.offsetHeight || innerHeight;
+    stops.forEach((s, i) => {
+      const stick = (i === 0 ? 0.38 : 0.42) * svh;           // mirrors road.css (38svh / 42svh)
+      const extra = Math.max(0, Math.round(s.card.offsetHeight - (svh - stick - 12)));
+      s.stick = stick;
+      if (s.extra === extra && s.svh === svh) return;
+      s.extra = extra; s.svh = svh;
+      s.card.style.top = `${Math.round(stick - extra)}px`;
+      s.el.style.minHeight = extra ? `calc(${i === stops.length - 1 ? 150 : 200}vh + ${extra}px)` : '';
+    });
+  }
+  // The sticky top above is the card's highest point. Until the car has parked, hold a tall
+  // card down at the normal line (so it arrives like every other card), then lift it as you
+  // scroll through the stop. Returns the extra translateY, in px, for scroll position s.
+  function phoneHold(st, k, s) {
+    if (!st.extra) return 0;
+    const nat = k.top - s;                                   // where normal flow would put it
+    const floor = k.top + k.h - st.card.offsetHeight - s;    // the stop's end pushing it off
+    const lift = clamp(s - Math.max(k.a, 0), 0, st.extra);
+    const want = Math.min(Math.max(nat, st.stick - lift), floor);
+    const real = Math.min(Math.max(nat, st.stick - st.extra), floor);
+    return Math.max(0, want - real);
+  }
   function measure() {
     vh = innerHeight;
+    if (mobile) fitPhoneCards();
     const maxS = document.documentElement.scrollHeight - vh;
     knots = stops.map((s, i) => {
       const top = s.el.offsetTop, h = s.el.offsetHeight;
-      const mid = top + h * 0.5 - vh * 0.55;
-      let a = mid - vh * 0.28, b = mid + vh * 0.28;
-      if (i === 0) { a = -1; b = Math.max(vh * 0.12, mid - vh * 0.2); }
+      const ex = s.extra || 0;
+      const mid = top + (h - ex) * 0.5 - vh * 0.55;
+      // the car stays parked (and the card fully shown) for the extra scroll a tall card needs
+      let a = mid - vh * 0.28, b = mid + vh * 0.28 + ex;
+      if (i === 0) { a = -1; b = Math.max(vh * 0.12, mid - vh * 0.2) + ex; }
       if (i === stops.length - 1) { a = Math.min(a, maxS - vh * 0.6); b = Infinity; }
-      return { a, b, t: s.t, mid: clamp(i === 0 ? 0 : mid, 0, maxS) };
+      // a tall phone card is best met on arrival, top edge showing, not mid-read
+      const land = ex ? a + vh * 0.06 : mid;
+      return { a, b, t: s.t, top, h, mid: clamp(i === 0 ? 0 : land, 0, maxS) };
     });
     const w = canvas.clientWidth, hgt = canvas.clientHeight;
     renderer.setSize(w, hgt, false);
@@ -184,10 +218,11 @@ export async function start() {
     let here = 0, best = -1;
     stops.forEach((st, i) => {
       const v = visAt(s, i);
-      if (Math.abs(v - st.vis) > 0.001) {
-        st.vis = v;
+      const hold = mobile ? phoneHold(st, knots[i], scrollY) : 0;   // native scroll: matches sticky layout
+      if (Math.abs(v - st.vis) > 0.001 || Math.abs(hold - (st.hold || 0)) > 0.5) {
+        st.vis = v; st.hold = hold;
         st.card.style.opacity = v.toFixed(3);
-        st.card.style.transform = `translateY(${((1 - v) * 28).toFixed(1)}px)`;
+        st.card.style.transform = `translateY(${(hold + (1 - v) * 28).toFixed(1)}px)`;
       }
       const on = v > 0.6;
       if (on !== st.on) {

@@ -72,7 +72,9 @@
 /* Phones: cards sit low, the car drives in the top half */
 @media (max-width:759px){
   .drive .stop{min-height:200vh;padding:0 12px}
-  .drive .stop .card,.drive .stop .card.wide{position:sticky;top:42svh;width:100%;max-height:calc(58svh - 12px);overflow:auto;-webkit-overflow-scrolling:touch}
+  /* No inner scroll box: drive.js lifts a tall card (top = 42svh minus its overflow) and
+     lengthens its stop by the same amount, so the page itself scrolls through the card. */
+  .drive .stop .card,.drive .stop .card.wide{position:sticky;top:42svh;width:100%}
   .drive #stop-garage{padding-top:0}
   .drive #stop-garage .card{top:38svh}
   .drive .stop[data-side="right"] .card{margin-left:0}
