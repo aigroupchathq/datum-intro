@@ -23,12 +23,16 @@ for (const f of ['.htaccess', 'CNAME', 'robots.txt', 'sitemap.xml', 'favicon.ico
 for (const p of NOT_PUBLISHED) if (existsSync(join(DIST, p))) fail(`${p} should not be published`);
 ok(`none of the ${NOT_PUBLISHED.length} unpublished paths are in dist/`);
 
-const drive = readdirSync(join(DIST, 'assets')).find((f) => /^drive-.*\.js$/.test(f));
+const drive = readdirSync(join(DIST, 'assets', 'drive')).find((f) => /^drive-.*\.js$/.test(f));
 if (!drive) fail('no drive-*.js chunk');
 else {
-  const gz = gzipSync(readFileSync(join(DIST, 'assets', drive))).length;
+  const gz = gzipSync(readFileSync(join(DIST, 'assets', 'drive', drive))).length;
   (gz <= BUDGET ? ok : fail)(`3D chunk ${(gz / 1024).toFixed(1)} KB gzipped (budget ${BUDGET / 1024} KB)`);
 }
+
+// GitHub Pages (Jekyll) silently skips files whose names start with _ or .
+const skipped = readdirSync(join(DIST, 'assets', 'drive')).filter((f) => /^[_.]/.test(f));
+skipped.length ? fail(`GitHub Pages would not publish: ${skipped.join(', ')}`) : ok('no build file is hidden from GitHub Pages');
 
 // local references in every page: src, href, srcset, url()
 let refs = 0;

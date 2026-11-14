@@ -89,3 +89,19 @@ On iPhone it follows the ring/silent switch.
 
 To try a model first without editing anything: `http://localhost:5173/?car=/car.glb&yaw=-90`
 (same-site `.glb` paths only). If the model is missing or fails, the coded coupé stays.
+
+## Publishing to the live site
+
+The live site is `aigroupchathq/datum-intro` (main branch, GitHub Pages). This project lives
+on that repository's `drive-source` branch. There, `_build/build.py` generates every subpage
+(with `pages.css` and `pages.js` linked) but not `index.html`, which comes from here:
+
+```bash
+npm run build
+npm run check
+npm run publish-to -- ../datum-intro
+```
+
+Then review, commit and push in `datum-intro`. The subpages in `public/` here mirror the
+live build; change subpage copy in `_build/build.py` on main, then copy the pages back.
+The home page's copy follows `home` in `build.py` word for word: change both together.

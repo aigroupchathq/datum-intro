@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "check": "node scripts/check-dist.mjs"
+    "check": "node scripts/check-dist.mjs",
+    "publish-to": "node scripts/publish-to.mjs"
   },
   "dependencies": {
     "gsap": "^3.12.5",

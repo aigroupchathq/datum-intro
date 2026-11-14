@@ -52,6 +52,9 @@ const publishingRules = () => {
 export default defineConfig({
   plugins: [publishingRules()],
   build: {
+    // the homepage's own scripts and styles get a folder of their own, so publishing can
+    // replace assets/drive/ wholesale without touching the site's photographs in assets/
+    assetsDir: 'assets/drive',
     // three.js is one chunk (~190 KB gzipped) loaded only in drive mode; the budget is 250 KB
     chunkSizeWarningLimit: 800,
   },
