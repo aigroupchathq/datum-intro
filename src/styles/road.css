@@ -109,3 +109,13 @@
 .ignition i::after{content:"";position:absolute;inset:0;background:var(--c-line);transform:translateX(-100%);animation:load 1.1s ease-in-out infinite}
 @keyframes load{to{transform:translateX(100%)}}
 .ignition.done{opacity:0;pointer-events:none}
+
+/* Engine sound toggle (src/sound.js): off by default, in a row with REV */
+.instrument-controls{display:flex;gap:12px;width:min(100%,300px)}
+.instrument-controls .instrument-rev{flex:1;width:auto}
+.instrument-sound{flex:0 0 64px;min-height:64px;display:inline-grid;place-items:center;border:1px solid var(--hair2);border-radius:var(--r);background:var(--raised);color:var(--sec);cursor:pointer}
+.instrument-sound:hover,.instrument-sound:focus-visible{color:var(--text);border-color:var(--ink)}
+.instrument-sound .on{display:none}
+.instrument-sound.is-on{color:var(--text);border-color:var(--c-line)}
+.instrument-sound.is-on .on{display:inline}
+.instrument-sound.is-on .off{display:none}
