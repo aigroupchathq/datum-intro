@@ -42,8 +42,8 @@
     if(q.get('drive')==='1'){rm=false;all=false;} if(q.get('drive')==='0')ok=false;
     d.classList.add(ok&&!rm&&!all?'drive':'still-mode');})();
 </script>
-  <script type="module" crossorigin src="/assets/drive/index-CgEMMQLg.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/drive/index-BSDz2Hc7.css">
+  <script type="module" crossorigin src="/assets/drive/index-CRsqaSYP.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/drive/index-DhBFZHWR.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -81,8 +81,31 @@
 </nav>
 <!-- Skip: the car drives on to the gate, then the whole site opens on one page (/overview.html).
      Take the drive: back to the road, at the section being read. -->
-<a class="skip-drive" href="/overview.html">Skip the drive</a>
-<button class="take-drive" type="button" hidden>Take the drive</button>
+<a class="skip-drive sign" href="/overview.html">
+  <svg class="sign-art" viewBox="0 0 48 18" width="64" height="24" aria-hidden="true" focusable="false">
+    <path class="road" d="M2 14H37"/>
+    <path class="life" d="M2 14H37" pathLength="1"/>
+    <path class="hop" d="M3 12C9 2.5 28 2.5 35 10" pathLength="1"/>
+    <path class="head" d="M34.2 6.5L35 10L31.6 9"/>
+    <path class="post" d="M41 8.6V16M46 8.6V16"/>
+    <path class="bar" d="M39.8 8.6H47.2"/>
+  </svg>
+  <span>Skip the drive</span>
+</a>
+<button class="take-drive sign" type="button" hidden>
+  <svg class="sign-art" viewBox="0 0 48 18" width="64" height="24" aria-hidden="true" focusable="false">
+    <path class="road" d="M21 15.6H35"/>
+    <g class="car">
+      <path class="beam" d="M17.2 11.6L29 9.2V16.4Z"/>
+      <path class="body" d="M1.5 14.6L3 10.7L7.2 9.3H11.2L14.5 11.8L17 12.6L17.4 14.6Z"/>
+      <path class="glass" d="M7.6 10.3H10.8L13 11.9H6.4Z"/>
+      <circle class="wheel" cx="5.4" cy="15" r="1.9"/>
+      <circle class="wheel" cx="13.9" cy="15" r="1.9"/>
+    </g>
+    <path class="chev" d="M37.5 12.2L40.5 15.6L37.5 19M42.5 12.2L45.5 15.6L42.5 19"/>
+  </svg>
+  <span>Take the drive</span>
+</button>
 <p class="scroll-hint" aria-hidden="true"><span>Scroll to drive</span><i></i></p>
 
 <main id="main" tabindex="-1">
