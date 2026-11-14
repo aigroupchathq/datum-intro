@@ -10,6 +10,8 @@ import { buildCar } from './scene/car.js';
 const clamp = THREE.MathUtils.clamp;
 const smooth = (a, b, x) => THREE.MathUtils.smoothstep(x, a, b);
 const ease = (u) => u * u * (3 - 2 * u);
+// frame-rate independent easing toward a target: the same feel at 30, 60 or 120 fps
+const damp = (rate, dt) => 1 - Math.exp(-rate * dt);
 
 export async function start() {
   const mobile = matchMedia('(max-width: 759px)').matches;
@@ -33,8 +35,17 @@ export async function start() {
   const routeLinks = [...document.querySelectorAll('.route a')];
 
   /* ---------- renderer, scene, camera ---------- */
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: !mobile || devicePixelRatio < 2, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(Math.min(devicePixelRatio, mobile ? 1.5 : 2));
+  // Resolution is the main cost (the ground shader runs on nearly every pixel). It starts modest;
+  // the governor in the loop raises it while frames are quick and lowers it if they are not.
+  // Multisampling only on standard-density screens, where pixels are cheap and jaggies show most.
+  const maxPR = Math.min(devicePixelRatio, mobile ? 1.5 : 2);
+  const minPR = Math.min(maxPR, 1);
+  let pr = Math.min(maxPR, mobile ? 1.25 : 1.5);
+  // ?pr=1.5 pins the resolution (testing and comparisons); the governor then stays out of it
+  const pinPR = parseFloat(new URLSearchParams(location.search).get('pr'));
+  if (pinPR > 0) pr = Math.min(3, pinPR);
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: devicePixelRatio < 1.5, powerPreference: 'high-performance' });
+  renderer.setPixelRatio(pr);
   renderer.setClearColor(BG);
   const scene = new THREE.Scene();
   scene.fog = new THREE.Fog(BG, 50, 120);
@@ -87,32 +98,32 @@ export async function start() {
   // while iOS Safari's toolbar grows and shrinks.
   const svhProbe = mobile ? document.body.appendChild(Object.assign(document.createElement('div'), { ariaHidden: 'true' })) : null;
   if (svhProbe) svhProbe.style.cssText = 'position:fixed;top:0;left:0;width:0;height:100svh;visibility:hidden;pointer-events:none';
+  // position from the top of the document (offsetTop is relative to <main>, which is positioned)
+  const docTop = (el) => el.getBoundingClientRect().top + scrollY;
   function fitPhoneCards() {
     const svh = svhProbe.offsetHeight || innerHeight;
     stops.forEach((s, i) => {
       const stick = (i === 0 ? 0.38 : 0.42) * svh;           // mirrors road.css (38svh / 42svh)
       const extra = Math.max(0, Math.round(s.card.offsetHeight - (svh - stick - 12)));
       s.stick = stick;
+      // the hero card starts at its line on load, then scrolls up natively as you read
+      if (i === 0) {
+        const pad = `${Math.max(0, Math.round(stick - docTop(s.el)))}px`;
+        if (s.el.style.paddingTop !== pad) s.el.style.paddingTop = pad;
+      }
       if (s.extra === extra && s.svh === svh) return;
       s.extra = extra; s.svh = svh;
       s.card.style.top = `${Math.round(stick - extra)}px`;
       s.el.style.minHeight = extra ? `calc(${i === stops.length - 1 ? 150 : 200}vh + ${extra}px)` : '';
     });
   }
-  // The sticky top above is the card's highest point. Until the car has parked, hold a tall
-  // card down at the normal line (so it arrives like every other card), then lift it as you
-  // scroll through the stop. Returns the extra translateY, in px, for scroll position s.
-  function phoneHold(st, k, s) {
-    if (!st.extra) return 0;
-    const nat = k.top - s;                                   // where normal flow would put it
-    const floor = k.top + k.h - st.card.offsetHeight - s;    // the stop's end pushing it off
-    const lift = clamp(s - Math.max(k.a, 0), 0, st.extra);
-    const want = Math.min(Math.max(nat, st.stick - lift), floor);
-    const real = Math.min(Math.max(nat, st.stick - st.extra), floor);
-    return Math.max(0, want - real);
-  }
+  // A tall card is never moved by script (that lags a frame behind native scrolling and
+  // wobbles): it rises with the page, the car parks as its top passes the usual line, and it
+  // carries on rising until its sticky top holds it fully on screen.
+  let lastW = 0, lastH = 0, needRender = true;
   function measure() {
-    vh = innerHeight;
+    // phones: the small viewport, so the address bar showing or hiding moves nothing
+    vh = mobile ? (svhProbe.offsetHeight || innerHeight) : innerHeight;
     if (mobile) fitPhoneCards();
     const maxS = document.documentElement.scrollHeight - vh;
     knots = stops.map((s, i) => {
@@ -121,17 +132,26 @@ export async function start() {
       const mid = top + (h - ex) * 0.5 - vh * 0.55;
       // the car stays parked (and the card fully shown) for the extra scroll a tall card needs
       let a = mid - vh * 0.28, b = mid + vh * 0.28 + ex;
+      if (ex && i > 0) { a = docTop(s.el) - s.stick; b = a + vh * 0.56 + ex; }
       if (i === 0) { a = -1; b = Math.max(vh * 0.12, mid - vh * 0.2) + ex; }
       if (i === stops.length - 1) { a = Math.min(a, maxS - vh * 0.6); b = Infinity; }
       // a tall phone card is best met on arrival, top edge showing, not mid-read
       const land = ex ? a + vh * 0.06 : mid;
       return { a, b, t: s.t, top, h, mid: clamp(i === 0 ? 0 : land, 0, maxS) };
     });
+    // resize the drawing buffer only when the canvas really changed size (it is sized to the
+    // large viewport, so on iPhone the address bar coming and going does not reallocate it)
     const w = canvas.clientWidth, hgt = canvas.clientHeight;
-    renderer.setSize(w, hgt, false);
-    cam.aspect = w / hgt;
-    cam.updateProjectionMatrix();
+    if (w !== lastW || hgt !== lastH) {
+      lastW = w; lastH = hgt;
+      renderer.setSize(w, hgt, false);
+      cam.aspect = w / hgt;
+      cam.updateProjectionMatrix();
+    }
+    needRender = true;
   }
+  let measuring = false;
+  const remeasure = () => { if (!measuring) { measuring = true; requestAnimationFrame(() => { measuring = false; measure(); }); } };
   function tAt(s) {
     for (let i = 0; i < knots.length; i++) {
       const k = knots[i];
@@ -185,9 +205,48 @@ export async function start() {
   const camPos = new THREE.Vector3(), camLook = new THREE.Vector3(), tmp = new THREE.Vector3();
   let carT = 0, lastYaw = null, lean = 0, beam = 0.25, ignited = false, first = true;
   const clock = new THREE.Clock();
+
+  // ?perf=1: a small readout (frame rate, slow frames, draw calls, resolution) for testing on devices
+  const hud = new URLSearchParams(location.search).get('perf') === '1' ? makeHud(renderer) : null;
+  if (hud) window.__drive = { renderer, scene };
+
   measure();
-  addEventListener('resize', () => { measure(); });
-  new ResizeObserver(() => measure()).observe(document.body);
+  addEventListener('resize', remeasure);
+  new ResizeObserver(remeasure).observe(document.body);
+
+  // Upload every texture and buffer and compile every shader now, behind the ignition screen,
+  // so the first drive past each stop does not stutter.
+  {
+    const culled = [];
+    scene.traverse((o) => { if (o.frustumCulled) { culled.push(o); o.frustumCulled = false; } });
+    renderer.compile(scene, cam);
+    renderer.render(scene, cam);
+    culled.forEach((o) => { o.frustumCulled = true; });
+  }
+
+  // Quality governor: about once a second of continuous drawing, compare the average frame time.
+  // Too slow (under ~45 fps): one step lower, and never back above that. Quick for three seconds
+  // running: one step higher, up to the screen's own density.
+  const gov = { sum: 0, n: 0, good: 0, ceiling: maxPR, since: performance.now() + 2000 };
+  function govern(delta, now) {
+    if (pinPR > 0 || now < gov.since || delta > 100) return;  // pinned; settling; tab switches
+    gov.sum += delta; gov.n++;
+    if (gov.sum < 1000 || gov.n < 20) return;
+    const avg = gov.sum / gov.n;
+    gov.sum = 0; gov.n = 0;
+    let next = pr;
+    if (avg > 22 && pr > minPR) { next = Math.max(minPR, pr - 0.25); gov.ceiling = next; gov.good = 0; }
+    else if (avg < 17.5 && pr < gov.ceiling) { if (++gov.good >= 3) { next = Math.min(gov.ceiling, pr + 0.25); gov.good = 0; } }
+    else gov.good = 0;
+    if (next !== pr) {
+      pr = next;
+      renderer.setPixelRatio(pr);
+      renderer.setSize(lastW, lastH, false);
+      needRender = true;
+    }
+  }
+  const film = document.getElementById('film');
+  let lastS = -1, lastFrame = 0, drewLast = false, revAt = -1e9, lastModel = null;
 
   function frame(time) {
     lenis.raf(time);
@@ -196,7 +255,7 @@ export async function start() {
 
     // car: follow the target distance with a little momentum
     const target = tAt(s);
-    carT += (target - carT) * Math.min(1, dt * 3.2);
+    carT += (target - carT) * damp(3.2, dt);
     if (Math.abs(target - carT) < 1e-5) carT = target;
     frameAt(carT, f);
     car.group.position.copy(f.pos);
@@ -204,13 +263,15 @@ export async function start() {
     car.group.rotation.y = yaw;
     if (lastYaw !== null) {
       let dy = yaw - lastYaw; dy = Math.atan2(Math.sin(dy), Math.cos(dy));
-      lean += ((clamp(-dy / Math.max(dt, 1e-3) * 0.08, -0.09, 0.09)) - lean) * Math.min(1, dt * 5);
+      lean += ((clamp(-dy / Math.max(dt, 1e-3) * 0.08, -0.09, 0.09)) - lean) * damp(5, dt);
     }
     lastYaw = yaw;
 
     if (!ignited && s > 4) ignited = true;
     rpm += ((revHeld ? 1 : 0) - rpm) * Math.min(1, dt * (revHeld ? 9 : 4.5));
-    beam += ((ignited ? 1 : 0.25) + rpm * 0.25 - beam) * Math.min(1, dt * 3);
+    const beamTo = (ignited ? 1 : 0.25) + rpm * 0.25;
+    beam += (beamTo - beam) * damp(3, dt);
+    if (rpm > 0.15) revAt = time;                            // exhaust puffs live on for a moment
     car.update(dt, { distance: carT * LENGTH, lean, beam, rpm, time: time / 1000 });
 
     if (props.dial) props.dial.pivot.rotation.y = props.dial.a0 - rpm * 0.906 * props.dial.sweep - Math.PI / 2;
@@ -220,21 +281,25 @@ export async function start() {
     shared.uBeam.value = beam;
     lifeLine.uProgress.value = carT;
 
-    // cards: fade and lift in at their stop
+    // cards: fade and lift in at their stop (opacity and transform only: compositor work)
     let here = 0, best = -1;
     stops.forEach((st, i) => {
       const v = visAt(s, i);
-      const hold = mobile ? phoneHold(st, knots[i], scrollY) : 0;   // native scroll: matches sticky layout
-      if (Math.abs(v - st.vis) > 0.001 || Math.abs(hold - (st.hold || 0)) > 0.5) {
-        st.vis = v; st.hold = hold;
+      if (Math.abs(v - st.vis) > 0.001 || (v === 0 && st.vis !== 0)) {
+        st.vis = v;
+        const live = v > 0;
+        if (live !== st.live) { st.live = live; st.card.classList.toggle('live', live); }  // own layer only while shown
         st.card.style.opacity = v.toFixed(3);
-        st.card.style.transform = `translateY(${(hold + (1 - v) * 28).toFixed(1)}px)`;
+        st.card.style.transform = `translate3d(0,${((1 - v) * 28).toFixed(1)}px,0)`;
       }
-      const on = v > 0.6;
+      // the contents follow in a soft cascade; it starts as the card arrives and, once played,
+      // only replays after the card has fully gone, so scrolling to and fro never flickers
+      const on = st.on ? v > 0.02 : v > 0.45;
       if (on !== st.on) {
         st.on = on;
         st.card.classList.toggle('on', on);
-        if (on) gsap.fromTo(st.card.querySelectorAll(':scope > *'), { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, stagger: 0.06, ease: 'power2.out', overwrite: true });
+        if (on) gsap.fromTo(st.card.querySelectorAll(':scope > *'), { y: 12, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.8, stagger: 0.05, ease: 'power3.out', overwrite: true, force3D: true, clearProps: 'transform,opacity' });
       }
       if (v > best) { best = v; here = i; }
     });
@@ -269,9 +334,11 @@ export async function start() {
     else lx += card.screen * groundW * 0.2 * card.vis;
     tmp.set(lx, f.pos.y, lz);
     if (first) { camLook.copy(tmp); }
-    camLook.lerp(tmp, Math.min(1, dt * 3.5));
+    const camMoving = camLook.distanceToSquared(tmp) > 4e-6;
+    camLook.lerp(tmp, damp(3.5, dt));
     const want = tmp.set(camLook.x, camLook.y + p.h, camLook.z + p.d);
-    if (first) camPos.copy(want); else camPos.lerp(want, Math.min(1, dt * 3.5));
+    const camAway = camPos.distanceToSquared(want) > 4e-6;
+    if (first) camPos.copy(want); else camPos.lerp(want, damp(3.5, dt));
     cam.position.copy(camPos);
     cam.lookAt(camLook);
     const L = Math.hypot(p.h, p.d);
@@ -279,7 +346,20 @@ export async function start() {
     scene.fog.far = shared.uFogFar.value = L + 62;
     shared.uTime.value = time / 1000;
 
-    renderer.render(scene, cam);
+    // Draw only when something on screen changed. A parked car with nothing moving costs no GPU
+    // time, which also keeps phones cool (a hot phone slows itself down).
+    if (car.group.userData.model !== lastModel) { lastModel = car.group.userData.model; needRender = true; }
+    const scrolled = Math.abs(s - lastS) > 0.05; lastS = s;
+    const busy = first || needRender || scrolled || camMoving || camAway || Math.abs(target - carT) > 1e-6 || revHeld
+      || rpm > 0.002 || time - revAt < 1400 || Math.abs(beamTo - beam) > 0.003 || Math.abs(lean) > 0.0005;
+    const draw = busy && !(film && !film.hidden);              // the film covers the road while it plays
+    if (draw) {
+      renderer.render(scene, cam);
+      if (drewLast) govern(time - lastFrame, time);
+      needRender = false;
+    }
+    drewLast = draw; lastFrame = time;
+    if (hud) hud.tick(time, draw);
     if (first) {
       first = false;
       ignition?.classList.add('done');
@@ -290,6 +370,32 @@ export async function start() {
   requestAnimationFrame(frame);
 
   // pause the smooth scroller while the film plays, so Esc and keys stay with the film
-  const film = document.getElementById('film');
   if (film) new MutationObserver(() => (film.hidden ? lenis.start() : lenis.stop())).observe(film, { attributes: true, attributeFilter: ['hidden'] });
+}
+
+/* ?perf=1 readout: average frame rate, share of slow frames (> 20 ms), draw calls,
+   triangles and the render resolution. For checking on real phones; never shown otherwise. */
+function makeHud(renderer) {
+  const el = document.createElement('div');
+  el.setAttribute('aria-hidden', 'true');
+  el.style.cssText = 'position:fixed;left:8px;top:8px;z-index:200;font:11px/1.35 ui-monospace,monospace;color:#E9E3D3;background:rgba(0,0,0,.72);padding:6px 8px;border-radius:4px;pointer-events:none;white-space:pre';
+  document.body.appendChild(el);
+  let last = 0, frames = 0, slow = 0, since = 0, drawn = 0;
+  const api = {
+    stats: null,
+    tick(now, draw) {
+      if (draw) drawn++;
+      if (last) { frames++; if (now - last > 20) slow++; }
+      last = now;
+      if (!since) since = now;
+      if (now - since < 500) return;
+      const i = renderer.info.render;
+      api.stats = { fps: Math.round((frames * 1000) / (now - since)), drawn: Math.round((drawn * 1000) / (now - since)), slowPct: Math.round((slow / Math.max(1, frames)) * 100),
+        calls: i.calls, tris: i.triangles, lines: i.lines, px: renderer.getPixelRatio(),
+        size: `${renderer.domElement.width}x${renderer.domElement.height}` };
+      el.textContent = `${api.stats.fps} fps  drawn ${api.stats.drawn}/s  slow ${api.stats.slowPct}%\n${i.calls} draws  ${(i.triangles / 1000).toFixed(0)}k tris  ${(i.lines / 1000).toFixed(0)}k lines\n${api.stats.size} @${api.stats.px}`;
+      frames = slow = drawn = 0; since = now;
+    },
+  };
+  return api;
 }

@@ -105,3 +105,23 @@ npm run publish-to -- ../datum-intro
 Then review, commit and push in `datum-intro`. The subpages in `public/` here mirror the
 live build; change subpage copy in `_build/build.py` on main, then copy the pages back.
 The home page's copy follows `home` in `build.py` word for word: change both together.
+
+## Performance
+
+What keeps the drive smooth (see `src/drive.js` and `src/styles/road.css`):
+
+- **Resolution adapts.** It starts at 1.5x (desktop) or 1.25x (phones). About once a second
+  of drawing, a governor lowers it a step if frames average over ~22 ms, and raises it after
+  three quick seconds, up to the screen's density (2x desktop, 1.5x phones). Never below 1x.
+- **Draws only when something moves.** Parked, with nothing moving, the GPU is idle; this
+  also keeps phones from heating up and slowing themselves down. Nothing draws behind the film.
+- **No first-visit stutter.** Every texture, buffer and shader is loaded behind the
+  "Turning the key" screen.
+- **Cheap cards.** No backdrop blur and no blend modes over the 3D canvas (both made the
+  browser redo the whole screen each frame). Cards move by opacity and transform only, and
+  get their own layer only while on screen. On phones, tall cards move with native scrolling.
+- **Steady on iPhone.** The canvas is sized to the large viewport and the stop positions to
+  the small one, so the address bar showing or hiding resizes and moves nothing.
+
+Add `?perf=1` to see frame rate, frames drawn, slow frames, draw calls and resolution, and
+`?pr=1.5` to pin the resolution (the governor then stays out of it).
