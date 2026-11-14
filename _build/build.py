@@ -490,12 +490,24 @@ notfound += sec(f"""<span class="label">404</span>
 {cta("/", "Go to the home page", "/record.html", "See a specimen record")}""", cls="last")
 notfound += footer() + end()
 
+
+def drive_look(html):
+    """The subpages in the home page's look: pages.css after site.css, pages.js at the end."""
+    css = '<link rel="stylesheet" href="%s">' % v("site.css")
+    return (html.replace(css, css + '\n<link rel="stylesheet" href="%s">' % v("pages.css"), 1)
+                .replace("</body>", '<script src="%s" defer></script>\n</body>' % v("pages.js"), 1))
+
+
+# index.html is not written here. The home page is the scroll-driven 3D road, built from the
+# drive-source branch of this repository (npm run build there, then copy dist/index.html and
+# dist/assets/drive/ here). Its copy follows `home` above word for word; change both together.
 PAGES = {
-    "index.html": home, "record.html": record, "keepers.html": keepers, "workshops.html": workshops,
+    "record.html": record, "keepers.html": keepers, "workshops.html": workshops,
     "buyers.html": buyers, "partners.html": partners, "invite.html": invite, "privacy.html": privacy,
     "404.html": notfound,
 }
-# compact.html is the old noindex preview address: keep it as a copy of the home page, not indexed.
+PAGES = {name: drive_look(html) for name, html in PAGES.items()}
+# compact.html is the old noindex preview address: keep it as a copy of the previous home page, not indexed.
 PAGES["compact.html"] = home.replace('<meta name="robots" content="index, follow">', '<meta name="robots" content="noindex">').replace(f'<link rel="canonical" href="{SITE}/">', "")
 
 for name, html in PAGES.items():
