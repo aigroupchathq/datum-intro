@@ -42,8 +42,8 @@
     if(q.get('drive')==='1'){rm=false;all=false;} if(q.get('drive')==='0')ok=false;
     d.classList.add(ok&&!rm&&!all?'drive':'still-mode');})();
 </script>
-  <script type="module" crossorigin src="/assets/drive/index-CuymaI6C.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/drive/index-DhBFZHWR.css">
+  <script type="module" crossorigin src="/assets/drive/index-Cx5bHuv0.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/drive/index-CxKSuY-z.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -92,6 +92,10 @@
   </svg>
   <span>Skip the drive</span>
 </a>
+<p class="scroll-hint" aria-hidden="true"><span>Scroll to drive</span><i></i></p>
+
+<main id="main" tabindex="-1">
+<!-- In the whole-page view: at the top of the page (in the margin on wide screens), covering nothing -->
 <button class="take-drive sign" type="button" hidden>
   <svg class="sign-art" viewBox="0 0 48 18" width="64" height="24" aria-hidden="true" focusable="false">
     <path class="road" d="M21 15.6H35"/>
@@ -106,9 +110,6 @@
   </svg>
   <span>Take the drive</span>
 </button>
-<p class="scroll-hint" aria-hidden="true"><span>Scroll to drive</span><i></i></p>
-
-<main id="main" tabindex="-1">
 
 <section class="stop" id="stop-garage" data-t="0.0" data-side="left" data-cam="garage">
   <div class="card hero-card">
