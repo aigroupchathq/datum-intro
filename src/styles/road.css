@@ -99,34 +99,29 @@
 @media (max-width:759px){.route{right:6px;top:auto;bottom:auto;top:96px;transform:none}.route a span{display:none}.route a{min-height:22px}.route::before{right:10px}}
 
 /* ---------- Skip the drive / Take the drive ----------
-   Small road signs from the same world as the painted ones: a plate drawn with the scene's two
-   offset pen strokes, the label in the signs' Archivo capitals, and a tiny inked diagram of
-   what each does. Skip: an arrow hops the road to the crimson-barred gate; the little road shows
-   the distance driven in crimson and fills to the gate during the run. Take: the coupé waits at
-   the start of the road, lights on, and rolls forward on hover. */
-.sign{position:fixed;left:16px;bottom:16px;z-index:40;display:inline-flex;align-items:center;gap:11px;min-height:46px;padding:0 16px 0 12px;
-  background:#0b0b0d;color:var(--ink);border:1.5px solid rgba(233,227,211,.85);border-radius:2px;
-  font:700 12.5px/1 var(--display);letter-spacing:.06em;text-transform:uppercase;text-decoration:none;cursor:pointer;
-  box-shadow:0 12px 30px -14px rgba(0,0,0,.9);transition:opacity .3s,border-color .2s,transform .2s}
-/* the second pen stroke: offset, and a touch off true, like a quick line drawn twice */
-.sign::after{content:"";position:absolute;inset:2px -3px -3px 2px;border:1px solid rgba(233,227,211,.32);border-radius:2px;pointer-events:none;transform:rotate(-.7deg)}
-.sign span{padding-top:1px}
-.sign:hover{transform:translateY(-1px)}
-.sign:active{transform:translateY(1px)}
-.sign:focus-visible{outline:2px solid var(--c-line);outline-offset:5px}
-.sign-art{flex:none;overflow:visible}
+   Minimal, and never over the content: no plate or box, just a small inked diagram of what each
+   does and the label in the painted signs' Archivo capitals, held off the scene by a soft dark
+   glow. The tap area is still 44px tall. Skip steps aside whenever a card is under it (drive.js).
+   Skip: an arrow hops the road to the crimson-barred gate; the little road shows the distance
+   driven in crimson and fills to the gate during the run. Take: the coupé, lights on. */
+.sign{position:fixed;left:8px;bottom:8px;z-index:40;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 10px;
+  background:none;border:0;color:var(--ink);font:700 11px/1 var(--display);letter-spacing:.07em;text-transform:uppercase;text-decoration:none;cursor:pointer;
+  text-shadow:0 0 7px #050505,0 0 3px #050505,0 0 1px #050505;opacity:.8;transition:opacity .2s}
+.sign:hover,.sign:focus-visible{opacity:1}
+.sign:focus-visible{outline:2px solid var(--c-line);outline-offset:0;border-radius:3px}
+.sign .sign-art{width:42px;height:16px;flex:none;overflow:visible;filter:drop-shadow(0 0 2px #050505) drop-shadow(0 0 4px #050505)}
 .sign-art *{fill:none;stroke-linecap:round;stroke-linejoin:round}
-.sign-art .road{stroke:var(--ink);stroke-width:1.2;stroke-dasharray:2.4 2.6;opacity:.7}
-.sign-art .life{stroke:var(--c-line);stroke-width:2;stroke-dasharray:1 1;stroke-dashoffset:calc(1 - var(--run,0))}
-.sign-art .hop,.sign-art .head{stroke:var(--ink);stroke-width:1.35}
+.sign-art .road{stroke:var(--ink);stroke-width:1.3;stroke-dasharray:2.4 2.6;opacity:.75}
+.sign-art .life{stroke:var(--c-line);stroke-width:2.2;stroke-dasharray:1 1;stroke-dashoffset:calc(1 - var(--run,0))}
+.sign-art .hop,.sign-art .head{stroke:var(--ink);stroke-width:1.5}
 .sign-art .hop{stroke-dasharray:1 1;stroke-dashoffset:0}
-.sign-art .post{stroke:var(--ink);stroke-width:1.2}
-.sign-art .bar{stroke:var(--c-line);stroke-width:2.2}
+.sign-art .post{stroke:var(--ink);stroke-width:1.3}
+.sign-art .bar{stroke:var(--c-line);stroke-width:2.4}
 .sign-art .body{fill:var(--c-fill);stroke:var(--ink);stroke-width:.9}
 .sign-art .wheel{fill:#0b0b0d;stroke:var(--ink);stroke-width:.9}
 .sign-art .glass{fill:#0b0c10;stroke:none}
 .sign-art .beam{fill:rgba(255,236,200,.22);stroke:none}
-.sign-art .chev{stroke:var(--ink);stroke-width:1.3}
+.sign-art .chev{stroke:var(--ink);stroke-width:1.4}
 .sign-art .car{transition:transform .45s cubic-bezier(.3,.7,.2,1)}
 @media (hover:hover){
   .skip-drive:hover .hop{animation:sign-hop .6s ease-out}
@@ -137,22 +132,27 @@
 @keyframes sign-hop{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
 @keyframes sign-head{0%,55%{opacity:0}100%{opacity:1}}
 @keyframes sign-roll{to{stroke-dashoffset:-5}}
-/* the run: crimson rim, the road rolling and filling, the hop arrow stepping back */
-.skip-drive.running{border-color:var(--c-line);cursor:default}
-.skip-drive.running:hover{transform:none}
+/* the run: the road rolls and fills, the hop arrow steps back */
+.skip-drive.running{cursor:default;opacity:1}
 .skip-drive.running .road{animation:sign-roll .3s linear infinite}
-.skip-drive.running .hop,.skip-drive.running .head{opacity:.25}
-.skip-drive.at-end,.skip-drive.tucked{opacity:0;pointer-events:none}
-.take-drive[hidden],.drive .take-drive{display:none}
-/* phones: Skip is a narrow roadside plate just under the header, the drawing over the words,
-   so it stays in the left margin, clear of the car and of the cards below */
+.skip-drive.running .hop,.skip-drive.running .head{opacity:.3}
+.skip-drive.at-end,.skip-drive.tucked{opacity:0;pointer-events:none;transition-duration:.12s}
+/* desktop: the bottom corner of whichever half the current card leaves free (drive.js) */
+.skip-drive.on-right{left:auto;right:8px}
+/* phones: just under the header; the label shows at the start, then folds to the drawing alone
+   (still read out as "Skip the drive"); the tap area stays 44px */
 @media (max-width:759px){
-  .skip-drive{left:12px;bottom:auto;top:calc(var(--top-h,108px) + 10px);flex-direction:column;align-items:flex-start;
-    gap:7px;min-height:0;padding:10px 12px 11px}
-  .skip-drive span{max-width:6.4em;font-size:11.5px;line-height:1.15}
-  .skip-drive .sign-art{width:52px;height:19.5px}
-  .take-drive{left:12px;bottom:12px}
+  .skip-drive{left:4px;bottom:auto;top:calc(var(--top-h,108px) + 2px);font-size:10.5px;min-width:44px}
+  .skip-drive .sign-art{width:36px;height:13.5px}
+  .skip-drive span{display:inline-block;max-width:9em;overflow:hidden;white-space:nowrap;transition:max-width .35s ease,opacity .25s}
+  .skip-drive.compact{gap:0}
+  .skip-drive.compact span{max-width:0;opacity:0}
 }
+/* Take the drive: in the page, at the top of the whole-page view, so it covers nothing;
+   on wide screens, fixed in the empty margin beside the column */
+.take-drive{position:static;justify-self:start;margin:-14px 0 -12px -10px}
+.take-drive[hidden],.drive .take-drive{display:none}
+@media (min-width:1200px){.take-drive{position:fixed;left:8px;bottom:8px;margin:0}}
 
 /* ---------- the whole site on one page (/overview.html, or after "Skip the drive") ---------- */
 .still-mode .stop{scroll-margin-top:calc(var(--top-h,64px) + 16px)}

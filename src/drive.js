@@ -119,8 +119,6 @@ export async function start({ startAt = null } = {}) {
         const pad = `${Math.max(0, Math.round(stick - docTop(s.el)))}px`;
         if (s.el.style.paddingTop !== pad) s.el.style.paddingTop = pad;
       }
-      // where the card sits in the page before sticking (for the skip sign to step aside)
-      s.cardTop = docTop(s.el) + (parseFloat(s.el.style.paddingTop) || 0);
       if (s.extra === extra && s.svh === svh) return;
       s.extra = extra; s.svh = svh;
       s.card.style.top = `${Math.round(stick - extra)}px`;
@@ -130,7 +128,7 @@ export async function start({ startAt = null } = {}) {
   // A tall card is never moved by script (that lags a frame behind native scrolling and
   // wobbles): it rises with the page, the car parks as its top passes the usual line, and it
   // carries on rising until its sticky top holds it fully on screen.
-  let lastW = 0, lastH = 0, needRender = true, signBottom = 0;
+  let lastW = 0, lastH = 0, needRender = true, signRect = null;
   const topBar = document.querySelector('.top');
   function measure() {
     document.documentElement.style.setProperty('--top-h', `${topBar?.offsetHeight || 0}px`);
@@ -138,7 +136,7 @@ export async function start({ startAt = null } = {}) {
     // phones: the small viewport, so the address bar showing or hiding moves nothing
     vh = mobile ? (svhProbe.offsetHeight || innerHeight) : innerHeight;
     if (mobile) fitPhoneCards();
-    if (mobile && skipLink) signBottom = skipLink.getBoundingClientRect().bottom;
+    if (skipLink) signRect = skipLink.getBoundingClientRect();
     const maxS = document.documentElement.scrollHeight - vh;
     knots = stops.map((s, i) => {
       const top = s.el.offsetTop, h = s.el.offsetHeight;
@@ -289,7 +287,7 @@ export async function start({ startAt = null } = {}) {
     else if (!quick) gov.quick = 0;
   }
   const film = document.getElementById('film');
-  let lastS = -1, lastFrame = 0, drewLast = false, revAt = -1e9, lastModel = null, currentStop = 0, signRun = -1, signTucked = false;
+  let lastS = -1, lastFrame = 0, drewLast = false, revAt = -1e9, lastModel = null, currentStop = 0, signRun = -1, signTucked = false, signScroll = 0;
 
   // Coming from the whole-page view: open the road at the section that was being read.
   if (startAt != null && knots[startAt]) {
@@ -325,8 +323,13 @@ export async function start({ startAt = null } = {}) {
   // Esc during the run: straight to the finish
   addEventListener('keydown', (e) => { if (e.key === 'Escape' && mode === 'skip' && run.tween) run.tween.progress(1); });
 
+  // Once the visitor switches views, this page places the scroll itself on Back and Forward, so the
+  // browser must not restore its own remembered position first (the drive would follow it during the fade).
+  const ownScroll = () => { try { history.scrollRestoration = 'manual'; } catch (e) { /* older browsers */ } };
+
   async function toOverview({ push = true, at = run.at } = {}) {
     if (mode === 'overview') return;
+    ownScroll();
     await fade(true);
     run.tween?.kill(); run.tween = null;
     mode = 'overview';
@@ -357,6 +360,7 @@ export async function start({ startAt = null } = {}) {
 
   async function toDrive({ push = true } = {}) {
     if (mode !== 'overview') return;
+    ownScroll();
     const at = sectionInView();
     await fade(true);
     takeBtn.hidden = true;
@@ -454,12 +458,33 @@ export async function start({ startAt = null } = {}) {
       skipLink.classList.toggle('running', skipping);
       skipLink.classList.toggle('at-end', !skipping && here === stops.length - 1);
       if (Math.abs(carT - signRun) > 0.002) { signRun = carT; skipLink.style.setProperty('--run', carT.toFixed(3)); }
-      // phones: step aside while a risen card is under the sign, so it never covers what is being read
-      if (mobile) {
-        const st = stops[here];
-        const y = Math.max(st.stick - (st.extra || 0), (st.cardTop ?? Infinity) - scrollY) + (1 - Math.max(0, st.vis)) * 28;
-        const tuck = !skipping && st.vis > 0.05 && y < signBottom + 6;
+      // step aside whenever a card being read is under the sign (any screen), so it never covers
+      // the content: checked each frame from where the visible cards actually are, with a margin
+      // that grows with scrolling speed so a rising card never reaches it first
+      if (signRect) {
+        const lead = 10 + Math.min(160, Math.abs(scrollY - signScroll) * 3);
+        signScroll = scrollY;
+        let tuck = false, under = null;
+        if (!skipping) for (const st of stops) {
+          if (st.vis < 0.05) continue;
+          const r = st.card.getBoundingClientRect();
+          if (r.left < signRect.right + 10 && r.right > signRect.left - 10 && r.top < signRect.bottom + lead && r.bottom > signRect.top - lead) { tuck = true; under = st; break; }
+        }
         if (tuck !== signTucked) { signTucked = tuck; skipLink.classList.toggle('tucked', tuck); }
+        // desktop: once hidden, move to the bottom corner of the half the card leaves free
+        // (the camera keeps the scene there), and come back there; it never jumps while visible
+        if (tuck && under && !mobile) {
+          const right = under.screen === -1;
+          if (right !== skipLink.classList.contains('on-right')) { skipLink.classList.toggle('on-right', right); signRect = skipLink.getBoundingClientRect(); }
+        }
+      }
+      // phones: the label shows at the start, where the choice is made, then folds to the drawing
+      if (mobile) {
+        const compact = carT > 0.02 || skipping;
+        if (compact !== skipLink.classList.contains('compact')) {
+          skipLink.classList.toggle('compact', compact);
+          setTimeout(() => { if (skipLink) signRect = skipLink.getBoundingClientRect(); }, 420);
+        }
       }
     }
     routeLinks.forEach((a, i) => {
